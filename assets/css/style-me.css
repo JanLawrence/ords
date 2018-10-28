@@ -1,0 +1,24 @@
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&subset=latin-ext");
+body{
+    font-family: 'Source Sans Pro';
+    font-size: 13px;
+    background: #f8f9fa!important;
+}
+
+/* navbar style */
+
+.navbar-light .navbar-nav .nav-link{
+    font-size: 14px;
+}
+.dropdown-item{
+    font-size: 14px;
+}
+
+/* nav tabs style */
+.nav-tabs-standard li a{
+    font-size: 14px;
+    font-weight: bolder;
+}
+.nav-tabs-standard li a{
+    color: #7e7e7e;
+}
