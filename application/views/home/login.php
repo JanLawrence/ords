@@ -27,7 +27,7 @@
                 <div class="login-form">
                     <form action="" method="post">
                         <div class="form-group">
-                            <label>User Name</label>
+                            <label>Username</label>
                             <input type="text" class="form-control" placeholder="User Name" name="username">
                         </div>
                         <div class="form-group">
