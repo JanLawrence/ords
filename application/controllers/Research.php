@@ -9,6 +9,10 @@ class Research extends CI_Controller {
 		$this->load->view('research/research');
 		$this->load->view('templates/footer');
 	}
+	public function add()
+	{
+		$this->research_model->add();
+	}
 	public function researchList()
 	{
 		$this->load->view('templates/header');
