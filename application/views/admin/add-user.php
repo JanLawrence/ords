@@ -15,9 +15,19 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>1</td>
+                            <td>Doe, John</td>
+                            <td>Admin</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Doe, Jane</td>
+                            <td>University President</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Dela Cruz, Juan</td>
+                            <td>Researcher</td>
                         </tr>
                     </tbody>
                 </table>
