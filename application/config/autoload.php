@@ -135,4 +135,5 @@ $autoload['language'] = array();
 <<<<<<< HEAD
 $autoload['model'] = array('admin_model');
 =======
+$autoload['model'] = array('research_model');
 >>>>>>> 33ce9faed75160bd0d3c804c0423bd54901abd7b
