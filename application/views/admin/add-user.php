@@ -41,71 +41,84 @@
             <div class="modal-header">
                 <h4><i class="ti-plus"></i> Add User</h4>
             </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h6> User Information</h6>
-                        <hr>
-                        <div class="form-group row">
-                            <label class="col-sm-3"> First Name:</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" name="fname">
+            <form id="addForm">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6> User Information</h6>
+                            <hr>
+                            <div class="form-group row">
+                                <label class="col-sm-3"> First Name:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="fname" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3"> Middle Name:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="mname" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3"> Last Name:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="lname" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3"> Email:</label>
+                                <div class="col-sm-9">
+                                    <input type="email" class="form-control" name="email" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3"> Position:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="position" required>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3"> Middle Name:</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" name="mname">
+                        <div class="col-md-6">
+                            <h6> User Login Information </h6>
+                            <hr>
+                            <div class="form-group row">
+                                <label class="col-sm-3"> Username:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="username" required>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3"> Last Name:</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" name="lname">
+                            <div class="form-group row">
+                                <label class="col-sm-3"> Password:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="password" required>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3"> Email:</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" name="email">
+                            <div class="form-group row">
+                                <label class="col-sm-3"> Confirm Password:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="confirmpass" required>
+                                    <span class="alert-notif"></span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3"> Position:</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" name="position">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <h6> User Login Information </h6>
-                        <hr>
-                        <div class="form-group row">
-                            <label class="col-sm-3"> Username:</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" name="username">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3"> Password:</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" name="password">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3"> Confirm Password:</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" name="confirmpass">
+                            <div class="form-group row">
+                                <label class="col-sm-3"> User Tpe:</label>
+                                <div class="col-sm-9">
+                                    <select name="usertype" class="form-control" required>
+                                        <option value="admin">Admin</option>
+                                        <option value="researcher">Researcher</option>
+                                        <option value="university president">University President</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <a href="#" class="btn btn-danger btn-sm" data-dismiss="modal"><i class="ti-close"></i> Close</a>
-                <a href="#" class="btn btn-success btn-sm"><i class="ti-save"></i> Save</a>
-            </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-danger btn-sm" data-dismiss="modal"><i class="ti-close"></i> Close</a>
+                    <button class="btn btn-success btn-sm btn-submit" type="submit"><i class="ti-save"></i> Save</button>
+                </div>
+            </form>
         </div>
     </div>   
 </div>
-<script src="<?= base_url()?>assets/modules/js/research.js"></script>
+<script src="<?= base_url()?>assets/modules/js/admin.js"></script>

@@ -78,7 +78,10 @@ class Admin extends CI_Controller {
             show_404();
         }
         
-	}
+    }
+    public function saveUser(){
+        $this->admin_model->saveUser();
+    }
 	public function researchList()
 	{
         if(!empty($this->session->userdata['user'])){
