@@ -68,8 +68,9 @@ class Admin extends CI_Controller {
 	{
         if(!empty($this->session->userdata['user'])){
             if($this->session->userdata['user']->user_type == 'admin'){
+                $data['userList'] = $this->admin_model->userList();
                 $this->load->view('templates/header');
-                $this->load->view('admin/add-user');
+                $this->load->view('admin/add-user',$data);
                 $this->load->view('templates/footer');
             } else {
                 show_404();
