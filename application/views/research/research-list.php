@@ -40,10 +40,14 @@
                                         <?php elseif($each->status == 'approved'):?>
                                             <span class="badge badge-success"><?= ucwords($each->status);?></span>
                                         <?php elseif($each->status == 'disapproved'):?>
-                                            <span class="badge badge-danger"><?= ucwords($each->status);?></span>
+                                        <span class="badge badge-danger"><?= ucwords($each->status);?></span>
                                         <?php endif;?>
                                     </td>
-                                    <td><a href="<?= base_url()?>research/researchEdit?id=<?=$each->id?>" target="_blank" class="btn btn-info btn-sm"><i class="ti-pencil-alt"></i> Edit</a></td>
+                                    <td>
+                                        <?php if($each->status == 'pending'):?>
+                                            <a href="<?= base_url()?>research/researchEdit?id=<?=$each->id?>" target="_blank" class="btn btn-info btn-sm"><i class="ti-pencil-alt"></i> Edit</a>
+                                        <?php endif;?>
+                                    </td>
                                 </tr>
                             <?php endforeach;?><!-- end of foreach loop -->
                             <?php else:?> <!-- if variable research is empty; displays-->
