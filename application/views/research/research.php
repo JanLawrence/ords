@@ -1,5 +1,7 @@
+<!-- Landing Page of Researcher User -->
 <div class="row">
     <div class="col-md-12">
+        <!-- Form for creating new research-->
         <form id="newResearchForm" method="post" enctype="multipart/form-data">
             <div class="card border-top-0 rounded-0">
                 <div class="card-body">
@@ -28,4 +30,5 @@
         </form>
     </div>
 </div>
+<!-- Point to external Javascript file -->
 <script src="<?= base_url()?>assets/modules/js/research.js"></script>

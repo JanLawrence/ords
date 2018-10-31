@@ -5,9 +5,10 @@
                 <table class="table table-bordered table-striped table-hovered">
                     <thead>
                         <tr>
-                            <th style="width: 20%">Control Number</th>
-                            <th style="width: 50%">Details</th>
-                            <th style="width: 20%">Status</th>
+                            <th style="width: 15%">Control Number</th>
+                            <th style="width: 50%">Title & Details</th>
+                            <th style="width: 15%">Date Filed</th>
+                            <th style="width: 10%">Status</th>
                             <th style="width: 10%"><i class="ti-settings"></i></th>
                         </tr>
                     </thead>
@@ -17,11 +18,9 @@
                             <tr>
                                 <td>
                                     <strong><?= $each->series_number?></strong><hr>
-                                    <p><strong>Date Filed:</strong><p>
-                                    <p><?= date('F d, Y  h:i A' , strtotime($each->date_created)) ?><p>
                                 </td>
                                 <td>
-                                    <h4><?= $each->title?></h4><hr>
+                                    <h5><?= $each->title?></h5><hr>
                                     <p><?= $each->details ?></p>
                                     <?php if($each->file_name != ''):?>
                                         <a target="_blank" href="<?= base_url()?>research/download?id=<?=$each->id?>"><small>Download File</small></a> 
@@ -32,6 +31,7 @@
                                     <?php endif;?><hr>
                                     <small>By: <?= $each->name?></small>
                                 </td>
+                                <td><?= date('F d, Y  h:i A' , strtotime($each->date_created)) ?></td>
                                 <td class="text-center">
                                     <?php if($each->status == 'pending'):?>
                                         <span class="badge badge-warning"><?= ucwords($each->status);?></span>

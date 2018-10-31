@@ -16,12 +16,14 @@
       
     </head>
     <body>
+        <!-- for title and details of system -->
         <div class="sidenav">
             <div class="login-main-text">
                 <h2><strong>ORDS</strong><br></h2>
                 <p>Research Evaluation, Implementation and Monitoring System</p>
             </div>
         </div>
+        <!-- login form -->
         <div class="main">
             <div class="col-md-6 col-sm-12">
                 <div class="login-form">
@@ -34,9 +36,10 @@
                             <label>Password</label>
                             <input type="password" class="form-control" placeholder="Password" name="password">
                         </div>
+                        <!-- for validation(if entry is invalid this class will show) -->
                         <div class="form-group text-center">
                             <?php if(validation_errors() == true):?> 
-                            <div class="alert alert-danger"><i class="ti-alert"></i> Invalid Username or Password</div>
+                                <div class="alert alert-danger"><i class="ti-alert"></i> Invalid Username or Password</div>
                             <?php endif;?> 
                         </div>
                         <div class="form-group">
