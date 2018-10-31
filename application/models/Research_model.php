@@ -14,20 +14,13 @@ class Research_model extends CI_Model {
 				exit;
 			} 
 		}
-		// $code = 'RSH-';
-		// $query = $this->db->get('tbl_research');
-		// $researchData = $query->result();
-		// if(empty($researchData)){
-		// 	$lastnum = $code.str_pad(1,7,'0',STR_PAD_LEFT);
-		// } else {
+		$series = $this->seriesIDResearch();
 
-		// }
-		// $lastnum = $code.str_pad($num,7,'0',STR_PAD_LEFT);
 		$data = array(
-            'series_number' => 'RSH-0000001',
+            'series_number' => $series[0]->newnum,
             'title' => $_POST['title'],
             'details' => $_POST['details'],
-            'content' => $_POST['content'],
+            'content' => isset($_POST['content']) ? $_POST['content'] : '',
             'created_by' => $this->user->id,
             'date_created' => date('Y-m-d H:i:s')
         );
@@ -66,6 +59,19 @@ class Research_model extends CI_Model {
 			'date_created' => date('Y-m-d H:i:s'));
 		
 		$this->db->insert('tbl_research_status', $data);
+
+	}
+	public function seriesIDResearch(){
+		$this->db->select("r.series_number lastnum,
+		CONCAT('RSH-',LPAD(TRIM(LEADING '0' FROM TRIM(LEADING 'RSH-' FROM r.series_number)) + 1,7,'0')) newnum")
+				->from('tbl_research r');
+		$this->db->where('r.series_number = (
+			SELECT
+				MAX(r.series_number) lastnum
+			FROM tbl_research r
+		)');
+		$query = $this->db->get();
+        return $query->result();
 
 	}
 	public function download(){
@@ -118,7 +124,7 @@ class Research_model extends CI_Model {
 
         $this->db->set('title', $_POST['title']);
         $this->db->set('details', $_POST['details']);
-        $this->db->set('content', $_POST['content']);
+        $this->db->set('content', isset($_POST['content']) ? $_POST['content'] : '');
         $this->db->set('modified_by', $this->user->id);
         $this->db->set('date_modified', date('Y-m-d H:i:s'));
         $this->db->where('id', $id);

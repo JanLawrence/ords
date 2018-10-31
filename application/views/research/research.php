@@ -3,6 +3,7 @@
         <form id="newResearchForm" method="post" enctype="multipart/form-data">
             <div class="card border-top-0 rounded-0">
                 <div class="card-body">
+                    <label class="card-subtitle mb-3 text-muted"><small>Control Number: </small></label> <strong> <?= $control_num[0]->newnum?></strong>
                     <div class="form-group">
                         <label>Title: </label>
                         <input class="form-control" type="text" name="title" required>

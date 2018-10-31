@@ -5,13 +5,15 @@ class Research extends CI_Controller {
 	
 	public function index()
 	{
+		$data['control_num'] = $this->research_model->seriesIDResearch();
 		$this->load->view('templates/header');
-		$this->load->view('research/research');
+		$this->load->view('research/research', $data);
 		$this->load->view('templates/footer');
 	}
 	public function researchEdit()
 	{
 		$data['research'] = $this->research_model->getResearch($_REQUEST['id']);
+		$data['control_num'] = $this->research_model->seriesIDResearch();
 		$this->load->view('templates/header');
 		$this->load->view('research/research-edit', $data);
 		$this->load->view('templates/footer');
