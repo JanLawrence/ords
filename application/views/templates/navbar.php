@@ -31,7 +31,8 @@
 			<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
 				 aria-expanded="false">
-					Welcome! <strong><?= $userInfo[0]->first_name.' '.($userInfo[0]->middle_name != '' ? substr(ucwords($userInfo[0]->middle_name), 0, 1).'.' : '').' '. $userInfo[0]->last_name?></strong>
+					<!-- Display User Info of user -->
+				 	Welcome! <strong><?= $userInfo[0]->first_name.' '.($userInfo[0]->middle_name != '' ? substr(ucwords($userInfo[0]->middle_name), 0, 1).'.' : '').' '. $userInfo[0]->last_name?></strong>
 				</a>
 				<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 					<a class="dropdown-item" href="#"><i class="ti-settings"></i> Manage Accounts</a>
@@ -46,6 +47,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12 mt-4">
+			<!-- Statement Condition -->
 			<?php if($userSession->user_type == 'researcher'): ?>
             <ul class="nav nav-tabs nav-tabs-standard">
 				<li class="nav-item">

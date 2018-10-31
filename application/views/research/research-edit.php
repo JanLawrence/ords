@@ -1,9 +1,10 @@
-
+<!-- Edit  Selected Data-->
 <div class="row">
     <div class="col-md-12">
         <form id="editResearchForm" method="post" enctype="multipart/form-data">
             <div class="card border-top-0 rounded-0">
                 <div class="card-body">
+                    <!-- value displays existing data -->
                     <div class="form-group">
                         <label>Title: </label>
                         <input class="form-control" type="hidden" name="id" value="<?= $research[0]->id?>" required>
@@ -29,4 +30,5 @@
         </form>
     </div>
 </div>
+<!-- Point to external Javascript file -->
 <script src="<?= base_url()?>assets/modules/js/research.js"></script>

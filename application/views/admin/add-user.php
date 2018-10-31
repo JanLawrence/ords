@@ -1,3 +1,4 @@
+<!-- List of Users -->
 <div class="row">
     <div class="col-md-12">
         <div class="card  border-top-0 rounded-0">
@@ -15,6 +16,8 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <!-- Variable $userList was declared in Admin Controller $data['userList'] -->
+                        <!-- Displays Data of $userList -->
                         <?php 
                             $ctr = 1;
                             foreach($userList as $each){
@@ -45,6 +48,7 @@
         </div>
     </div>
 </div>
+<!-- For Adding of user -->
 <div class="modal" id="addModal">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -131,7 +135,7 @@
         </div>
     </div>   
 </div>
-</div>
+<!-- For Update/Edit of user -->
 <div class="modal" id="editModal">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">

@@ -1,3 +1,4 @@
+<!-- Admin Login -->
 <html>
     <head>
         <meta charset="UTF-8">
@@ -16,6 +17,7 @@
       
     </head>
     <body>
+        <!-- for title and details of system -->
         <div class="sidenav">
             <div class="login-main-text">
                 <h2><strong>ORDS</strong><br></h2>
@@ -23,6 +25,7 @@
                 <p>Administrator</p>
             </div>
         </div>
+        <!-- login form -->
         <div class="main">
             <div class="col-md-6 col-sm-12">
                 <div class="login-form">

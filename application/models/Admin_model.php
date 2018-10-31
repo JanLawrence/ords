@@ -6,6 +6,7 @@ class Admin_model extends CI_Model{
         $this->user = isset($this->session->userdata['user']) ? $this->session->userdata['user'] : ''; //get session
     }
     public function userList(){
+        // get data from tbl_user_info and tbl_user
         $this->db->select("ui.user_id,CONCAT(ui.last_name, ', ' ,ui.first_name, ' ', ui.middle_name) name, u.user_type,
             ui.first_name f_name,ui.last_name l_name, ui.middle_name m_name , ui.email, ui.position, u.username, u.password
         ")
@@ -68,7 +69,9 @@ class Admin_model extends CI_Model{
         $this->db->update('tbl_user_info');
     }
     public function getAllResearh(){
-		$researcher = $this->user->id;
+        $researcher = $this->user->id; //this is from the session declared in function __construct
+
+        // get data from joined tables
         $this->db->select('r.*, ra.name file_name, ra.type file_type, ra.size file_size, rs.status, rs.admin_status, rs.president_status,
             ui.user_id,CONCAT(ui.last_name, ", " ,ui.first_name, " ", ui.middle_name) name
         ')
@@ -81,7 +84,8 @@ class Admin_model extends CI_Model{
         return $query->result();
 	}
     public function getAllResearhApprovedAdmin(){
-		$researcher = $this->user->id;
+		$researcher = $this->user->id;//this is from the session declared in function __construct
+        // get data from joined tables
         $this->db->select('r.*, ra.name file_name, ra.type file_type, ra.size file_size, rs.status, rs.admin_status, rs.president_status,
             ui.user_id,CONCAT(ui.last_name, ", " ,ui.first_name, " ", ui.middle_name) name
         ')
