@@ -5,39 +5,43 @@ class Research extends CI_Controller {
 	
 	public function index()
 	{
-		$data['control_num'] = $this->research_model->seriesIDResearch();
+		$data['control_num'] = $this->research_model->seriesIDResearch(); // load control num
+		// load view
 		$this->load->view('templates/header');
 		$this->load->view('research/research', $data);
 		$this->load->view('templates/footer');
 	}
 	public function researchEdit()
 	{
-		$data['research'] = $this->research_model->getResearch($_REQUEST['id']);
-		$data['control_num'] = $this->research_model->seriesIDResearch();
+		$data['research'] = $this->research_model->getResearch($_REQUEST['id']); // load research per edit id
+		$data['control_num'] = $this->research_model->seriesIDResearch(); // load control num
+		// load view
 		$this->load->view('templates/header');
 		$this->load->view('research/research-edit', $data);
 		$this->load->view('templates/footer');
 	}
 	public function add()
 	{
-		$this->research_model->add();
+		$this->research_model->add();  // add research controller
 	}
 	public function edit()
 	{
-		$this->research_model->edit();
+		$this->research_model->edit();  // edit research controller
 	}
 	public function researchList()
 	{
-		$data['research'] = $this->research_model->getResearchByResearcher();
+		$data['research'] = $this->research_model->getResearchByResearcher(); // load research per researcher
+
+		// load view
 		$this->load->view('templates/header');
 		$this->load->view('research/research-list', $data);
 		$this->load->view('templates/footer');
 	}
 	public function download()
 	{
-		$this->research_model->download();
+		$this->research_model->download(); // download research controller
 	}
-	public function showContent()
+	public function showContent() // show content of research controller
 	{
 		$query = $this->db->get_where('tbl_research', array('id'=> $_REQUEST['id']));
 		$researchData = $query->result();
