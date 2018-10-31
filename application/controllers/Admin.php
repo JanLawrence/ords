@@ -86,9 +86,15 @@ class Admin extends CI_Controller {
 	public function researchList()
 	{
         if(!empty($this->session->userdata['user'])){
-            if($this->session->userdata['user']->user_type == 'admin'){
+            if($this->session->userdata['user']->user_type == 'admin' || $this->session->userdata['user']->user_type == 'university president'){
+               
+                if($this->session->userdata['user']->user_type == 'admin'){
+                    $data['research'] = $this->admin_model->getAllResearh();
+                } else if($this->session->userdata['user']->user_type == 'university president'){
+                    $data['research'] = $this->admin_model->getAllResearhApprovedAdmin();
+                }
                 $this->load->view('templates/header');
-                $this->load->view('admin/research-list');
+                $this->load->view('admin/research-list', $data);
                 $this->load->view('templates/footer');
             } else {
                 show_404();

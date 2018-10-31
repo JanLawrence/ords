@@ -37,4 +37,31 @@ class Admin_model extends CI_Model{
         );
         $this->db->insert('tbl_user_info',$data); //insert data to tbl_user_info
     }
+    public function getAllResearh(){
+		$researcher = $this->user->id;
+        $this->db->select('r.*, ra.name file_name, ra.type file_type, ra.size file_size, rs.status, rs.admin_status, rs.president_status,
+            ui.user_id,CONCAT(ui.last_name, ", " ,ui.first_name, " ", ui.middle_name) name
+        ')
+			->from('tbl_research r')
+			->join('tbl_research_status rs', 'rs.research_id = r.id', 'inner')
+			->join('tbl_research_attachment ra', 'ra.research_id = r.id', 'left')
+			->join('tbl_user_info ui', 'r.created_by = ui.user_id', 'inner');
+		$this->db->order_by('r.date_created','DESC');
+		$query = $this->db->get();
+        return $query->result();
+	}
+    public function getAllResearhApprovedAdmin(){
+		$researcher = $this->user->id;
+        $this->db->select('r.*, ra.name file_name, ra.type file_type, ra.size file_size, rs.status, rs.admin_status, rs.president_status,
+            ui.user_id,CONCAT(ui.last_name, ", " ,ui.first_name, " ", ui.middle_name) name
+        ')
+			->from('tbl_research r')
+			->join('tbl_research_status rs', 'rs.research_id = r.id', 'inner')
+			->join('tbl_research_attachment ra', 'ra.research_id = r.id', 'left')
+			->join('tbl_user_info ui', 'r.created_by = ui.user_id', 'inner');
+		$this->db->where('rs.admin_status','approved');
+		$this->db->order_by('r.date_created','DESC');
+		$query = $this->db->get();
+        return $query->result();
+	}
 }

@@ -12,6 +12,7 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <?php if(!empty($research)):?>
                             <?php foreach($research as $each): ?>
                                 <tr>
                                     <td>
@@ -42,6 +43,11 @@
                                     <td><a href="<?= base_url()?>research/researchEdit?id=<?=$each->id?>" target="_blank" class="btn btn-info btn-sm"><i class="ti-pencil-alt"></i> Edit</a></td>
                                 </tr>
                             <?php endforeach;?>
+                            <?php else:?>
+                                <tr>
+                                    <td colspan = "4" class="text-center"> No pending research found. </td>
+                                </tr>
+                            <?php endif;?>      
                         </tbody>
                     </table> 
                 </div>

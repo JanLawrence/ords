@@ -38,7 +38,7 @@
             <div class="modal-header">
                 <h4><i class="ti-plus"></i> Add User</h4>
             </div>
-            <form id="addForm">
+            <form id="addForm" method="post">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6">

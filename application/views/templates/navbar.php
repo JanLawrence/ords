@@ -57,9 +57,11 @@
             </ul>
 			<?php elseif($userSession->user_type == 'admin' || $userSession->user_type == 'university president'): ?>
             <ul class="nav nav-tabs nav-tabs-standard">
-                <li class="nav-item">
-                    <a class="nav-link <?= $controller.'/'.$method == 'admin/addUser' ? 'active' : ''?>" href="<?= base_url()?>admin/addUser"><i class="ti-plus"></i> New User</a>
-                </li>
+				<?php if($userSession->user_type == 'admin'):?>
+					<li class="nav-item">
+						<a class="nav-link <?= $controller.'/'.$method == 'admin/addUser' ? 'active' : ''?>" href="<?= base_url()?>admin/addUser"><i class="ti-plus"></i> New User</a>
+					</li>
+				<?php endif;?>
                 <li class="nav-item">
                     <a class="nav-link <?= $controller.'/'.$method == 'admin/researchList' ? 'active' : ''?>" href="<?= base_url()?>admin/researchList"><i class="ti-write"></i> Research List</a>
                 </li>
