@@ -1,22 +1,23 @@
 $(function(){
-    $('#addForm').submit(function(){
+    $('#addForm').submit(function(){ // submit add user form
         var pass = $(this).find('input[name="password"]').val();
         var confirmpass = $(this).find('input[name="confirmpass"]').val();
+        var that = $(this);
+        if(pass == confirmpass){ // validation password and confirm pass
 
-        if(pass == confirmpass){
-
-            $.post(URL+'admin/saveUser',$(this).serialize())
+            $.post(URL+'admin/saveUser',that.serialize()) // post to admin/saveUser
             .done(function(returnData){
-                location.reload();
+                location.reload(); // reload if success
             })
         } else {
-            alert('Password do not match.');
+            alert('Password do not match.'); // alert error if pass not match
         }
         return false;
     })
-    $("#tableList").on('click','.btn-edit',function(){
-        $('#editModal').modal('toggle');
-
+    $("#tableList").on('click','.btn-edit',function(){ // on click edit button on user list
+        $('#editModal').modal('toggle'); // toggle edit modal
+        
+         // get values on attr of the button clicked
         var uid = $(this).attr('userid');
         var fname = $(this).attr('u_fname');
         var lname = $(this).attr('u_lname');
@@ -27,6 +28,7 @@ $(function(){
         var username = $(this).attr('u_username');
         var password = $(this).attr('u_password');
 
+        // put attr values on each specific input 
         $('#editForm').find('input[name="id"]').val(uid);
         $('#editForm').find('input[name="fname"]').val(fname);
         $('#editForm').find('input[name="mname"]').val(mname);
@@ -40,30 +42,31 @@ $(function(){
 
         return false;
     })
-    $('#editForm').submit(function(){
+    $('#editForm').submit(function(){ // submit edit user form
         var pass = $(this).find('input[name="password"]').val();
         var confirmpass = $(this).find('input[name="confirmpass"]').val();
+        var that = $(this);
+        if(pass == confirmpass){ // validation password and confirm pass
 
-        if(pass == confirmpass){
-
-            $.post(URL+'admin/editUser',$(this).serialize())
+            $.post(URL+'admin/editUser',that.serialize()) // post to admin/editUser
             .done(function(returnData){
-                location.reload();
+                location.reload(); // reload if success
             })
         } else {
-            alert('Password do not match.');
+            alert('Password do not match.'); // alert error if pass not match
         }
         return false;
     })
-    $('#researchList').on('click', '.btn-status', function(){
+    $('#researchList').on('click', '.btn-status', function(){ // on click status buttons on research list
+        // get attr values for status and research id
         var status = $(this).attr('status');
         var id = $(this).attr('rid');
-
-        var r = confirm("Are you sure?");
+        
+        var r = confirm("Are you sure?"); // alert confirmation if will update
         if (r == true) {
-            $.post(URL+'admin/changeResearchStatus',{'status': status, 'id': id})
+            $.post(URL+'admin/changeResearchStatus',{'status': status, 'id': id})  // post to admin/changeResearchStatus
             .done(function(returnData){
-                location.reload();
+                location.reload(); // reload if success
             })
         } 
         return false;
