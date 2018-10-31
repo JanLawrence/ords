@@ -55,4 +55,17 @@ $(function(){
         }
         return false;
     })
+    $('#researchList').on('click', '.btn-status', function(){
+        var status = $(this).attr('status');
+        var id = $(this).attr('rid');
+
+        var r = confirm("Are you sure?");
+        if (r == true) {
+            $.post(URL+'admin/changeResearchStatus',{'status': status, 'id': id})
+            .done(function(returnData){
+                location.reload();
+            })
+        } 
+        return false;
+    })
 })
