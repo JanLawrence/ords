@@ -4,18 +4,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Research_model extends CI_Model {
 	
 	public function __construct(){
-		$this->user = isset($this->session->userdata['user']) ? $this->session->userdata['user'] : array();
+		$this->user = isset($this->session->userdata['user']) ? $this->session->userdata['user'] : array(); //get session
 	}
 	public function add()
 	{
-		if(isset($_FILES['file']) && $_FILES['file']['tmp_name']!=''){
-			if($_FILES['file']['type'] != 'application/pdf'){
+		if(isset($_FILES['file']) && $_FILES['file']['tmp_name']!=''){ //validation if all condition statement are true proceed to sub statement
+ 			if($_FILES['file']['type'] != 'application/pdf'){
 				echo 2;
 				exit;
 			} 
 		}
 		$series = $this->seriesIDResearch();
 
+		//insert data to tbl_research
 		$data = array(
             'series_number' => $series[0]->newnum,
             'title' => $_POST['title'],
@@ -26,10 +27,10 @@ class Research_model extends CI_Model {
         );
         
         $this->db->insert('tbl_research', $data);
-        $researchId = $this->db->insert_id();
-		
-		if(isset($_FILES['file']) && $_FILES['file']['tmp_name']!=''){
-
+        $researchId = $this->db->insert_id();//get tbl_research id
+		//insertion of attachment
+		if(isset($_FILES['file']) && $_FILES['file']['tmp_name']!=''){//if statement is true
+			//insert attachment
 			list($fileName , $ext) = explode('.', $_FILES['file']['name']);
 			$tmpName  = $_FILES['file']['tmp_name'];            
 			$fileSize = $_FILES['file']['size'];                
@@ -52,7 +53,7 @@ class Research_model extends CI_Model {
 			$this->db->insert('tbl_research_attachment', $data);
 
         }
-
+		//insert data into tbl_research_status
 		$data = array(
 			'research_id' => $researchId,
 			'created_by' => $this->user->id,
@@ -62,6 +63,7 @@ class Research_model extends CI_Model {
 
 	}
 	public function seriesIDResearch(){
+		//get data of NEW research series number
 		$this->db->select("r.series_number lastnum,
 		CONCAT('RSH-',LPAD(TRIM(LEADING '0' FROM TRIM(LEADING 'RSH-' FROM r.series_number)) + 1,7,'0')) newnum")
 				->from('tbl_research r');
@@ -75,6 +77,7 @@ class Research_model extends CI_Model {
 
 	}
 	public function download(){
+		//for attachment download
 		$query = $this->db->get_where('tbl_research_attachment', array('research_id'=> $_REQUEST['id']));
 		$researchData = $query->result();
 		$name = $researchData[0]->name;
@@ -90,6 +93,7 @@ class Research_model extends CI_Model {
 			
 	} 
 	public function getResearchByResearcher(){
+		//get data of joined tables
 		$researcher = $this->user->id;
 		$this->db->select('r.*, ra.name file_name, ra.type file_type, ra.size file_size, rs.status, rs.admin_status, rs.president_status')
 			->from('tbl_research r')
@@ -102,6 +106,7 @@ class Research_model extends CI_Model {
 	}
 
 	public function getResearch($id){
+		//get data of joined tables filtered by research id
 		$this->db->select('r.*, ra.name file_name, ra.type file_type, ra.size file_size, rs.status, rs.admin_status, rs.president_status')
 			->from('tbl_research r')
 			->join('tbl_research_status rs', 'rs.research_id = r.id', 'inner')
@@ -113,6 +118,7 @@ class Research_model extends CI_Model {
 
 	public function edit()
 	{
+		//edit research
 		$id = $_REQUEST['id'];
 
 		if(isset($_FILES['file']) && $_FILES['file']['tmp_name']!=''){
