@@ -23,7 +23,20 @@
                                 <td><?= $ctr++?></td>
                                 <td><?= $each->name?></td>
                                 <td><?= $each->user_type?></td>
-                                <td><button class="btn btn-primary btn-sm btn-edit" userid="<?= $each->user_id?>"><i class="ti-pencil-alt"></i> </button></td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm btn-edit" 
+                                    userid="<?= $each->user_id?>" 
+                                    u_fname="<?= $each->f_name?>"
+                                    u_lname="<?= $each->l_name?>"
+                                    u_mname="<?= $each->m_name?>"
+                                    u_user_type="<?= $each->user_type?>"
+                                    u_email="<?= $each->email?>"
+                                    u_position="<?= $each->position?>"
+                                    u_username="<?= $each->username?>"
+                                    u_password="<?= $each->password?>">
+                                        <i class="ti-pencil-alt"></i> 
+                                    </button>
+                                </td>
                             </tr>
                         <?php } ?>
                     </tbody>
@@ -53,7 +66,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-3"> Middle Name:</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="mname" required>
+                                    <input type="text" class="form-control" name="mname">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -87,18 +100,18 @@
                             <div class="form-group row">
                                 <label class="col-sm-3"> Password:</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="password" required>
+                                    <input type="password" class="form-control" name="password" required>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-3"> Confirm Password:</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="confirmpass" required>
+                                    <input type="password" class="form-control" name="confirmpass" required>
                                     <span class="alert-notif"></span>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-3"> User Tpe:</label>
+                                <label class="col-sm-3"> User Type:</label>
                                 <div class="col-sm-9">
                                     <select name="usertype" class="form-control" required>
                                         <option value="admin">Admin</option>
@@ -123,7 +136,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4><i class="ti-plus"></i> Add User</h4>
+                <h4><i class="ti-pencil-alt"></i> Edit User</h4>
             </div>
             <form id="editForm">
                 <div class="modal-body">
@@ -134,13 +147,14 @@
                             <div class="form-group row">
                                 <label class="col-sm-3"> First Name:</label>
                                 <div class="col-sm-9">
+                                    <input type="hidden" class="form-control" name="id" required>
                                     <input type="text" class="form-control" name="fname" required>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-3"> Middle Name:</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="mname" required>
+                                    <input type="text" class="form-control" name="mname">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -174,18 +188,18 @@
                             <div class="form-group row">
                                 <label class="col-sm-3"> Password:</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="password" required>
+                                    <input type="password" class="form-control" name="password" required>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-3"> Confirm Password:</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="confirmpass" required>
+                                    <input type="password" class="form-control" name="confirmpass" required>
                                     <span class="alert-notif"></span>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-3"> User Tpe:</label>
+                                <label class="col-sm-3"> User Type:</label>
                                 <div class="col-sm-9">
                                     <select name="usertype" class="form-control" required>
                                         <option value="admin">Admin</option>

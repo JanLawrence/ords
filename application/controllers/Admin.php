@@ -83,6 +83,9 @@ class Admin extends CI_Controller {
     public function saveUser(){
         $this->admin_model->saveUser();
     }
+    public function editUser(){
+        $this->admin_model->editUser();
+    }
 	public function researchList()
 	{
         if(!empty($this->session->userdata['user'])){
