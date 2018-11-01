@@ -3,16 +3,29 @@
     <div class="col-md-12">
         <!-- Form for creating new research-->
         <form id="newResearchForm" method="post" enctype="multipart/form-data">
-            <div class="card border-top-0 rounded-0">
+            <div class="card rounded-0">
                 <div class="card-body">
                     <label class="card-subtitle mb-3 text-muted"><small>Control Number: </small></label> <strong> <?= empty($control_num) ? 'RSH-0000001' : $control_num[0]->newnum?></strong>
-                    <div class="form-group">
+                    <div class="form-group"> 
                         <label>Title: </label>
                         <input class="form-control" type="text" name="title" required>
                     </div>    
                     <div class="form-group">
                         <label>Details: </label>
                         <input class="form-control" type="text" name="details" required>
+                    </div>    
+                    <div class="form-group">
+                        <label>Classification: </label>
+                        <select class="form-control" name="classification" required>
+                            <option selected disabled value="">--- Select Classification ---</option>
+                            <?php foreach($classification as $each): ?>
+                                <option value="<?= $each->id?>"><?= $each->classification?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>    
+                    <div class="form-group">
+                        <label>Deadline: </label>
+                        <input class="form-control" type="date" name="deadline">
                     </div>    
                     <div class="form-group">
                         <label>Upload File: </label>

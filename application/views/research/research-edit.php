@@ -2,7 +2,7 @@
 <div class="row">
     <div class="col-md-12">
         <form id="editResearchForm" method="post" enctype="multipart/form-data">
-            <div class="card border-top-0 rounded-0">
+            <div class="card rounded-0">
                 <div class="card-body">
                     <!-- value displays existing data -->
                     <div class="form-group">
@@ -13,7 +13,20 @@
                     <div class="form-group">
                         <label>Details: </label>
                         <input class="form-control" type="text" name="details" value="<?= $research[0]->details?>"  required>
+                    </div>
+                    <div class="form-group">
+                        <label>Classification: </label>
+                        <select class="form-control" name="classification" required>
+                            <option selected disabled value="">--- Select Classification ---</option>
+                            <?php foreach($classification as $each): ?>
+                                <option value="<?= $each->id?>" <?= $research[0]->classification_id == $each->id ? 'selected' : ''?>><?= $each->classification?></option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>    
+                    <div class="form-group">
+                        <label>Deadline: </label>
+                        <input class="form-control" type="date" name="deadline" value="<?= $research[0]->deadline?>">
+                    </div>
                     <div class="form-group">
                         <label>Upload File: </label>
                         <input class="form-control" type="file" name="file">

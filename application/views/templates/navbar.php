@@ -6,14 +6,49 @@
 	$userInfo = $userInfo->result();
 ?>
 <nav class="navbar navbar-expand-lg navbar-light bg-white">
-	<a class="navbar-brand" href="#"><strong>ORDS</strong></a>
+	<a class="navbar-brand ml-2" href="#"><strong>ORDS</strong></a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
 	 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	</button>
 
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
-		<ul class="navbar-nav ml-auto">
+		<ul class="navbar-nav mr-auto nav-tabs-standard ml-3">
+
+			<?php if($userSession->user_type == 'researcher'): ?>
+				<li class="nav-item">
+					<a class="nav-link <?= $controller.'/'.$method == 'research/index' ? 'active' : ''?>" href="<?= base_url()?>research"><i class="ti-plus"></i> New Research</a>
+                </li>
+                <li class="nav-item">
+					<a class="nav-link <?= $controller.'/'.$method == 'research/researchList' ? 'active' : ''?>" href="<?= base_url()?>research/researchList"><i class="ti-write"></i> Research List</a>
+                </li>
+			<?php elseif($userSession->user_type == 'admin' || $userSession->user_type == 'university president'): ?>
+				<?php if($userSession->user_type == 'admin'):?>
+					<li class="nav-item">
+						<a class="nav-link <?= $controller.'/'.$method == 'admin/addUser' ? 'active' : ''?>" href="<?= base_url()?>admin/addUser"><i class="ti-user"></i> User List</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link <?= $controller.'/'.$method == 'admin/classification' ? 'active' : ''?>" href="<?= base_url()?>admin/classification"><i class="ti-layers-alt"></i> Classification List</a>
+					</li>
+				<?php endif;?>
+                <li class="nav-item" >
+                    <a class="nav-link <?= $controller.'/'.$method == 'admin/researchList' ? 'active' : ''?>" href="<?= base_url()?>admin/researchList"><i class="ti-write"></i> Research List</a>
+				</li>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+					aria-expanded="false">
+						<i class="ti-clipboard"></i> Reports
+					</a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="#">Monthly</a>
+						<a class="dropdown-item" href="#">Midterm</a>
+						<a class="dropdown-item" href="#">Terminal</a>
+					</div>
+				</li>
+			<?php endif;?>
+		</ul>
+		<ul class="navbar-nav ml-auto nav-tabs-standard">
+
 			<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
 				 aria-expanded="false">
@@ -48,24 +83,4 @@
     <div class="row">
         <div class="col-md-12 mt-4">
 			<!-- Statement Condition -->
-			<?php if($userSession->user_type == 'researcher'): ?>
-            <ul class="nav nav-tabs nav-tabs-standard">
-				<li class="nav-item">
-					<a class="nav-link <?= $controller.'/'.$method == 'research/index' ? 'active' : ''?>" href="<?= base_url()?>research"><i class="ti-plus"></i> New Research</a>
-                </li>
-                <li class="nav-item">
-					<a class="nav-link <?= $controller.'/'.$method == 'research/researchList' ? 'active' : ''?>" href="<?= base_url()?>research/researchList"><i class="ti-write"></i> Research List</a>
-                </li>
-            </ul>
-			<?php elseif($userSession->user_type == 'admin' || $userSession->user_type == 'university president'): ?>
-            <ul class="nav nav-tabs nav-tabs-standard">
-				<?php if($userSession->user_type == 'admin'):?>
-					<li class="nav-item">
-						<a class="nav-link <?= $controller.'/'.$method == 'admin/addUser' ? 'active' : ''?>" href="<?= base_url()?>admin/addUser"><i class="ti-plus"></i> New User</a>
-					</li>
-				<?php endif;?>
-                <li class="nav-item">
-                    <a class="nav-link <?= $controller.'/'.$method == 'admin/researchList' ? 'active' : ''?>" href="<?= base_url()?>admin/researchList"><i class="ti-write"></i> Research List</a>
-                </li>
-			</ul>
-			<?php endif;?>
+			

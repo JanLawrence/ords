@@ -1,4 +1,12 @@
 $(function(){
+    $('#researchList').on('click', '.btn-view-notes', function(){ // on click notes buttons on research list
+        var id = $(this).attr('rid'); // get attr values for status and research id
+         $.post(URL+'admin/viewNotesPerResearch',{'research': id}) // post to admin/viewNotesPerResearch and pass research id
+        .done(function(returnData){
+            $('#returnNotes').html(returnData) // pass the return of the post to notes modal
+            $('#viewNotesModal').modal('toggle');
+        })
+    })
     CKEDITOR.replace( 'editor' ); // toggle ckeditor on textarea with id = editor
     // new research
     $('#newResearchForm').submit(function(e){ 
@@ -65,4 +73,5 @@ $(function(){
         return false;
             
     })
+  
 })

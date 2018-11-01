@@ -1,7 +1,7 @@
 <!-- List of Users -->
 <div class="row">
     <div class="col-md-12">
-        <div class="card  border-top-0 rounded-0">
+        <div class="card rounded-0">
             <div class="card-body">
                 <div class="text-right">
                     <a href="#" class="btn btn-secondary btn-sm mb-4" data-toggle="modal" data-target="#addModal"><i class="ti-plus"></i> Add User</a>

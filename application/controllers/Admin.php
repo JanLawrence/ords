@@ -88,11 +88,43 @@ class Admin extends CI_Controller {
         }
         
     }
+	public function classification()
+	{
+        if(!empty($this->session->userdata['user'])){ // if has session
+            if($this->session->userdata['user']->user_type == 'admin'){ // if user type admin 
+
+                // load view
+                $data['classification'] = $this->admin_model->classificationList();
+                $this->load->view('templates/header');
+                $this->load->view('admin/classification',$data);
+                $this->load->view('templates/footer');
+                
+            } else { 
+                show_404(); // show 404 error page
+            }
+        } else {
+            show_404(); // show 404 error page
+        }
+        
+    }
+    public function saveClassification(){
+        $this->admin_model->saveClassification(); // save Classification controller
+    }
+    public function editClassification(){
+        $this->admin_model->editClassification(); // edit Classification controller
+    }
     public function saveUser(){
         $this->admin_model->saveUser(); // save user controller
     }
     public function editUser(){
         $this->admin_model->editUser(); // edit user controller
+    }
+    public function addNotes(){
+        $this->admin_model->addNotes(); // add notes controller
+    }
+    public function viewNotesPerResearch(){
+       $data['notes'] = $this->admin_model->viewNotesPerResearch($_REQUEST['research']);
+       $this->load->view('admin/ajax/notes', $data);
     }
     public function changeResearchStatus(){
         $this->admin_model->changeResearchStatus(); // update status controller
@@ -103,8 +135,6 @@ class Admin extends CI_Controller {
 
             // if user type is equal to admin or president
             if($this->session->userdata['user']->user_type == 'admin' || $this->session->userdata['user']->user_type == 'university president'){
-               
-
                 if($this->session->userdata['user']->user_type == 'admin'){ // if user type is admin get getAllResearch method in admin model for research list
                     $data['research'] = $this->admin_model->getAllResearh();
                 } else if($this->session->userdata['user']->user_type == 'university president'){  // if user type is president get getAllResearhApprovedAdmin method in admin model  for research list

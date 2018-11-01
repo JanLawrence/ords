@@ -4,10 +4,13 @@ $(function(){
         var confirmpass = $(this).find('input[name="confirmpass"]').val();
         var that = $(this);
         if(pass == confirmpass){ // validation password and confirm pass
-
             $.post(URL+'admin/saveUser',that.serialize()) // post to admin/saveUser
             .done(function(returnData){
-                location.reload(); // reload if success
+                if(returnData == 1){ // if existing username
+                    alert('Exisiting Username') // alert error
+                } else {
+                    location.reload(); // reload if success
+                }
             })
         } else {
             alert('Password do not match.'); // alert error if pass not match
@@ -47,10 +50,13 @@ $(function(){
         var confirmpass = $(this).find('input[name="confirmpass"]').val();
         var that = $(this);
         if(pass == confirmpass){ // validation password and confirm pass
-
             $.post(URL+'admin/editUser',that.serialize()) // post to admin/editUser
             .done(function(returnData){
-                location.reload(); // reload if success
+                if(returnData == 1){ // if existing username
+                    alert('Exisiting Username') // alert error
+                } else {
+                    location.reload(); // reload if success
+                }
             })
         } else {
             alert('Password do not match.'); // alert error if pass not match
@@ -70,5 +76,31 @@ $(function(){
             })
         } 
         return false;
+    })
+    $('#researchList').on('click', '.btn-notes', function(){ // on click notes buttons on research list
+
+        var id = $(this).attr('rid'); // get attr values for status and research id
+        $('#addNotesForm').find('input[name="id"]').val(id); // put attr values on each specific input 
+        
+        $('#addNotesModal').modal('toggle'); // toggle notes modal
+    })
+    $('#addNotesForm').submit(function(){ // submit add notes form
+        var r = confirm("Are you sure?"); // alert confirmation if will add note
+        if (r == true) {
+            $.post(URL+'admin/addNotes',$(this).serialize()) // post to admin/addNotes
+            .done(function(returnData){
+                location.reload(); // reload if success
+            })
+        }
+        return false;
+    })
+    $('#researchList').on('click', '.btn-view-notes', function(){ // on click notes buttons on research list
+
+        var id = $(this).attr('rid'); // get attr values for status and research id
+         $.post(URL+'admin/viewNotesPerResearch',{'research': id}) // post to admin/viewNotesPerResearch and pass research id
+        .done(function(returnData){
+            $('#returnNotes').html(returnData) // pass the return of the post to notes modal
+            $('#viewNotesModal').modal('toggle');
+        })
     })
 })

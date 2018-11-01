@@ -18,10 +18,12 @@ class Research_model extends CI_Model {
 
 		//insert data to tbl_research
 		$data = array(
+            'classification_id' => $_POST['classification'],
             'series_number' => empty($series) ? 'RSH-0000001' : $series[0]->newnum,
             'title' => $_POST['title'],
             'details' => $_POST['details'],
             'content' => isset($_POST['content']) ? $_POST['content'] : '',
+            'deadline' => $_POST['deadline'],
             'created_by' => $this->user->id,
             'date_created' => date('Y-m-d H:i:s')
         );
@@ -95,10 +97,12 @@ class Research_model extends CI_Model {
 	public function getResearchByResearcher(){
 		//get data of joined tables
 		$researcher = $this->user->id;
-		$this->db->select('r.*, ra.name file_name, ra.type file_type, ra.size file_size, rs.status, rs.admin_status, rs.president_status')
+		$this->db->select('r.*, ra.name file_name, ra.type file_type, ra.size file_size, rs.status, rs.admin_status, rs.president_status
+							, rc.classification')
 			->from('tbl_research r')
 			->join('tbl_research_status rs', 'rs.research_id = r.id', 'inner')
-			->join('tbl_research_attachment ra', 'ra.research_id = r.id', 'left');
+			->join('tbl_research_attachment ra', 'ra.research_id = r.id', 'left')
+			->join('tbl_research_classification rc', 'rc.id = r.classification_id', 'left');
 		$this->db->where('r.created_by', $researcher);
 		$this->db->order_by('r.date_created','DESC');
 		$query = $this->db->get();
@@ -107,10 +111,12 @@ class Research_model extends CI_Model {
 
 	public function getResearch($id){
 		//get data of joined tables filtered by research id
-		$this->db->select('r.*, ra.name file_name, ra.type file_type, ra.size file_size, rs.status, rs.admin_status, rs.president_status')
+		$this->db->select('r.*, ra.name file_name, ra.type file_type, ra.size file_size, rs.status, rs.admin_status, rs.president_status
+							, rc.classification')
 			->from('tbl_research r')
 			->join('tbl_research_status rs', 'rs.research_id = r.id', 'inner')
-			->join('tbl_research_attachment ra', 'ra.research_id = r.id', 'left');
+			->join('tbl_research_attachment ra', 'ra.research_id = r.id', 'left')
+			->join('tbl_research_classification rc', 'rc.id = r.classification_id', 'left');
 		$this->db->where('r.id', $id);
 		$query = $this->db->get();
         return $query->result();
@@ -128,9 +134,11 @@ class Research_model extends CI_Model {
 			} 
 		}
 
+        $this->db->set('classification_id', $_POST['classification']);
         $this->db->set('title', $_POST['title']);
         $this->db->set('details', $_POST['details']);
         $this->db->set('content', isset($_POST['content']) ? $_POST['content'] : '');
+        $this->db->set('deadline', $_POST['deadline']);
         $this->db->set('modified_by', $this->user->id);
         $this->db->set('date_modified', date('Y-m-d H:i:s'));
         $this->db->where('id', $id);

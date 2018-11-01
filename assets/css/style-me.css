@@ -13,6 +13,9 @@ body{
 .dropdown-item{
     font-size: 14px;
 }
+.nav-tabs-standard li a.active{
+    border-bottom: 2px solid rgba(0,0,0,.9);
+}
 
 /* nav tabs style */
 .nav-tabs-standard li a{

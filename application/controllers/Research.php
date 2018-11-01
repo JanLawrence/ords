@@ -6,6 +6,7 @@ class Research extends CI_Controller {
 	public function index()
 	{
 		$data['control_num'] = $this->research_model->seriesIDResearch(); // load control num
+		$data['classification'] = $this->admin_model->classificationList(); // load classification in admin model
 		// load view
 		$this->load->view('templates/header');
 		$this->load->view('research/research', $data);
@@ -15,6 +16,7 @@ class Research extends CI_Controller {
 	{
 		$data['research'] = $this->research_model->getResearch($_REQUEST['id']); // load research per edit id
 		$data['control_num'] = $this->research_model->seriesIDResearch(); // load control num
+		$data['classification'] = $this->admin_model->classificationList(); // load classification in admin model
 		// load view
 		$this->load->view('templates/header');
 		$this->load->view('research/research-edit', $data);
