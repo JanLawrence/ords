@@ -18,7 +18,7 @@ class Research_model extends CI_Model {
 
 		//insert data to tbl_research
 		$data = array(
-            'series_number' => $series[0]->newnum,
+            'series_number' => empty($series) ? 'RSH-0000001' : $series[0]->newnum,
             'title' => $_POST['title'],
             'details' => $_POST['details'],
             'content' => isset($_POST['content']) ? $_POST['content'] : '',
