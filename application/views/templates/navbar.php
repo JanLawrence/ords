@@ -30,6 +30,9 @@
 					<li class="nav-item">
 						<a class="nav-link <?= $controller.'/'.$method == 'admin/classification' ? 'active' : ''?>" href="<?= base_url()?>admin/classification"><i class="ti-layers-alt"></i> Classification List</a>
 					</li>
+					<li class="nav-item">
+						<a class="nav-link <?= $controller.'/'.$method == 'admin/department' ? 'active' : ''?>" href="<?= base_url()?>admin/department"><i class="ti-layers-alt"></i> Department</a>
+					</li>
 				<?php endif;?>
                 <li class="nav-item" >
                     <a class="nav-link <?= $controller.'/'.$method == 'admin/researchList' ? 'active' : ''?>" href="<?= base_url()?>admin/researchList"><i class="ti-write"></i> Research List</a>

@@ -76,6 +76,7 @@ class Admin extends CI_Controller {
 
                 // load view
                 $data['userList'] = $this->admin_model->userList();
+                $data['deptList'] = $this->admin_model->deptList();
                 $this->load->view('templates/header');
                 $this->load->view('admin/add-user',$data);
                 $this->load->view('templates/footer');
@@ -176,4 +177,29 @@ class Admin extends CI_Controller {
             show_404(); // show 404 error page
         } 
 	}
+	public function department()
+	{
+        if(!empty($this->session->userdata['user'])){ // if has session
+            if($this->session->userdata['user']->user_type == 'admin'){ // if user type admin 
+
+                // load view
+                $data['department'] = $this->admin_model->deptList();
+                $this->load->view('templates/header');
+                $this->load->view('admin/department',$data);
+                $this->load->view('templates/footer');
+                
+            } else { 
+                show_404(); // show 404 error page
+            }
+        } else {
+            show_404(); // show 404 error page
+        }
+        
+    }
+    public function saveDept(){
+        $this->admin_model->saveDept(); // save Departmenr controller
+    }
+    public function editDept(){
+        $this->admin_model->editDept(); // edit Departmenr controller
+    }
 }
