@@ -225,4 +225,35 @@ class Admin_model extends CI_Model{
 		$query = $this->db->get();
         return $query->result();
     }
+    public function addEvent(){
+        //data that will be inserted to tbl_user
+        $data = array(
+            "event" => $_POST['remarks'],
+            "event_date" => $_POST['date'], 
+            "created_by" => $this->user->id,
+            "date_created" => date('Y-m-d H:i:s')
+        );
+        $this->db->insert('tbl_calendar_activity',$data); //insert data to tbl_user
+        $userid = $this->db->insert_id(); // getting the id of the inserted data
+    }
+    public function updateEvent(){
+        //data that will be inserted to tbl_user
+        $data = array(
+            $this->db->set('classification', $_POST['remarks']);
+            "event" => $_POST['remarks'],
+            "event_date" => $_POST['date'], 
+            "created_by" => $this->user->id,
+            "date_created" => date('Y-m-d H:i:s')
+        );
+        $this->db->insert('tbl_calendar_activity',$data); //insert data to tbl_user
+        $userid = $this->db->insert_id(); // getting the id of the inserted data
+    }
+    public function getEventByDate(){
+        // get event data per date
+        $this->db->select('ca.*, SUBSTRING(ca.event,1,20) sub_event')
+			->from('tbl_calendar_activity ca');
+		$this->db->where('ca.event_date', $_POST['date']);
+		$query = $this->db->get();
+        echo json_encode($query->result());
+    }
 }

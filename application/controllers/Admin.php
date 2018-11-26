@@ -107,6 +107,31 @@ class Admin extends CI_Controller {
         }
         
     }
+	public function calendar()
+	{
+        if(!empty($this->session->userdata['user'])){ // if has session
+            if($this->session->userdata['user']->user_type == 'admin'){ // if user type admin 
+
+                // load view
+                // $data['classification'] = $this->admin_model->classificationList();
+                $this->load->view('templates/header');
+                $this->load->view('admin/calendar');
+                $this->load->view('templates/footer');
+                
+            } else { 
+                show_404(); // show 404 error page
+            }
+        } else {
+            show_404(); // show 404 error page
+        }
+        
+    }
+    public function addEvent(){
+        $this->admin_model->addEvent();
+    }
+    public function getEventByDate(){
+        $this->admin_model->getEventByDate();
+    }
     public function saveClassification(){
         $this->admin_model->saveClassification(); // save Classification controller
     }
