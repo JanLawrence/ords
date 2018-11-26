@@ -11,7 +11,9 @@
                             <th style="width: 5%">Deadline</th>
                             <th style="width: 15%">Date Filed</th>
                             <th style="width: 10%">Status</th>
-                            <th style="width: 10%"><i class="ti-settings"></i></th>
+                            <?php if($this->session->userdata['user']->user_type == 'admin'):?>
+                                <th style="width: 10%"><i class="ti-settings"></i></th>
+                            <?php endif;?>
                         </tr>
                     </thead>
                     <tbody>
@@ -54,21 +56,21 @@
                                         <a class="btn-view-notes" rid="<?= $each->id ?>" href="#"><small>View Notes  <span class="badge badge-danger"><?= count($notes)?></span></small></a>
                                     <?php endif;?>
                                 </td>
-                                <td>
-                                    <?php if($this->session->userdata['user']->user_type == 'admin'):?>
+                                <?php if($this->session->userdata['user']->user_type == 'admin'):?>
+                                    <td>
                                         <?php if($each->admin_status == 'remarks'):?>
                                             <button class="btn btn-success btn-sm btn-status" rid="<?= $each->id ?>" status="approved" type="button">Approve</button>
                                             <button class="btn btn-danger btn-sm btn-status" rid="<?= $each->id ?>" status="disapproved" type="button">Disapprove</button>
                                             <button class="btn btn-info btn-sm btn-notes" rid="<?= $each->id ?>" status="disapproved" type="button"><i class="ti-plus"></i> Add Notes</button>
                                         <?php endif;?>
-                                    <?php elseif($this->session->userdata['user']->user_type == 'university president'):?>
-                                        <?php if($each->president_status == 'remarks'):?>
-                                            <button class="btn btn-success btn-sm btn-status" rid="<?= $each->id ?>" status="approved" type="button">Approve</button>
+                                    <?php //elseif($this->session->userdata['user']->user_type == 'university president'):?>
+                                        <?php //if($each->president_status == 'remarks'):?>
+                                            <!-- <button class="btn btn-success btn-sm btn-status" rid="<?= $each->id ?>" status="approved" type="button">Approve</button>
                                             <button class="btn btn-danger btn-sm btn-status" rid="<?= $each->id ?>" status="disapproved" type="button">Disapprove</button>
-                                            <button class="btn btn-info btn-sm btn-notes" rid="<?= $each->id ?>" status="disapproved" type="button"><i class="ti-plus"></i> Add Notes</button>
-                                        <?php endif;?>
-                                    <?php endif;?>
-                                </td>
+                                            <button class="btn btn-info btn-sm btn-notes" rid="<?= $each->id ?>" status="disapproved" type="button"><i class="ti-plus"></i> Add Notes</button> -->
+                                        <?php //endif;?>
+                                    </td>
+                                <?php endif;?>
                             </tr>
                         <?php endforeach;?>
                         <?php else:?>
