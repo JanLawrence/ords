@@ -140,10 +140,7 @@ class Admin_model extends CI_Model{
     }
     public function changeResearchStatus(){
         if($this->user->user_type == 'admin'){
-
-            if($_POST['status'] == 'disapproved'){
-                $this->db->set('status', $_POST['status']);
-            }
+            $this->db->set('status', $_POST['status']);
             $this->db->set('admin_status', $_POST['status']);
             $this->db->set('admin_id', $this->user->id);
             $this->db->set('admin_date_modified', date('Y-m-d H:i:s'));
@@ -151,17 +148,17 @@ class Admin_model extends CI_Model{
             $this->db->set('date_modified', date('Y-m-d H:i:s'));
             $this->db->where('research_id', $_POST['id']);
             $this->db->update('tbl_research_status');
-            
-        } else if ($this->user->user_type == 'university president'){
-            $this->db->set('status', $_POST['status']);
-            $this->db->set('president_status', $_POST['status']);
-            $this->db->set('president_id', $this->user->id);
-            $this->db->set('president_date_modified', date('Y-m-d H:i:s'));
-            $this->db->set('modified_by', $this->user->id);
-            $this->db->set('date_modified', date('Y-m-d H:i:s'));
-            $this->db->where('research_id', $_POST['id']);
-            $this->db->update('tbl_research_status');
-        }
+        }    
+        // } else if ($this->user->user_type == 'university president'){
+        //     $this->db->set('status', $_POST['status']);
+        //     $this->db->set('president_status', $_POST['status']);
+        //     $this->db->set('president_id', $this->user->id);
+        //     $this->db->set('president_date_modified', date('Y-m-d H:i:s'));
+        //     $this->db->set('modified_by', $this->user->id);
+        //     $this->db->set('date_modified', date('Y-m-d H:i:s'));
+        //     $this->db->where('research_id', $_POST['id']);
+        //     $this->db->update('tbl_research_status');
+        // }
     }
     public function classificationList(){
         $query = $this->db->get('tbl_research_classification');
