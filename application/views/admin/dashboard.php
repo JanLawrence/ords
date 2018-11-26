@@ -27,14 +27,11 @@
 		// $check = array();
 		if(empty($check)){
 			echo '<span class="calendar-day">'. str_pad($day, 2, '0', STR_PAD_LEFT) .'</span> <br> 
-				<span class="calendar-working-day">No Event</span> <br><br>
-				<span style="float:right;">
-					<button class="btn btn-success btn-circle btnAddEvent"> <i class="ti-plus"></i></button></span>
 				';
 		} else {
 
 			$viewRemarks = '';
-			$workingTime = '<br><br>';
+			$workingTime = '<br>';
 			// $workingDay = $check[0]->workingType == 'regular' ? 'Regular Working Day' : ($check[0]->workingType == 'holiday' ?  'Holiday' : 'Rest Day');
             $workingDay = $check[0]->sub_event.'...';
             // $viewRemarks = '<span style="float:left;">
@@ -123,8 +120,8 @@
                         <h3><i class="ti-calendar"></i> &nbsp<?= date('F Y', strtotime($date))?></h3>
                     </div>
                     <div class="float-right">
-                        <a href="calendar?date=<?=date('Y-m-d',strtotime($date.'-1 month'))?>"><button type="button" class="btn btn-success" style="padding: 10px"> <i class="ti-angle-left"></i></button></a>
-                        <a href="calendar?date=<?=date('Y-m-d',strtotime($date.' +1 month'))?>"><button type="button" class="btn btn-success" style="padding: 10px"> <i class="ti-angle-right"></i></button></a>
+                        <a href="dashboard?date=<?=date('Y-m-d',strtotime($date.'-1 month'))?>"><button type="button" class="btn btn-success" style="padding: 10px"> <i class="ti-angle-left"></i></button></a>
+                        <a href="dashboard?date=<?=date('Y-m-d',strtotime($date.' +1 month'))?>"><button type="button" class="btn btn-success" style="padding: 10px"> <i class="ti-angle-right"></i></button></a>
                     </div>
                 </div>
                 <br>
@@ -190,130 +187,46 @@
         </div>
     </div>
 </div>
-<form method="post" id="formAddEvent">
-	<div id="sampleModal" class="modal fade" role="dialog">
-		<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title"><i class="pe-7s-date pe-lg"></i> Add Event</h4>
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-			</div>
-			<div class="modal-body">
-                <div class="form-group row">
-                    <div class="col-lg-12">
-                        Date: 
-                        <input type="text" class="form-control" readonly name="date">
-                    </div>
+<div id="updateModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title"><i class="ti-calendar"></i> <span class="titleDate">Update Event</span></h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group row">
+                <div class="col-lg-12">
+                    Event: <br><br>
+                    <p id="eventP" style="font-size: 25px;"></p>
                 </div>
-                <div class="form-group row">
-                    <div class="col-lg-12">
-                        Event: 
-                        <textarea class="form-control" rows="6" name="remarks" required></textarea>
-                    </div>
-                </div>
-			</div>
-			<div class="modal-footer">
-				<button type="submit" class="btn btn-success">Save</button>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			</div>
-		</div>
+            </div>
+        </div>
+    </div>
 
-		</div>
-	</div>
-</form>
-<form method="post" id="formUpdateEvent">
-	<div id="updateModal" class="modal fade" role="dialog">
-		<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title"><i class="pe-7s-date pe-lg"></i> Update Event</h4>
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-			</div>
-			<div class="modal-body">
-                <div class="form-group row">
-                    <div class="col-lg-12">
-                        Date: 
-                        <input type="hidden" class="form-control" readonly name="id">
-                        <input type="text" class="form-control" readonly name="date">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-lg-12">
-                        Event: 
-                        <textarea class="form-control" rows="6" name="remarks" required></textarea>
-                    </div>
-                </div>
-			</div>
-			<div class="modal-footer">
-				<button type="submit" class="btn btn-success">Save</button>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			</div>
-		</div>
-
-		</div>
-	</div>
-</form>
-
+    </div>
+</div>
 <script>
 	var year = "<?=$year?>";
 	var month = "<?=$month?>";
 	$(function(){
-		// $('textarea[name="remarks"]').ckeditor();
-		
-		$('#formAddEvent').submit(function(){
-            var form = $(this).serialize();
-            if(confirm('Are you sure you want to add this event?') == true){
-				$.post(URL+'admin/addEvent',form)
-				.done(function(returnData){
-                    alert('Event successfully added!');
-                    location.reload();
-				})
-				return false;
-            } else {
-                return false;
-            }
-			
-		})
-		$('#formUpdateEvent').submit(function(){
-			var form = $(this).serialize();
-			if(confirm('Are you sure you want to update this event?') == true){
-				$.post(URL+'admin/updateEvent',form)
-				.done(function(returnData){
-                    alert('Event successfully updated!');
-                    location.reload();
-				})
-				return false;
-            } else {
-                return false;
-            }
-			
-		})
-		$('.btnAddEvent').click(function(){
-			// getHoliday()
-			var day = $(this).closest('td').find('span.calendar-day').html();
-			var date = year+'-'+month+'-'+day;
-			$('#sampleModal').modal('toggle');
-			$('#formAddEvent').find('input[name="date"]').val(date);
-		})
 		$('.btnUpdateEvent').click(function(){
 			var day = $(this).closest('td').find('span.calendar-day').html();
 			var date = year+'-'+month+'-'+day;
 			selectDate(date);
-		})
-		$('.btnViewRemarks').click(function(){
-			var day = $(this).closest('td').find('span.calendar-day').html();
-			var date = year+'-'+month+'-'+day;
-			getEvent(date);
 		})
 
 	})
 	function selectDate(date){
 		$.post(URL+'admin/getEventByDate',{"date":date})
 		.done(function(returnData){
-			var data = $.parseJSON(returnData);
-			$('#formUpdateEvent').find('input[name="date"]').val(data[0].event_date);
-			$('#formUpdateEvent').find('input[name="id"]').val(data[0].id);
-			$('#formUpdateEvent').find('textarea[name="remarks"]').val(data[0].event);
+            var data = $.parseJSON(returnData);
+            var monthNames = ["","January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            var month = monthNames[Number(date.split('-')[1]).toString()];
+            var day = date.split('-')[2];
+            var year = date.split('-')[0];
+            $('.titleDate').html(month+' '+day+', '+year);
+			$('#eventP').text(data[0].event);
 			$('#updateModal').modal({
 			  	backdrop: 'static', 
 			   	keyboard: false,

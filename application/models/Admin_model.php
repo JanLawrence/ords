@@ -272,7 +272,7 @@ class Admin_model extends CI_Model{
         return $query->result();
     }
     public function addEvent(){
-        //data that will be inserted to tbl_user
+        //data that will be inserted to tbl_calendar_activity
         $data = array(
             "event" => $_POST['remarks'],
             "event_date" => $_POST['date'], 
@@ -283,16 +283,13 @@ class Admin_model extends CI_Model{
         $userid = $this->db->insert_id(); // getting the id of the inserted data
     }
     public function updateEvent(){
-        //data that will be inserted to tbl_user
-        // $data = array(
-        //     $this->db->set('classification', $_POST['remarks']);
-        //     "event" => $_POST['remarks'],
-        //     "event_date" => $_POST['date'], 
-        //     "created_by" => $this->user->id,
-        //     "date_created" => date('Y-m-d H:i:s')
-        // );
-        // $this->db->insert('tbl_calendar_activity',$data); //insert data to tbl_user
-        // $userid = $this->db->insert_id(); // getting the id of the inserted data
+        //data that will be inserted to tbl_calendar_activity
+        $this->db->set('event', $_POST['remarks']);
+        $this->db->set('event_date', $_POST['date']);
+        $this->db->set('modified_by', $this->user->id);
+        $this->db->set('date_modified', date('Y-m-d H:i:s'));
+        $this->db->where('id', $_POST['id']);
+        $this->db->update('tbl_calendar_activity');
     }
     public function getEventByDate(){
         // get event data per date

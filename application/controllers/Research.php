@@ -43,6 +43,13 @@ class Research extends CI_Controller {
 	{
 		$this->research_model->download(); // download research controller
 	}
+	public function dashboard()
+	{
+		// load view
+		$this->load->view('templates/header');
+		$this->load->view('research/dashboard');
+		$this->load->view('templates/footer');
+	}
 	public function showContent() // show content of research controller
 	{
 		$query = $this->db->get_where('tbl_research', array('id'=> $_REQUEST['id']));

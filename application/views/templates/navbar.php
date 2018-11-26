@@ -17,6 +17,9 @@
 
 			<?php if($userSession->user_type == 'researcher'): ?>
 				<li class="nav-item">
+					<a class="nav-link <?= $controller.'/'.$method == 'research/dashboard' ? 'active' : ''?>" href="<?= base_url()?>research/dashboard"><i class="ti-dashboard"></i> Dashboard</a>
+				</li>
+				<li class="nav-item">
 					<a class="nav-link <?= $controller.'/'.$method == 'research/index' ? 'active' : ''?>" href="<?= base_url()?>research"><i class="ti-plus"></i> New Research</a>
                 </li>
                 <li class="nav-item">
@@ -28,10 +31,18 @@
 						<a class="nav-link <?= $controller.'/'.$method == 'admin/addUser' ? 'active' : ''?>" href="<?= base_url()?>admin/addUser"><i class="ti-user"></i> User List</a>
 					</li>
 					<li class="nav-item">
+						<a class="nav-link <?= $controller.'/'.$method == 'admin/calendar' ? 'active' : ''?>" href="<?= base_url()?>admin/calendar"><i class="ti-calendar"></i> Calendar</a>
+					</li>
+					<li class="nav-item">
 						<a class="nav-link <?= $controller.'/'.$method == 'admin/classification' ? 'active' : ''?>" href="<?= base_url()?>admin/classification"><i class="ti-layers-alt"></i> Classification List</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link <?= $controller.'/'.$method == 'admin/department' ? 'active' : ''?>" href="<?= base_url()?>admin/department"><i class="ti-layers-alt"></i> Department</a>
+					</li>
+				<?php endif;?>
+				<?php if($userSession->user_type == 'university president'):?>
+					<li class="nav-item">
+						<a class="nav-link <?= $controller.'/'.$method == 'admin/dashboard' ? 'active' : ''?>" href="<?= base_url()?>admin/dashboard"><i class="ti-dashboard"></i> Dashboard</a>
 					</li>
 				<?php endif;?>
                 <li class="nav-item" >
