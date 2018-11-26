@@ -37,9 +37,9 @@
 			$workingTime = '<br><br>';
 			// $workingDay = $check[0]->workingType == 'regular' ? 'Regular Working Day' : ($check[0]->workingType == 'holiday' ?  'Holiday' : 'Rest Day');
             $workingDay = $check[0]->sub_event.'...';
-            // $viewRemarks = '<span style="float:left;">
-			//  		<button class="btn btn-info btn-circle btnViewRemarks" > <i class="ti-eye pe-lg"></i></button>
-			//  	</span>';
+            $viewRemarks = '<span style="float:left;">
+		  		<button class="btn btn-danger btn-circle btnDeleteRemarks" eventid="'. $check[0]->id.'"> <i class="ti-trash"></i></button>
+			  	</span>';
 			// if($check[0]->remarks != ''){
 			// 	$viewRemarks = '<span style="float:left;">
 			// 		<button class="btn btn-info btn-circle btnViewRemarks" > <i class="pe-7s-look pe-lg"></i></button>
@@ -259,7 +259,19 @@
 	var month = "<?=$month?>";
 	$(function(){
 		// $('textarea[name="remarks"]').ckeditor();
-		
+		$('.btnDeleteRemarks').click(function(){
+            var id = $(this).attr('eventid');
+            if(confirm('Are you sure you want to delete this event?') == true){
+                $.post(URL+'admin/deleteEvent', {'id':id})
+                .done(function(returnData){
+                    alert('Event successfully deleted!');
+                    location.reload();
+                })
+                return false;
+            } else {
+                return false;
+            }
+        })
 		$('#formAddEvent').submit(function(){
             var form = $(this).serialize();
             if(confirm('Are you sure you want to add this event?') == true){

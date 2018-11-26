@@ -150,6 +150,9 @@ class Admin extends CI_Controller {
     public function updateEvent(){
         $this->admin_model->updateEvent();
     }
+    public function deleteEvent(){
+        $this->admin_model->deleteEvent();
+    }
     public function getEventByDate(){
         $this->admin_model->getEventByDate();
     }
