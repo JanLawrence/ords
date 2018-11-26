@@ -33,6 +33,7 @@
                                     u_lname="<?= $each->l_name?>"
                                     u_mname="<?= $each->m_name?>"
                                     u_user_type="<?= $each->user_type?>"
+                                    u_department_id="<?= $each->department_id?>"
                                     u_email="<?= $each->email?>"
                                     u_position="<?= $each->position?>"
                                     u_username="<?= $each->username?>"
@@ -124,6 +125,23 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="form-group row dept d-none">
+                                <label class="col-sm-3"> Department:</label>
+                                <div class="col-sm-9">
+                                    <select name="department" class="form-control">
+                                        <?php if(!empty($deptList)):
+                                            foreach($deptList as $each){
+                                        ?>
+                                            <option value="<?= $each->id?>"><?= $each->department?></option>
+                                        <?php 
+                                            }
+                                        else:
+                                        ?>
+                                            <option selected disabled>Setup Department<option>
+                                        <?php endif;?>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -209,6 +227,23 @@
                                         <option value="admin">Admin</option>
                                         <option value="researcher">Researcher</option>
                                         <option value="university president">University President</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row dept d-none">
+                                <label class="col-sm-3"> Department:</label>
+                                <div class="col-sm-9">
+                                    <select name="department" class="form-control">
+                                        <?php if(!empty($deptList)):
+                                            foreach($deptList as $each){
+                                        ?>
+                                            <option value="<?= $each->id?>"><?= $each->department?></option>
+                                        <?php 
+                                            }
+                                        else:
+                                        ?>
+                                            <option selected disabled>Setup Department<option>
+                                        <?php endif;?>
                                     </select>
                                 </div>
                             </div>

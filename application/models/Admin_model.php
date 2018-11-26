@@ -8,7 +8,7 @@ class Admin_model extends CI_Model{
     public function userList(){
         // get data from tbl_user_info and tbl_user
         $this->db->select("ui.user_id,CONCAT(ui.last_name, ', ' ,ui.first_name, ' ', ui.middle_name) name, u.user_type,
-            ui.first_name f_name,ui.last_name l_name, ui.middle_name m_name , ui.email, ui.position, u.username, u.password
+            ui.first_name f_name,ui.last_name l_name, ui.middle_name m_name , ui.email, ui.position, u.username, u.password, ui.department_id
         ")
         ->from("tbl_user_info ui")
         ->join("tbl_user u","ON u.id = ui.user_id","inner");
@@ -22,6 +22,7 @@ class Admin_model extends CI_Model{
         return $query->result();
     }
     public function saveUser(){
+        $dept = isset($_POST['department']) && $_POST['usertype'] === 'researcher' ? $_POST['department'] : 0;
 
         $check = $this->db->get_where('tbl_user', array('username'=>$_POST['username'])); //check if username inputed is exisiting
         if(empty($check->result())){ // if not existing insert user
@@ -44,6 +45,7 @@ class Admin_model extends CI_Model{
                 "last_name" => $_POST['lname'],
                 "email" => $_POST['email'],
                 "position" => $_POST['position'],
+                "department_id" => $dept,
                 "created_by" => $this->user->id,
                 "date_created" => date('Y-m-d H:i:s')
             );
@@ -53,7 +55,7 @@ class Admin_model extends CI_Model{
         }
     }
     public function editUser(){
-
+        $dept = isset($_POST['department']) && $_POST['usertype'] === 'researcher' ? $_POST['department'] : 0;
         $checkById = $this->db->get_where('tbl_user', array('id' => $_POST['id'])); //get data by user id
         $checkById= $checkById->result();
         $check = $this->db->get_where('tbl_user', array('username' => $_POST['username'])); //check if username inputed is exisiting
@@ -74,6 +76,7 @@ class Admin_model extends CI_Model{
                 $this->db->set('last_name', $_POST['lname']);
                 $this->db->set('email', $_POST['email']);
                 $this->db->set('position', $_POST['position']);
+                $this->db->set('department_id', $dept);
                 $this->db->set('modified_by', $this->user->id);
                 $this->db->set('date_modified', date('Y-m-d H:i:s'));
                 $this->db->where('user_id', $_POST['id']);
@@ -201,6 +204,49 @@ class Admin_model extends CI_Model{
             $this->db->set('date_modified', date('Y-m-d H:i:s'));
             $this->db->where('id', $_POST['id']);
             $this->db->update('tbl_research_classification'); //update data to tbl_research_classification
+        }
+    }
+    public function deptList(){
+        $query = $this->db->get('tbl_department');
+        return $query->result();
+    }
+    public function saveDept(){
+        $check = $this->db->get_where('tbl_department', array('department'=>$_POST['department'])); //check if department inputed is exisiting
+        if(empty($check->result())){ // if not existing insert department
+            //data that will be inserted to tbl_department
+            $data = array(
+                "department" => $_POST['department'],
+                "created_by" => $this->user->id,
+                "date_created" => date('Y-m-d H:i:s')
+            );
+            $this->db->insert('tbl_department',$data); //insert data to tbl_department
+        } else { // if existing print 1
+            echo 1; 
+        }
+    }
+    public function editDept(){
+
+        $checkById = $this->db->get_where('tbl_department', array('id' => $_POST['id'])); //get data by department id
+        $checkById= $checkById->result();
+        $check = $this->db->get_where('tbl_department', array('department' => $_POST['department'])); //check if department inputed is exisiting
+        if(!empty($check->result())){ // if existing department
+            if($checkById[0]->department == $_POST['department']){ // if inputed is same in data by department id
+                //data that will be updated to tbl_department
+                $this->db->set('department', $_POST['department']);
+                $this->db->set('modified_by', $this->user->id);
+                $this->db->set('date_modified', date('Y-m-d H:i:s'));
+                $this->db->where('id', $_POST['id']);
+                $this->db->update('tbl_department'); //update data to tbl_department
+            } else {
+                echo 1;
+            }
+        } else {
+            //data that will be updated to tbl_department
+            $this->db->set('department', $_POST['department']);
+            $this->db->set('modified_by', $this->user->id);
+            $this->db->set('date_modified', date('Y-m-d H:i:s'));
+            $this->db->where('id', $_POST['id']);
+            $this->db->update('tbl_department'); //update data to tbl_department
         }
     }
     public function addNotes(){
