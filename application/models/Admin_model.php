@@ -282,6 +282,9 @@ class Admin_model extends CI_Model{
         $this->db->insert('tbl_calendar_activity',$data); //insert data to tbl_user
         $userid = $this->db->insert_id(); // getting the id of the inserted data
     }
+    public function deleteEvent(){
+        $this->db->delete('tbl_calendar_activity', array('id' => $_POST['id'])); 
+    }
     public function updateEvent(){
         //data that will be inserted to tbl_calendar_activity
         $this->db->set('event', $_POST['remarks']);
