@@ -32,6 +32,10 @@ class Home extends CI_Controller {
     public function redirect_login($type){  // redirect based on user_type 
         if($type == 'researcher'){
             redirect('research');
+        } else if($type == 'admin'){
+            redirect('admin/addUser');
+        } else if($type == 'university president'){
+            redirect('admin/researchList');
         } else {
             show_404(); // show 404 error page
         }
@@ -43,7 +47,7 @@ class Home extends CI_Controller {
             // query user by username and user type is equal to admin or president
             $this->db->select('*')
                     ->from('tbl_user');
-            $this->db->where("username = '$user' AND user_type = 'researcher'");
+            $this->db->where("username = '$user'");
             $query = $this->db->get();
             $data = $query->result();
 
@@ -78,5 +82,45 @@ class Home extends CI_Controller {
         } else if($session->user_type== 'researcher'){
             redirect('');
         }
+    }
+    function changepass(){
+        $oldpass = $_POST['oldpass'];
+        $pass = $_POST['pass'];
+        $confirmpass = $_POST['confirmpass'];
+        $userData = $this->session->userdata['user'];
+        $realpass = $this->encryptpass->pass_crypt($userData->password, 'd');
+        if($realpass == $oldpass){
+
+            $this->db->set('password', $this->encryptpass->pass_crypt($_POST['pass']));
+            $this->db->where('username', $userData->username);
+            $this->db->update('tbl_user'); //update status to logged in from tbl_user
+   
+            $query = $this->db->get_where('tbl_user', array('username' => $userData->username));
+            $data = $query->result();
+            $this->session->set_userdata('user', $data[0]);
+
+
+        } else {
+            echo 1;
+        }
+    }
+    function accountupdate(){
+        //data that will be updated to tbl_user
+        $this->db->set('username', $_POST['username']);
+        $this->db->where('id', $_POST['id']);
+        $this->db->update('tbl_user');
+
+        //data that will be updated to tbl_user_info
+        $this->db->set('first_name', $_POST['fname']);
+        $this->db->set('middle_name', $_POST['mname']);
+        $this->db->set('last_name', $_POST['lname']);
+        $this->db->set('email', $_POST['email']);
+        $this->db->where('user_id', $_POST['id']);
+        $this->db->update('tbl_user_info');
+
+        
+        $query = $this->db->get_where('tbl_user', array('username' => $_POST['username']));
+        $data = $query->result();
+        $this->session->set_userdata('user', $data[0]);
     }
 }

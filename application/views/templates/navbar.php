@@ -84,15 +84,138 @@
 				 	Welcome! <strong><?= $userInfo[0]->first_name.' '.($userInfo[0]->middle_name != '' ? substr(ucwords($userInfo[0]->middle_name), 0, 1).'.' : '').' '. $userInfo[0]->last_name?></strong>
 				</a>
 				<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-					<a class="dropdown-item" href="#"><i class="ti-settings"></i> Manage Accounts</a>
-					<a class="dropdown-item" href="#"><i class="ti-key"></i> Change Password</a>
+					<a class="dropdown-item" href="#" id="manageAccount"><i class="ti-settings"></i> Manage Accounts</a>
+					<a class="dropdown-item" href="#" id="openPass"><i class="ti-key"></i> Change Password</a>
 					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="<?=base_url()?>home/logout"><i class="ti-power-off"></i> Logout</a>
+					<a class="dropdown-item" href="<?=base_url()?>home/logout" id="logout"><i class="ti-power-off"></i> Logout</a>
 				</div>
 			</li>
 		</ul>
 	</div>
 </nav>
+<form id="changePassForm" method="post">
+    <div class="modal fade" id="changePassModal">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="ti-key"></i> Change Password</h5>
+                </div>
+                <div class="modal-body">
+                        <div class="form-group">
+                            <label>Old Password</label>
+                            <input type="password" class="form-control" name="oldpass">
+                        </div>
+                        <div class="form-group">
+                            <label>New Password</label>
+                            <input type="password" class="form-control" name="pass">
+                        </div>
+                        <div class="form-group">
+                            <label>Confirm Password</label>
+                            <input type="password" class="form-control" name="confirmpass">
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal"><i class="ti-close"></i> Close</button>
+                    <button type="submit" class="btn btn-default"><i class="ti-save"></i> Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<form id="manageAccountForm" method="post">
+    <div class="modal fade" id="manageAccountModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="ti-user"></i> Manage Account</h5>
+                </div>
+                <div class="modal-body">
+					<div class="form-group">
+						<label>Username</label>
+						<input type="text" class="form-control" name="username" value="<?= $userSession->username?>" required>
+					</div>
+					<div class="form-group">
+						<label>First Name</label>
+						<input type="hidden" class="form-control" name="id" value="<?= $userSession->id?>" >
+						<input type="text" class="form-control" name="fname" value="<?= $userInfo[0]->first_name?>" required>
+					</div>
+					<div class="form-group">
+						<label>Middle Name</label>
+						<input type="text" class="form-control" name="mname" value="<?= $userInfo[0]->middle_name?>">
+					</div>
+					<div class="form-group">
+						<label>Last Name</label>
+						<input type="text" class="form-control" name="lname" value="<?= $userInfo[0]->last_name?>" required>
+					</div>
+					<div class="form-group">
+						<label>Email</label>
+						<input type="email" class="form-control" name="email" value="<?= $userInfo[0]->email?>" required>
+					</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal"><i class="ti-close"></i> Close</button>
+                    <button type="submit" class="btn btn-default"><i class="ti-save"></i> Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    $(function(){
+        $('#logout').click(function(){
+            var r = confirm('Are you sure you want to logout?');
+            if(r==true){
+                return;
+            } else {
+                return false;
+            }
+        })
+        $('#openPass').click(function(){
+            $('#changePassModal').modal('toggle');
+        })
+        $('#manageAccount').click(function(){
+            $('#manageAccountModal').modal('toggle');
+        })
+        $('#changePassForm').submit(function(){
+            var r = confirm('Are you sure you want to change your password?');
+            if(r==true){
+                var form = $(this).serialize(); // get form declare to variable form
+                var pass = $('#changePassForm').find('input[name=pass]').val(); // get value of pass input to changepassform
+                var confirmpass = $('#changePassForm').find('input[name=confirmpass]').val(); // get value of confirmpass input to changepassform
+                if(pass == confirmpass){ //if equal return to post
+                    $.post(URL+'home/changepass', form) // post to home/changepass
+                    .done(function(returnData){
+                        if(returnData == 1){
+                            alert('Invalid Old Password'); // alert error if old password is invalid
+                        } else {
+                            alert('Password successfully changed');
+                            location.reload();
+                        }
+                    })
+                } else {
+                    alert('Password do not match'); // alert error
+                }
+            } else {
+                return false;
+            }
+            return false;
+        })
+        $('#manageAccountForm').submit(function(){
+            var r = confirm('Are you sure you want to update your account?');
+            if(r==true){
+                var form = $(this).serialize(); // get form declare to variable form
+				$.post(URL+'home/accountupdate', form) // post to home/accountupdate
+				.done(function(returnData){
+					alert('Account successfully changed');
+					location.reload();
+				})
+            } else {
+                return false;
+            }
+            return false;
+        })
+    })
+</script>
 <div class="container">
     <div class="row">
         <div class="col-md-12 mt-4">

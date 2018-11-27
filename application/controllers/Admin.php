@@ -5,6 +5,7 @@ class Admin extends CI_Controller {
 
 	public function index() // login page of admin
 	{
+        redirect(base_url());
         if(empty($this->session->userdata['user'])){ // if empty session
 
             //declared validations for username and password
