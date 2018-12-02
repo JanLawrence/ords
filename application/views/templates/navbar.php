@@ -4,6 +4,9 @@
 	$userSession = $this->session->userdata['user'];
 	$userInfo = $this->db->get_where('tbl_user_info', array('user_id' => $userSession->id));
 	$userInfo = $userInfo->result();
+	$ci =&get_instance();
+	$ci->load->model('admin_model');
+	$notif = $ci->admin_model->notifications();
 ?>
 <nav class="navbar navbar-expand-lg navbar-light bg-white">
 	<a class="navbar-brand ml-2" href="#"><strong>ORDS</strong></a>
@@ -64,17 +67,22 @@
 		<ul class="navbar-nav ml-auto nav-tabs-standard">
 
 			<li class="nav-item dropdown">
-				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+				<a class="nav-link dropdown-toggle notifBtn" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
 				 aria-expanded="false">
-					<i class="ti-bell"></i><span class="badge badge-danger">2</span>
+					<i class="ti-bell"></i><span class="badge badge-danger"><?= count($notif);?></span>
 				</a>
 				<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                    <div class="dropdown-header">Notifications <span class="badge badge-light">2</span></div>
+                    <div class="dropdown-header">Notifications <span class="badge badge-light"><?= count($notif);?></span></div>
 					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="#"><i class="ti-check text-success"></i> Your research <strong>RSH-0001</strong> has been approved!</a>
-					<a class="dropdown-item" href="#"><i class="ti-close text-danger"></i> Your research <strong>RSH-0002</strong> has been disapproved!</a>
-					<div class="dropdown-divider"></div>
-                    <div class="dropdown-header"><a href="#">See All</a></div>
+					<?php if(!empty($notif)):?>
+						<?php foreach($notif as $each):?>
+						<a class="dropdown-item" href="<?= base_url()?>admin/researchList"><span class="badge badge-warning">Pending</span> | <strong><?= $each->series_number?></strong> - <?= $each->title?> | by: <?= $each->researcher?></a>
+						<?php endforeach;?>
+					<?php else:?>
+						<a class="dropdown-item" href="#">No Notifications</a>
+					<?php endif;?>
+					<!-- <div class="dropdown-divider"></div>
+                    <div class="dropdown-header"><a href="#">See All</a></div> -->
 				</div>
 			</li>
 			<li class="nav-item dropdown">
@@ -213,7 +221,12 @@
                 return false;
             }
             return false;
-        })
+		})
+		$('.notifBtn').click(function(){
+			$.post(URL+'admin/readNotifs')
+			.done(function(returnData){
+			})
+		})
     })
 </script>
 <div class="container">

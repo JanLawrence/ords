@@ -299,4 +299,50 @@ class Admin_model extends CI_Model{
 		$query = $this->db->get();
         echo json_encode($query->result());
     }
+    public function notifications(){
+        $researcher = $this->user->id;//this is from the session declared in function __construct
+        if($this->user->user_type == 'admin'){
+
+            // get data from joined tables
+            $this->db->select('rs.id, CONCAT(ui.last_name,", ",ui.first_name," ",ui.middle_name) researcher,
+                        r.title,
+                        r.series_number,
+                        r.date_created
+            ')
+			->from('tbl_research_status rs')
+			->join('tbl_research r', 'r.id = rs.research_id', 'left')
+			->join('tbl_user_info ui', 'ui.user_id = r.created_by', 'left');
+            $this->db->where('rs.admin_notif','unread');
+            $this->db->where('rs.admin_status','remarks');
+            $query = $this->db->get();
+            return $query->result();
+        } else {
+            
+            // get data from joined tables
+            $this->db->select('rs.id, CONCAT(ui.last_name,", ",ui.first_name," ",ui.middle_name) researcher,
+                        r.title,
+                        r.series_number,
+                        rs.admin_date_modified
+            ')
+			->from('tbl_research_status rs')
+			->join('tbl_research r', 'r.id = rs.research_id', 'left')
+			->join('tbl_user_info ui', 'ui.user_id = rs.admin_id', 'left');
+            $this->db->where('r.created_by',$researcher);
+            $this->db->where('rs.admin_status != remarks');
+            $query = $this->db->get();
+            return $query->result();
+        }
+    }
+    public function readNotifs(){
+        $notifs = $this->notifications();
+        foreach($notifs as $each){
+            //data that will be inserted to tbl_research_status
+            $this->db->set('admin_notif', 'read');
+            $this->db->set('admin_notif_date', date('Y-m-d H:i:s'));
+            $this->db->set('date_modified', date('Y-m-d H:i:s'));
+            $this->db->where('id', $each->id);
+            $this->db->update('tbl_research_status');
+        }
+    }
+
 }

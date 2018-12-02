@@ -226,4 +226,7 @@ class Admin extends CI_Controller {
     public function editDept(){
         $this->admin_model->editDept(); // edit Departmenr controller
     }
+    public function readNotifs(){
+        $this->admin_model->readNotifs();
+    }
 }
