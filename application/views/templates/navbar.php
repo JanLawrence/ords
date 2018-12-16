@@ -76,7 +76,16 @@
 					<div class="dropdown-divider"></div>
 					<?php if(!empty($notif)):?>
 						<?php foreach($notif as $each):?>
-						<a class="dropdown-item" href="<?= base_url()?>admin/researchList"><span class="badge badge-warning">Pending</span> | <strong><?= $each->series_number?></strong> - <?= $each->title?> | by: <?= $each->researcher?></a>
+						<a class="dropdown-item" href="<?= base_url()?>admin/researchList">.
+							<?php if($each->admin_status == 'remarks'):?>
+							<span class="badge badge-warning">Pending</span>
+							<?php elseif($each->admin_status == 'approved'):?>
+							<span class="badge badge-success">Approved</span>
+							<?php elseif($each->admin_status == 'disapproved'):?>
+							<span class="badge badge-danger">Disapproved</span>
+							<?php endif;?>
+						
+						 | <strong><?= $each->series_number?></strong> - <?= $each->title?> | by: <?= $each->researcher?></a>
 						<?php endforeach;?>
 					<?php else:?>
 						<a class="dropdown-item" href="#">No Notifications</a>
