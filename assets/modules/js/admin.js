@@ -15,8 +15,6 @@ $(function(){
         if(pass == confirmpass){ // validation password and confirm pass
             $.post(URL+'admin/saveUser',that.serialize()) // post to admin/saveUser
             .done(function(returnData){
-                alert(returnData);
-                return false;
                 if(returnData == 1){ // if existing username
                     alert('Exisiting Username') // alert error
                 } else {
@@ -80,10 +78,11 @@ $(function(){
         // get attr values for status and research id
         var status = $(this).attr('status');
         var id = $(this).attr('rid');
+        var rpid = $(this).attr('rpid');
         
         var r = confirm("Are you sure?"); // alert confirmation if will update
         if (r == true) {
-            $.post(URL+'admin/changeResearchStatus',{'status': status, 'id': id})  // post to admin/changeResearchStatus
+            $.post(URL+'admin/changeResearchStatus',{'status': status, 'id': id, 'progress_id': id})  // post to admin/changeResearchStatus
             .done(function(returnData){
                 location.reload(); // reload if success
             })
@@ -93,14 +92,35 @@ $(function(){
     $('#researchList').on('click', '.btn-notes', function(){ // on click notes buttons on research list
 
         var id = $(this).attr('rid'); // get attr values for status and research id
+        var rpid = $(this).attr('rpid'); // get attr values for status and research id
         $('#addNotesForm').find('input[name="id"]').val(id); // put attr values on each specific input 
+        $('#addNotesForm').find('input[name="progress_id"]').val(rpid); // put attr values on each specific input 
         
         $('#addNotesModal').modal('toggle'); // toggle notes modal
+    })
+    $('#researchList').on('click', '.btn-deadline', function(){ // on click notes buttons on research list
+
+        var id = $(this).attr('rid'); // get attr values for status and research id
+        var rpid = $(this).attr('rpid'); // get attr values for status and research id
+        $('#addDurationForm').find('input[name="id"]').val(id); // put attr values on each specific input 
+        $('#addDurationForm').find('input[name="progress_id"]').val(rpid); // put attr values on each specific input 
+        
+        $('#setDurationModal').modal('toggle'); // toggle notes modal
     })
     $('#addNotesForm').submit(function(){ // submit add notes form
         var r = confirm("Are you sure?"); // alert confirmation if will add note
         if (r == true) {
             $.post(URL+'admin/addNotes',$(this).serialize()) // post to admin/addNotes
+            .done(function(returnData){
+                location.reload(); // reload if success
+            })
+        }
+        return false;
+    })
+    $('#addDurationForm').submit(function(){ // submit add notes form
+        var r = confirm("Are you sure?"); // alert confirmation if will add note
+        if (r == true) {
+            $.post(URL+'admin/setDuration',$(this).serialize()) // post to admin/addNotes
             .done(function(returnData){
                 location.reload(); // reload if success
             })

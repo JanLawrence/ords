@@ -8,6 +8,12 @@
 	$ci->load->model('admin_model');
 	$notif = $ci->admin_model->notifications();
 ?>
+<style>
+	.dtnotif{
+		font-size: 10px;
+		font-weight: 400;
+	}
+</style>
 <nav class="navbar navbar-expand-lg navbar-light bg-white">
 	<a class="navbar-brand ml-2" href="#"><strong>ORDS</strong></a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -27,29 +33,6 @@
                 </li>
                 <li class="nav-item">
 					<a class="nav-link <?= $controller.'/'.$method == 'research/researchList' ? 'active' : ''?>" href="<?= base_url()?>research/researchList"><i class="ti-write"></i> Research List</a>
-                </li>
-			<?php elseif($userSession->user_type == 'admin' || $userSession->user_type == 'university president'): ?>
-				<?php if($userSession->user_type == 'admin'):?>
-					<li class="nav-item">
-						<a class="nav-link <?= $controller.'/'.$method == 'admin/addUser' ? 'active' : ''?>" href="<?= base_url()?>admin/addUser"><i class="ti-user"></i> User List</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link <?= $controller.'/'.$method == 'admin/calendar' ? 'active' : ''?>" href="<?= base_url()?>admin/calendar"><i class="ti-calendar"></i> Calendar</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link <?= $controller.'/'.$method == 'admin/classification' ? 'active' : ''?>" href="<?= base_url()?>admin/classification"><i class="ti-layers-alt"></i> Classification List</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link <?= $controller.'/'.$method == 'admin/department' ? 'active' : ''?>" href="<?= base_url()?>admin/department"><i class="ti-layers-alt"></i> Department</a>
-					</li>
-				<?php endif;?>
-				<?php if($userSession->user_type == 'university president'):?>
-					<li class="nav-item">
-						<a class="nav-link <?= $controller.'/'.$method == 'admin/dashboard' ? 'active' : ''?>" href="<?= base_url()?>admin/dashboard"><i class="ti-dashboard"></i> Dashboard</a>
-					</li>
-				<?php endif;?>
-                <li class="nav-item" >
-                    <a class="nav-link <?= $controller.'/'.$method == 'admin/researchList' ? 'active' : ''?>" href="<?= base_url()?>admin/researchList"><i class="ti-write"></i> Research List</a>
 				</li>
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
@@ -57,10 +40,33 @@
 						<i class="ti-clipboard"></i> Reports
 					</a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="#">Monthly</a>
-						<a class="dropdown-item" href="#">Midterm</a>
-						<a class="dropdown-item" href="#">Terminal</a>
+						<a class="dropdown-item" href="<?= base_url()?>research/monthly">Monthly</a>
+						<a class="dropdown-item" href="<?= base_url()?>research/midterm">Midterm</a>
+						<a class="dropdown-item" href="<?= base_url()?>research/terminal">Terminal</a>
 					</div>
+				</li>
+			<?php elseif($userSession->user_type == 'admin' || $userSession->user_type == 'pres' || $userSession->user_type == 'rde' || $userSession->user_type == 'twg'): ?>
+				<?php if($userSession->user_type == 'admin'):?>
+					<li class="nav-item">
+						<a class="nav-link <?= $controller.'/'.$method == 'admin/addUser' ? 'active' : ''?>" href="<?= base_url()?>admin/addUser"><i class="ti-user"></i> User List</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link <?= $controller.'/'.$method == 'admin/calendar' ? 'active' : ''?>" href="<?= base_url()?>admin/calendar"><i class="ti-calendar"></i> Calendar</a>
+					</li>
+					<!-- <li class="nav-item">
+						<a class="nav-link <?= $controller.'/'.$method == 'admin/classification' ? 'active' : ''?>" href="<?= base_url()?>admin/classification"><i class="ti-layers-alt"></i> Classification List</a>
+					</li> -->
+					<li class="nav-item">
+						<a class="nav-link <?= $controller.'/'.$method == 'admin/department' ? 'active' : ''?>" href="<?= base_url()?>admin/department"><i class="ti-layers-alt"></i> Department</a>
+					</li>
+				<?php endif;?>
+				<?php if($userSession->user_type == 'pres' || $userSession->user_type == 'rde' || $userSession->user_type == 'twg'):?>
+					<li class="nav-item">
+						<a class="nav-link <?= $controller.'/'.$method == 'admin/dashboard' ? 'active' : ''?>" href="<?= base_url()?>admin/dashboard"><i class="ti-dashboard"></i> Dashboard</a>
+					</li>
+				<?php endif;?>
+                <li class="nav-item" >
+                    <a class="nav-link <?= $controller.'/'.$method == 'admin/researchList' ? 'active' : ''?>" href="<?= base_url()?>admin/researchList"><i class="ti-write"></i> Research List</a>
 				</li>
 			<?php endif;?>
 		</ul>
@@ -76,16 +82,26 @@
 					<div class="dropdown-divider"></div>
 					<?php if(!empty($notif)):?>
 						<?php foreach($notif as $each):?>
-						<a class="dropdown-item" href="<?= base_url()?>admin/researchList">.
-							<?php if($each->admin_status == 'remarks'):?>
-							<span class="badge badge-warning">Pending</span>
-							<?php elseif($each->admin_status == 'approved'):?>
-							<span class="badge badge-success">Approved</span>
-							<?php elseif($each->admin_status == 'disapproved'):?>
-							<span class="badge badge-danger">Disapproved</span>
+						<a class="dropdown-item" href="#">
+							<?php if($each->status == 'remarks'):?>
+								<?php if($userSession->user_type == 'researcher'): ?>
+									<span class="badge badge-warning">For <?= ucwords($each->status)?></span>
+								<?php else:?>
+									<span class="badge badge-warning">Update <?= ucwords($each->status)?></span>
+								<?php endif;?>
+							<?php elseif($each->status == 'open'):?>
+							<span class="badge badge-warning">Submitted</span>
+							<?php elseif($each->status == 'approved'):?>
+							<span class="badge badge-success"><?= ucwords($each->status)?></span>
+							<?php elseif($each->status == 'disapproved'):?>
+							<span class="badge badge-danger"><?= ucwords($each->status)?></span>
+							<?php elseif($each->status == 'twg'):?>
+							<span class="badge badge-warning">Approved By Admin</span>
 							<?php endif;?>
 						
-						 | <strong><?= $each->series_number?></strong> - <?= $each->title?> | by: <?= $each->researcher?></a>
+						 | <strong><?= $each->series_number?></strong> - <?= $each->title?> | by: <?= $each->researcher?> <br>
+						 	<span class="dtnotif"><?= date('F d, Y  h:i A' , strtotime($each->date_created)) ?> - <?= strtoupper($each->user_type)?></span> <hr>
+						</a> 
 						<?php endforeach;?>
 					<?php else:?>
 						<a class="dropdown-item" href="#">No Notifications</a>

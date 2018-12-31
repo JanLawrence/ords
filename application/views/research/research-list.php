@@ -8,9 +8,9 @@
                             <tr>
                                 <th style="width: 15%">Control Number</th>
                                 <th style="width: 35%">Title & Details</th>
-                                <th style="width: 10%">Classification</th>
-                                <th style="width: 5%">Deadline</th>
-                                <th style="width: 15%">Date Filed</th>
+                                <!-- <th style="width: 10%">Classification</th>
+                                <th style="width: 5%">Deadline</th> -->
+                                <th style="width: 15%">Date Submitted</th>
                                 <th style="width: 10%">Status</th>
                                 <th style="width: 10%"><i class="ti-settings"></i></th>
                             </tr>
@@ -27,25 +27,46 @@
                                     <td>
                                         <h5><?= $each->title?></h5><hr>
                                         <p><?= $each->details ?></p>
+                                        <a target="_blank" href="<?= base_url()?>research/showContent?id=<?=$each->id?>"><small>View Content</small></a>
                                         <?php if($each->file_name != ''):?>
+                                             <?= ' | '?> 
                                             <a target="_blank" href="<?= base_url()?>research/download?id=<?=$each->id?>"><small>Download File</small></a> 
-                                            <?= ($each->content != '') ? ' | ' : ''?> 
-                                        <?php endif;?>
-                                        <?php if($each->content != ''):?>
-                                            <a target="_blank" href="<?= base_url()?>research/showContent?id=<?=$each->id?>"><small>View Content</small></a>
+                                        <?php endif;?><br><br>
+                                        <?php if($each->duration_date != ''):?>
+                                        <small>Duration Date: <?= date('F d, Y' , strtotime($each->duration_date))?></small>
                                         <?php endif;?>
                                     </td>
-                                    <td><?= $each->classification ?></td>
-                                    <td><?= date('F d, Y' , strtotime($each->deadline)) ?></td>
+                                    <!-- <td><?= $each->classification ?></td>
+                                    <td><?= date('F d, Y' , strtotime($each->deadline)) ?></td> -->
                                     <td><?= date('F d, Y  h:i A' , strtotime($each->date_created)) ?></td>
                                     <td class="text-center">
-                                        <?php if($each->status == 'pending'):?>
-                                            <span class="badge badge-warning"><?= ucwords($each->status);?></span>
-                                        <?php elseif($each->status == 'approved'):?>
-                                            <span class="badge badge-success"><?= ucwords($each->status);?></span>
-                                        <?php elseif($each->status == 'disapproved'):?>
-                                        <span class="badge badge-danger"><?= ucwords($each->status);?></span>
-                                        <?php endif;?>
+                                        <?php if($each->status == 'open'):?>
+                                        <span class="badge badge-warning"><?= ucwords($each->status);?></span>
+                                        <?php elseif($each->status == 'admin_remarks'):?>
+                                        <span class="badge badge-warning">For Admin Remarks</span>
+                                        <?php elseif($each->status == 'twg_remarks'):?>
+                                        <span class="badge badge-warning">For TWG Remarks</span>
+                                        <?php elseif($each->status == 'rde_remarks'):?>
+                                        <span class="badge badge-warning">For RDE Remarks</span>
+                                        <?php elseif($each->status == 'pres_remarks'):?>
+                                        <span class="badge badge-warning">For University President Remarks</span>
+                                        <?php elseif($each->status == 'admin_approved'):?>
+                                        <span class="badge badge-success">Approved By Admin</span>
+                                        <?php elseif($each->status == 'twg_approved'):?>
+                                        <span class="badge badge-success">Approved By TWG</span>
+                                        <?php elseif($each->status == 'rde_approved'):?>
+                                        <span class="badge badge-success">Approved By RDE</span>
+                                        <?php elseif($each->status == 'pres_approved'):?>
+                                        <span class="badge badge-success">Approved By University President</span>
+                                        <?php elseif($each->status == 'admin_disapproved'):?>
+                                        <span class="badge badge-danger">Disapproved By Admin</span>
+                                        <?php elseif($each->status == 'twg_disapproved'):?>
+                                        <span class="badge badge-danger">Disapproved By TWG</span>
+                                        <?php elseif($each->status == 'rde_disapproved'):?>
+                                        <span class="badge badge-danger">Disapproved By RDE</span>
+                                        <?php elseif($each->status == 'pres_disapproved'):?>
+                                        <span class="badge badge-danger">Disapproved By University President</span>
+                                        <?php endif;?> 
                                         <?php   
                                             // check if research has notes
                                             $notes = $this->db->get_where('tbl_research_notes', array('research_id' => $each->id)); //get notes by research id
@@ -57,8 +78,11 @@
                                         <?php endif;?>
                                     </td>
                                     <td>
-                                        <?php if($each->status == 'pending'):?>
+                                        <?php if($each->status == 'admin_remarks' || $each->status == 'twg_remarks' || $each->status == 'rde_remarks' || $each->status == 'pres_remarks'):?>
                                             <a href="<?= base_url()?>research/researchEdit?id=<?=$each->id?>" target="_blank" class="btn btn-info btn-sm"><i class="ti-pencil-alt"></i> Edit</a>
+                                        <?php endif;?>
+                                        <?php if($each->status == 'pres_approved'):?>
+                                            <a class="btn btn-info btn-sm btn-upload text-light" rid="<?=$each->id?>"><i class="ti-upload"></i> Upload</a>
                                         <?php endif;?>
                                     </td>
                                 </tr>
@@ -93,5 +117,27 @@
         </div>
     </div>   
 </div>
+<form id="uploadResearchForm" method="post" enctype="multipart/form-data">
+    <div class="modal" id="uploadResearchModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4><i class="ti-plus"></i>Upload File</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Upload File: </label>
+                        <input class="form-control" type="hidden" name="id">
+                        <input class="form-control" type="file" name="file">
+                    </div>    
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-danger btn-sm" data-dismiss="modal"><i class="ti-close"></i> Close</a>
+                    <button type="submit" class="btn btn-success btn-sm"><i class="ti-save"></i> Submit</a>
+                </div>
+            </div>
+        </div>   
+    </div>
+</form>
 <!-- Point to external Javascript file -->
 <script src="<?= base_url()?>assets/modules/js/research.js"></script>

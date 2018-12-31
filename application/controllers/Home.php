@@ -34,7 +34,11 @@ class Home extends CI_Controller {
             redirect('research');
         } else if($type == 'admin'){
             redirect('admin/addUser');
-        } else if($type == 'university president'){
+        } else if($type == 'pres'){
+            redirect('admin/researchList');
+        } else if($type == 'twg'){
+            redirect('admin/researchList');
+        } else if($type == 'rde'){
             redirect('admin/researchList');
         } else {
             show_404(); // show 404 error page
@@ -77,7 +81,7 @@ class Home extends CI_Controller {
         //destroy session
         $this->session->sess_destroy();
         //redirect to homepage
-        if($session->user_type== 'admin' || $session->user_type== 'university president'){
+        if($session->user_type== 'admin' || $session->user_type== 'pres'  || $session->user_type== 'twg' || $session->user_type== 'rde'){
             redirect('admin');
         } else if($session->user_type== 'researcher'){
             redirect('');

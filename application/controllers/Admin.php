@@ -32,7 +32,7 @@ class Admin extends CI_Controller {
     public function redirect_admin($type){ // redirect based on user_type 
         if($type == 'admin'){
             redirect('admin/addUser');
-        } else if($type == 'university president'){
+        } else if($type == 'pres' || $type == 'twg' || $type == 'rde'){
             redirect('admin/researchList');
         } else {
             show_404(); // show 404 error page
@@ -44,7 +44,7 @@ class Admin extends CI_Controller {
             // query user by username and user type is equal to admin or president
             $this->db->select('*')
                     ->from('tbl_user');
-            $this->db->where("username = '$user' AND user_type = 'admin' OR user_type = 'university president'");
+            $this->db->where("username = '$user' AND user_type = 'admin' OR user_type = 'pres' OR user_type = 'twg' OR user_type = 'rde'");
             $query = $this->db->get();
             $data = $query->result();
 
@@ -130,7 +130,7 @@ class Admin extends CI_Controller {
 	public function dashboard()
 	{
         if(!empty($this->session->userdata['user'])){ // if has session
-            if($this->session->userdata['user']->user_type == 'university president'){ // if user type admin 
+            if($this->session->userdata['user']->user_type == 'pres' || $this->session->userdata['user']->user_type == 'twg' || $this->session->userdata['user']->user_type == 'rde'){ // if user type admin 
 
                 // load view
                 $this->load->view('templates/header');
@@ -179,16 +179,23 @@ class Admin extends CI_Controller {
     public function changeResearchStatus(){
         $this->admin_model->changeResearchStatus(); // update status controller
     }
+    public function setDuration(){
+        $this->admin_model->setDuration(); // setDuration controller
+    }
 	public function researchList() 
 	{
         if(!empty($this->session->userdata['user'])){ // if has session
 
             // if user type is equal to admin or president
-            if($this->session->userdata['user']->user_type == 'admin' || $this->session->userdata['user']->user_type == 'university president'){
-                if($this->session->userdata['user']->user_type == 'admin'){ // if user type is admin get getAllResearch method in admin model for research list
-                    $data['research'] = $this->admin_model->getAllResearh();
-                } else if($this->session->userdata['user']->user_type == 'university president'){  // if user type is president get getAllResearhApprovedAdmin method in admin model  for research list
-                    $data['research'] = $this->admin_model->getAllResearhApprovedAdmin();
+            if($this->session->userdata['user']->user_type == 'admin' || $this->session->userdata['user']->user_type == 'pres' || $this->session->userdata['user']->user_type == 'twg' || $this->session->userdata['user']->user_type == 'rde'){
+                if($this->session->userdata['user']->user_type == 'admin'){
+                    $data['research'] = $this->admin_model->getAllResearhAdmin2();
+                } else if($this->session->userdata['user']->user_type == 'twg'){ 
+                    $data['research'] = $this->admin_model->getAllResearhTwg();
+                } else if($this->session->userdata['user']->user_type == 'rde'){ 
+                    $data['research'] = $this->admin_model->getAllResearhRde();
+                } else if($this->session->userdata['user']->user_type == 'pres'){ 
+                    $data['research'] = $this->admin_model->getAllResearhPres();
                 }
                 // load view
                 $this->load->view('templates/header');

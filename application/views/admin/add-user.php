@@ -119,9 +119,11 @@
                                 <label class="col-sm-3"> User Type:</label>
                                 <div class="col-sm-9">
                                     <select name="usertype" class="form-control" required>
-                                        <option value="admin">Admin</option>
+                                    <option value="admin">Admin</option>
                                         <option value="researcher">Researcher</option>
-                                        <option value="university president">University President</option>
+                                        <option value="pres">University President</option>
+                                        <option value="twg">TWG</option>
+                                        <option value="rde">RDE</option>
                                     </select>
                                 </div>
                             </div>
@@ -226,7 +228,9 @@
                                     <select name="usertype" class="form-control" required>
                                         <option value="admin">Admin</option>
                                         <option value="researcher">Researcher</option>
-                                        <option value="university president">University President</option>
+                                        <option value="pres">University President</option>
+                                        <option value="twg">TWG</option>
+                                        <option value="rde">RDE</option>
                                     </select>
                                 </div>
                             </div>

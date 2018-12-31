@@ -122,46 +122,160 @@ class Admin_model extends CI_Model{
 		$query = $this->db->get();
         return $query->result();
 	}
-    public function getAllResearhApprovedAdmin(){
-		$researcher = $this->user->id;//this is from the session declared in function __construct
+    public function getAllResearhAdmin(){
+        $researcher = $this->user->id; //this is from the session declared in function __construct
+
         // get data from joined tables
         $this->db->select('r.*, ra.name file_name, ra.type file_type, ra.size file_size, rs.status, rs.admin_status, rs.president_status,
             ui.user_id,CONCAT(ui.last_name, ", " ,ui.first_name, " ", ui.middle_name) name, rc.classification
         ')
 			->from('tbl_research r')
 			->join('tbl_research_status rs', 'rs.research_id = r.id', 'inner')
-			->join('tbl_research_attachment ra', 'ra.research_id = r.id', 'left')
-			->join('tbl_research_classification rc', 'rc.id = r.classification_id', 'left')
+            ->join('tbl_research_attachment ra', 'ra.research_id = r.id', 'left')
+            ->join('tbl_research_classification rc', 'rc.id = r.classification_id', 'left')
 			->join('tbl_user_info ui', 'r.created_by = ui.user_id', 'inner');
-		$this->db->where('rs.admin_status','approved');
 		$this->db->order_by('r.date_created','DESC');
 		$query = $this->db->get();
         return $query->result();
+	}
+    public function getAllResearhAdmin2(){
+		$researcher = $this->user->id;//this is from the session declared in function __construct
+        // get data from joined tables
+        $this->db->select('r.*, rp.id research_progress_id, rp.levels,rp.`status`, ra.name file_name, ra.type file_type, ra.size file_size,
+            CONCAT(ui.last_name,", ",ui.first_name," ",ui.middle_name) researcher, r.series_number , rd.duration_date')
+        ->from('tbl_research_progress rp')
+        ->join('tbl_research r', 'r.id = rp.research_id', 'left')
+        ->join('tbl_user_info ui', 'ui.user_id = r.created_by', 'left')
+        ->join('tbl_research_attachment ra', 'ra.research_id = r.id', 'left')
+        ->join('tbl_research_duration rd', 'rd.research_id = r.id', 'left');
+        $this->db->order_by('r.date_created','DESC');
+        $this->db->group_by('r.id');
+        $query = $this->db->get();
+        return $query->result();
+    }
+    public function getAllResearhTwg(){
+		$researcher = $this->user->id;//this is from the session declared in function __construct
+        // get data from joined tables
+        $this->db->select('r.*, rp.id research_progress_id, rp.levels,rp.`status`, ra.name file_name, ra.type file_type, ra.size file_size,
+            CONCAT(ui.last_name,", ",ui.first_name," ",ui.middle_name) researcher, r.series_number, rd.duration_date')
+        ->from('tbl_research_progress rp')
+        ->join('tbl_research r', 'r.id = rp.research_id', 'left')
+        ->join('tbl_user_info ui', 'ui.user_id = r.created_by', 'left')
+        ->join('tbl_research_attachment ra', 'ra.research_id = r.id', 'left')
+        ->join('tbl_research_duration rd', 'rd.research_id = r.id', 'left');
+        $this->db->where('rp.status','admin_approved');
+        $this->db->or_where('rp.status','twg_approved');
+        $this->db->or_where('rp.status','twg_disapproved');
+        $this->db->or_where('rp.status','twg_remarks');
+        $this->db->order_by('r.date_created','DESC');
+        $this->db->group_by('r.id');
+        $query = $this->db->get();
+        return $query->result();
+    }
+    public function getAllResearhRde(){
+		$researcher = $this->user->id;//this is from the session declared in function __construct
+        // get data from joined tables
+        $this->db->select('r.*, rp.id research_progress_id, rp.levels,rp.`status`, ra.name file_name, ra.type file_type, ra.size file_size,
+            CONCAT(ui.last_name,", ",ui.first_name," ",ui.middle_name) researcher, r.series_number, rd.duration_date')
+        ->from('tbl_research_progress rp')
+        ->join('tbl_research r', 'r.id = rp.research_id', 'left')
+        ->join('tbl_user_info ui', 'ui.user_id = r.created_by', 'left')
+        ->join('tbl_research_attachment ra', 'ra.research_id = r.id', 'left')
+        ->join('tbl_research_duration rd', 'rd.research_id = r.id', 'left');
+        $this->db->where('rp.status','admin_approved');
+        $this->db->or_where('rp.status','twg_approved');
+        $this->db->or_where('rp.status','twg_disapproved');
+        $this->db->or_where('rp.status','twg_remarks');
+        $this->db->or_where('rp.status','rde_approved');
+        $this->db->or_where('rp.status','rde_disapproved');
+        $this->db->or_where('rp.status','rde_remarks');
+        $this->db->order_by('r.date_created','DESC');
+        $this->db->group_by('r.id');
+        $query = $this->db->get();
+        return $query->result();
+    }
+    public function getAllResearhPres(){
+		$researcher = $this->user->id;//this is from the session declared in function __construct
+        // get data from joined tables
+        $this->db->select('r.*, rp.id research_progress_id, rp.levels,rp.`status`, ra.name file_name, ra.type file_type, ra.size file_size,
+            CONCAT(ui.last_name,", ",ui.first_name," ",ui.middle_name) researcher, r.series_number, rd.duration_date')
+        ->from('tbl_research_progress rp')
+        ->join('tbl_research r', 'r.id = rp.research_id', 'left')
+        ->join('tbl_user_info ui', 'ui.user_id = r.created_by', 'left')
+        ->join('tbl_research_attachment ra', 'ra.research_id = r.id', 'left')
+        ->join('tbl_research_duration rd', 'rd.research_id = r.id', 'left');
+        $this->db->where('rp.status','rde_approved');
+        $this->db->or_where('rp.status','pres_approved');
+        $this->db->or_where('rp.status','pres_disapproved');
+        $this->db->or_where('rp.status','pres_remarks');
+        $this->db->order_by('r.date_created','DESC');
+        $this->db->group_by('r.id');
+        $query = $this->db->get();
+        return $query->result();
     }
     public function changeResearchStatus(){
-        if($this->user->user_type == 'admin'){
-            $this->db->set('status', $_POST['status']);
-            $this->db->set('admin_status', $_POST['status']);
-            $this->db->set('admin_id', $this->user->id);
-            $this->db->set('admin_date_modified', date('Y-m-d H:i:s'));
-            $this->db->set('modified_by', $this->user->id);
-            $this->db->set('date_modified', date('Y-m-d H:i:s'));
-            $this->db->where('research_id', $_POST['id']);
-            $this->db->update('tbl_research_status');
-        }    
-        // } else if ($this->user->user_type == 'university president'){
-        //     $this->db->set('status', $_POST['status']);
-        //     $this->db->set('president_status', $_POST['status']);
-        //     $this->db->set('president_id', $this->user->id);
-        //     $this->db->set('president_date_modified', date('Y-m-d H:i:s'));
-        //     $this->db->set('modified_by', $this->user->id);
-        //     $this->db->set('date_modified', date('Y-m-d H:i:s'));
-        //     $this->db->where('research_id', $_POST['id']);
-        //     $this->db->update('tbl_research_status');
-        // }
+
+        $this->db->set('status', $this->user->user_type.'_'.$_POST['status']);
+        $this->db->where('id', $_POST['progress_id']);
+        $this->db->update('tbl_research_progress');
+
+        $data = array(
+            'research_progress_id' => $_POST['progress_id'],
+            'notif' => 'unread',
+            'notif_type' => $_POST['status'],
+            'notif_from' =>  $this->user->user_type,
+            'notif_from_id' => '',
+            "created_by" => $this->user->id,
+            "date_created" => date('Y-m-d H:i:s')
+        );
+        $this->db->insert('tbl_researcher_notif',$data); //insert data to tbl_researcher_notif
+        if($_POST['status'] == 'approved'){
+            if($this->user->user_type == 'admin'){
+                $data = array(
+                    'research_progress_id' => $_POST['progress_id'],
+                    'notif' => 'unread',
+                    'status' => $_POST['status'],
+                    "created_by" => $this->user->id,
+                    "date_created" => date('Y-m-d H:i:s')
+                );
+                $this->db->insert('tbl_twg_notif',$data); //insert data to tbl_twg_notif
+                if($_POST['status'] == 'approved'){
+                    $data = array(
+                        'research_progress_id' => $_POST['progress_id'],
+                        'notif' => 'unread',
+                        'status' => 'twg',
+                        "created_by" => $this->user->id,
+                        "date_created" => date('Y-m-d H:i:s')
+                    );
+                    $this->db->insert('tbl_rde_notif',$data); //insert data to tbl_rde_notif
+                }
+            } else if($this->user->user_type == 'twg'){
+                $data = array(
+                    'research_progress_id' => $_POST['progress_id'],
+                    'notif' => 'unread',
+                    'status' => $_POST['status'],
+                    "created_by" => $this->user->id,
+                    "date_created" => date('Y-m-d H:i:s')
+                );
+                $this->db->insert('tbl_rde_notif',$data); //insert data to tbl_rde_notif
+            } else if($this->user->user_type == 'rde'){
+                $data = array(
+                    'research_progress_id' => $_POST['progress_id'],
+                    'notif' => 'unread',
+                    'status' => $_POST['status'],
+                    "created_by" => $this->user->id,
+                    "date_created" => date('Y-m-d H:i:s')
+                );
+                $this->db->insert('tbl_pres_notif',$data); //insert data to tbl_pres_notif
+            }
+        }
     }
     public function classificationList(){
         $query = $this->db->get('tbl_research_classification');
+        return $query->result();
+    }
+    public function agendaList(){
+        $query = $this->db->get('tbl_priority_agenda');
         return $query->result();
     }
     public function saveClassification(){
@@ -246,9 +360,19 @@ class Admin_model extends CI_Model{
             $this->db->update('tbl_department'); //update data to tbl_department
         }
     }
+    public function setDuration(){
+        //data that will be inserted to tbl_research_notes
+       $data = array(
+           "research_id" => $_POST['id'],
+           "duration_date" => $_POST['date'],
+           "created_by" => $this->user->id,
+           "date_created" => date('Y-m-d H:i:s')
+       );
+       $this->db->insert('tbl_research_duration',$data); //insert data to tbl_research_notes
+    }
     public function addNotes(){
          //data that will be inserted to tbl_research_notes
-         $data = array(
+        $data = array(
             "research_id" => $_POST['id'],
             "user_id" => $this->user->id,
             "notes" => $_POST['notes'],
@@ -256,6 +380,25 @@ class Admin_model extends CI_Model{
             "date_created" => date('Y-m-d H:i:s')
         );
         $this->db->insert('tbl_research_notes',$data); //insert data to tbl_research_notes
+        
+        $data = array(
+            'research_progress_id' => $_POST['progress_id'],
+            'notif' => 'unread',
+            'notif_type' => 'remarks',
+            'notif_from' =>  $this->user->user_type,
+            'notif_from_id' => '',
+            "created_by" => $this->user->id,
+            "date_created" => date('Y-m-d H:i:s')
+        );
+        $this->db->insert('tbl_researcher_notif',$data); //insert data to tbl_researcher_notif
+
+        $query = $this->db->get_where('tbl_research_progress', array('id' => $_POST['progress_id']));
+        $progress = $query->result();
+
+        $this->db->set('levels', $progress[0]->levels++);
+        $this->db->set('status', $this->user->user_type.'_remarks');
+        $this->db->where('id', $_POST['progress_id']);
+        $this->db->update('tbl_research_progress');
     }
     public function viewNotesPerResearch($id){
 
@@ -304,59 +447,99 @@ class Admin_model extends CI_Model{
         if($this->user->user_type == 'admin'){
 
             // get data from joined tables
-            $this->db->select('rs.id, CONCAT(ui.last_name,", ",ui.first_name," ",ui.middle_name) researcher,
-                        r.title,
-                        r.series_number,
-                        rs.admin_status,
-                        r.date_created
-            ')
-			->from('tbl_research_status rs')
-			->join('tbl_research r', 'r.id = rs.research_id', 'left')
-			->join('tbl_user_info ui', 'ui.user_id = r.created_by', 'left');
-            $this->db->where('rs.admin_notif','unread');
-            $this->db->where('rs.admin_status','remarks');
+            $this->db->select('an.*, rp.levels, r.title, r.details, 
+            CONCAT(ui.last_name,", ",ui.first_name," ",ui.middle_name) researcher, r.series_number, u.user_type')
+			->from('tbl_admin_notif an')
+			->join('tbl_research_progress rp', 'rp.id = an.research_progress_id', 'left')
+			->join('tbl_research r', 'r.id = rp.research_id', 'left')
+			->join('tbl_user_info ui', 'ui.user_id = r.created_by', 'left')
+			->join('tbl_user u', 'u.id = ui.user_id', 'left');
+            $this->db->where('an.notif','unread');
+            $this->db->order_by('an.id','DESC');
+            $this->db->group_by('r.id');
             $query = $this->db->get();
             return $query->result();
         } else if($this->user->user_type == 'researcher') {
-            
+            $this->db->select('rn.*, rn.notif_type status, rp.levels, r.title, r.details, 
+            CONCAT(ui.last_name,", ",ui.first_name," ",ui.middle_name) researcher, r.series_number, u.user_type')
+			->from('tbl_researcher_notif rn')
+			->join('tbl_research_progress rp', 'rp.id = rn.research_progress_id', 'left')
+			->join('tbl_research r', 'r.id = rp.research_id', 'left')
+            ->join('tbl_user_info ui', 'ui.user_id = rn.created_by', 'left')
+            ->join('tbl_user u', 'u.id = ui.user_id', 'left');
+            $this->db->where('rn.notif','unread');
+            $this->db->order_by('rn.id','DESC');
+            $this->db->group_by('r.id');
+            $query = $this->db->get();
+            return $query->result();
+        } else if($this->user->user_type == 'twg'){
+
             // get data from joined tables
-            $this->db->select('rs.id, CONCAT(ui.last_name,", ",ui.first_name," ",ui.middle_name) researcher,
-                        r.title,
-                        r.series_number,
-                        rs.admin_status,
-                        rs.admin_date_modified
-            ')
-			->from('tbl_research_status rs')
-			->join('tbl_research r', 'r.id = rs.research_id', 'left')
-			->join('tbl_user_info ui', 'ui.user_id = rs.admin_id', 'left');
-            $this->db->where('r.created_by',$researcher);
-            $this->db->where('rs.admin_status != "remarks"');
-            $this->db->where('rs.admin_notif = "read"');
-            $this->db->where('rs.researcher_notif = "unread"');
+            $this->db->select('an.*, rp.levels, r.title, r.details, 
+            CONCAT(ui.last_name,", ",ui.first_name," ",ui.middle_name) researcher, r.series_number, u.user_type')
+			->from('tbl_twg_notif an')
+			->join('tbl_research_progress rp', 'rp.id = an.research_progress_id', 'left')
+			->join('tbl_research r', 'r.id = rp.research_id', 'left')
+            ->join('tbl_user_info ui', 'ui.user_id = r.created_by', 'left')
+            ->join('tbl_user u', 'u.id = ui.user_id', 'left');
+            $this->db->where('an.notif','unread');
+            $this->db->order_by('an.id','DESC');
+            $this->db->group_by('r.id');
+            $query = $this->db->get();
+            return $query->result();
+        } else if($this->user->user_type == 'rde'){
+
+            // get data from joined tables
+            $this->db->select('an.*, rp.levels, r.title, r.details, 
+            CONCAT(ui.last_name,", ",ui.first_name," ",ui.middle_name) researcher, r.series_number, u.user_type')
+			->from('tbl_rde_notif an')
+			->join('tbl_research_progress rp', 'rp.id = an.research_progress_id', 'left')
+			->join('tbl_research r', 'r.id = rp.research_id', 'left')
+            ->join('tbl_user_info ui', 'ui.user_id = r.created_by', 'left')
+            ->join('tbl_user u', 'u.id = ui.user_id', 'left');
+            $this->db->where('an.notif','unread');
+            $this->db->order_by('an.id','DESC');
+            $this->db->group_by('r.id');
+            $query = $this->db->get();
+            return $query->result();
+        } else if($this->user->user_type == 'pres'){
+
+            // get data from joined tables
+            $this->db->select('an.*, rp.levels, r.title, r.details, 
+            CONCAT(ui.last_name,", ",ui.first_name," ",ui.middle_name) researcher, r.series_number, u.user_type')
+			->from('tbl_pres_notif an')
+			->join('tbl_research_progress rp', 'rp.id = an.research_progress_id', 'left')
+			->join('tbl_research r', 'r.id = rp.research_id', 'left')
+            ->join('tbl_user_info ui', 'ui.user_id = r.created_by', 'left')
+            ->join('tbl_user u', 'u.id = ui.user_id', 'left');
+            $this->db->where('an.notif','unread');
+            $this->db->order_by('an.id','DESC');
+            $this->db->group_by('r.id');
             $query = $this->db->get();
             return $query->result();
         }
     }
     public function readNotifs(){
-        $notifs = $this->notifications();
         if($this->user->user_type == 'admin'){
-        foreach($notifs as $each){
-            //data that will be inserted to tbl_research_status
-            $this->db->set('admin_notif', 'read');
-            $this->db->set('admin_notif_date', date('Y-m-d H:i:s'));
-            $this->db->set('date_modified', date('Y-m-d H:i:s'));
-            $this->db->where('id', $each->id);
-            $this->db->update('tbl_research_status');
-        }
-        }else if($this->user->user_type == 'researcher') {
-            foreach($notifs as $each){
-                //data that will be inserted to tbl_research_status
-                $this->db->set('researcher_notif', 'read');
-                $this->db->set('researcher_notif_date', date('Y-m-d H:i:s'));
-                $this->db->set('date_modified', date('Y-m-d H:i:s'));
-                $this->db->where('id', $each->id);
-                $this->db->update('tbl_research_status');
-            }
+            //data that will be inserted to tbl_admin_notif
+            $this->db->set('notif', 'read');
+            $this->db->update('tbl_admin_notif');
+        } else if($this->user->user_type == 'researcher') {
+            //data that will be inserted to tbl_researcher_notif
+            $this->db->set('notif', 'read');
+            $this->db->update('tbl_researcher_notif');
+        } else if($this->user->user_type == 'twg') {
+            //data that will be inserted to tbl_twg_notif
+            $this->db->set('notif', 'read');
+            $this->db->update('tbl_twg_notif');
+        } else if($this->user->user_type == 'rde') {
+            //data that will be inserted to tbl_rde_notif
+            $this->db->set('notif', 'read');
+            $this->db->update('tbl_rde_notif');
+        } else if($this->user->user_type == 'pres') {
+            //data that will be inserted to tbl_pres_notif
+            $this->db->set('notif', 'read');
+            $this->db->update('tbl_pres_notif');
         }
     }
 
