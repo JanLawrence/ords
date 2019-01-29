@@ -8,7 +8,7 @@ class Admin_model extends CI_Model{
     public function userList(){
         // get data from tbl_user_info and tbl_user
         $this->db->select("ui.user_id,CONCAT(ui.last_name, ', ' ,ui.first_name, ' ', ui.middle_name) name, u.user_type,
-            ui.first_name f_name,ui.last_name l_name, ui.middle_name m_name , ui.email, ui.position, u.username, u.password, ui.department_id
+            ui.first_name f_name,ui.last_name l_name, ui.middle_name m_name , ui.email, ui.position, u.username, u.password, ui.department_id, ui.specialization_id
         ")
         ->from("tbl_user_info ui")
         ->join("tbl_user u","ON u.id = ui.user_id","inner");
@@ -23,6 +23,7 @@ class Admin_model extends CI_Model{
     }
     public function saveUser(){
         $dept = isset($_POST['department']) && $_POST['usertype'] === 'researcher' ? $_POST['department'] : 0;
+        $spec = isset($_POST['specialization']) && ($_POST['usertype'] === 'researcher' || $_POST['usertype'] === 'twg') ? $_POST['specialization'] : 0;
 
         $check = $this->db->get_where('tbl_user', array('username'=>$_POST['username'])); //check if username inputed is exisiting
         if(empty($check->result())){ // if not existing insert user
@@ -46,6 +47,7 @@ class Admin_model extends CI_Model{
                 "email" => $_POST['email'],
                 "position" => $_POST['position'],
                 "department_id" => $dept,
+                "specialization_id" => $spec,
                 "created_by" => $this->user->id,
                 "date_created" => date('Y-m-d H:i:s')
             );
@@ -56,6 +58,8 @@ class Admin_model extends CI_Model{
     }
     public function editUser(){
         $dept = isset($_POST['department']) && $_POST['usertype'] === 'researcher' ? $_POST['department'] : 0;
+        $spec = isset($_POST['specialization']) && ($_POST['usertype'] === 'researcher' || $_POST['usertype'] === 'twg') ? $_POST['specialization'] : 0;
+        
         $checkById = $this->db->get_where('tbl_user', array('id' => $_POST['id'])); //get data by user id
         $checkById= $checkById->result();
         $check = $this->db->get_where('tbl_user', array('username' => $_POST['username'])); //check if username inputed is exisiting
@@ -77,6 +81,7 @@ class Admin_model extends CI_Model{
                 $this->db->set('email', $_POST['email']);
                 $this->db->set('position', $_POST['position']);
                 $this->db->set('department_id', $dept);
+                $this->db->set('specialization_id', $spec);
                 $this->db->set('modified_by', $this->user->id);
                 $this->db->set('date_modified', date('Y-m-d H:i:s'));
                 $this->db->where('user_id', $_POST['id']);
@@ -358,6 +363,48 @@ class Admin_model extends CI_Model{
             $this->db->set('date_modified', date('Y-m-d H:i:s'));
             $this->db->where('id', $_POST['id']);
             $this->db->update('tbl_department'); //update data to tbl_department
+        }
+    }
+    public function specializationList(){
+        $query = $this->db->get('tbl_specialization');
+        return $query->result();
+    }
+    public function saveSpecialization(){
+        $check = $this->db->get_where('tbl_specialization', array('specialization'=>$_POST['specialization'])); //check if specialization inputed is exisiting
+        if(empty($check->result())){ // if not existing insert specialization
+            //data that will be inserted to tbl_specialization
+            $data = array(
+                "specialization" => $_POST['specialization'],
+                "created_by" => $this->user->id,
+                "date_created" => date('Y-m-d H:i:s')
+            );
+            $this->db->insert('tbl_specialization',$data); //insert data to tbl_specialization
+        } else { // if existing print 1
+            echo 1; 
+        }
+    }
+    public function editSpecialization(){
+        $checkById = $this->db->get_where('tbl_specialization', array('id' => $_POST['id'])); //get data by specialization id
+        $checkById= $checkById->result();
+        $check = $this->db->get_where('tbl_specialization', array('specialization' => $_POST['specialization'])); //check if specialization inputed is exisiting
+        if(!empty($check->result())){ // if existing specialization
+            if($checkById[0]->specialization == $_POST['specialization']){ // if inputed is same in data by specialization id
+                //data that will be updated to tbl_specialization
+                $this->db->set('specialization', $_POST['specialization']);
+                $this->db->set('modified_by', $this->user->id);
+                $this->db->set('date_modified', date('Y-m-d H:i:s'));
+                $this->db->where('id', $_POST['id']);
+                $this->db->update('tbl_specialization'); //update data to tbl_specialization
+            } else {
+                echo 1;
+            }
+        } else {
+            //data that will be updated to tbl_specialization
+            $this->db->set('specialization', $_POST['specialization']);
+            $this->db->set('modified_by', $this->user->id);
+            $this->db->set('date_modified', date('Y-m-d H:i:s'));
+            $this->db->where('id', $_POST['id']);
+            $this->db->update('tbl_specialization'); //update data to tbl_specialization
         }
     }
     public function setDuration(){

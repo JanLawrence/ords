@@ -78,6 +78,7 @@ class Admin extends CI_Controller {
                 // load view
                 $data['userList'] = $this->admin_model->userList();
                 $data['deptList'] = $this->admin_model->deptList();
+                $data['specialization'] = $this->admin_model->specializationList();
                 $this->load->view('templates/header');
                 $this->load->view('admin/add-user',$data);
                 $this->load->view('templates/footer');
@@ -235,5 +236,29 @@ class Admin extends CI_Controller {
     }
     public function readNotifs(){
         $this->admin_model->readNotifs();
+    }
+    public function specialization()
+	{
+        if(!empty($this->session->userdata['user'])){ // if has session
+            if($this->session->userdata['user']->user_type == 'admin'){ // if user type admin 
+
+                // load view
+                $data['specialization'] = $this->admin_model->specializationList();
+                $this->load->view('templates/header');
+                $this->load->view('admin/specialization',$data);
+                $this->load->view('templates/footer');
+                
+            } else { 
+                show_404(); // show 404 error page
+            }
+        } else {
+            show_404(); // show 404 error page
+        }   
+    }
+    public function saveSpecialization(){
+        $this->admin_model->saveSpecialization(); // save Specialization controller
+    }
+    public function editSpecialization(){
+        $this->admin_model->editSpecialization(); // edit Specialization controller
     }
 }

@@ -7,6 +7,13 @@ $(function(){
             $('.dept').addClass('d-none');
         }
     })
+    $('select[name=usertype]').change(function(){
+        if($(this).val() === 'researcher' || $(this).val() === 'twg'){
+            $('.spec').removeClass('d-none');
+        }else{
+            $('.spec').addClass('d-none');
+        }
+    })
 
     $('#addForm').submit(function(){ // submit add user form
         var pass = $(this).find('input[name="password"]').val();
@@ -36,6 +43,7 @@ $(function(){
         var mname = $(this).attr('u_mname');
         var userType = $(this).attr('u_user_type');
         var deptid = $(this).attr('u_department_id');
+        var specid = $(this).attr('u_spec_id');
         var email = $(this).attr('u_email');
         var position = $(this).attr('u_position');
         var username = $(this).attr('u_username');
@@ -53,6 +61,7 @@ $(function(){
         $('#editForm').find('input[name="confirmpass"]').val(password);
         $('#editForm').find('select[name="usertype"]').val(userType).change();
         $('#editForm').find('select[name="department"]').val(deptid).change();
+        $('#editForm').find('select[name="specialization"]').val(specid).change();
 
         return false;
     })

@@ -34,6 +34,7 @@
                                     u_mname="<?= $each->m_name?>"
                                     u_user_type="<?= $each->user_type?>"
                                     u_department_id="<?= $each->department_id?>"
+                                    u_spec_id="<?= $each->specialization_id?>"
                                     u_email="<?= $each->email?>"
                                     u_position="<?= $each->position?>"
                                     u_username="<?= $each->username?>"
@@ -144,6 +145,23 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="form-group row spec d-none">
+                                <label class="col-sm-3"> Specialization:</label>
+                                <div class="col-sm-9">
+                                    <select name="specialization" class="form-control">
+                                        <?php if(!empty($specialization)):
+                                            foreach($specialization as $each){
+                                        ?>
+                                            <option value="<?= $each->id?>"><?= $each->specialization?></option>
+                                        <?php 
+                                            }
+                                        else:
+                                        ?>
+                                            <option selected disabled>Setup Specialization<option>
+                                        <?php endif;?>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -247,6 +265,23 @@
                                         else:
                                         ?>
                                             <option selected disabled>Setup Department<option>
+                                        <?php endif;?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row spec d-none">
+                                <label class="col-sm-3"> Specialization:</label>
+                                <div class="col-sm-9">
+                                    <select name="specialization" class="form-control">
+                                        <?php if(!empty($specialization)):
+                                            foreach($specialization as $each){
+                                        ?>
+                                            <option value="<?= $each->id?>"><?= $each->specialization?></option>
+                                        <?php 
+                                            }
+                                        else:
+                                        ?>
+                                            <option selected disabled>Setup Specialization<option>
                                         <?php endif;?>
                                     </select>
                                 </div>
