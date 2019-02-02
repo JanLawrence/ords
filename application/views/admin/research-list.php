@@ -81,8 +81,8 @@
                                 <td>
                                     <?php if($user->user_type == 'admin'): ?>
                                         <?php if($each->status == 'open' || $each->status == 'admin_remarks'):?>
-                                        <button class="btn btn-success btn-sm btn-status" rid="<?= $each->id ?>" rpid="<?=$each->research_progress_id?>" status="approved" type="button">Approve</button>
-                                        <button class="btn btn-danger btn-sm btn-status" rid="<?= $each->id ?>" rpid="<?=$each->research_progress_id?>" status="disapproved" type="button">Disapprove</button>
+                                        <button class="btn btn-success btn-sm btn-status" rid="<?= $each->id ?>" rpid="<?=$each->research_progress_id?>" status="approved" type="button">Send</button>
+                                        <!-- <button class="btn btn-danger btn-sm btn-status" rid="<?= $each->id ?>" rpid="<?=$each->research_progress_id?>" status="disapproved" type="button">Disapprove</button> -->
                                         <button class="btn btn-info btn-sm btn-notes" rid="<?= $each->id ?>" rpid="<?=$each->research_progress_id?>" type="button"><i class="ti-plus"></i> Add Notes</button>
                                         <?php endif;?>
                                         <?php if($each->status == 'pres_approved' && $each->duration_date == ''):?>

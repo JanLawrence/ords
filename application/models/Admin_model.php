@@ -32,7 +32,7 @@ class Admin_model extends CI_Model{
                 "username" => $_POST['username'],
                 "password" => $this->encryptpass->pass_crypt($_POST['password']),
                 "user_type" => $_POST['usertype'],
-                "created_by" => $this->user->id,
+                "created_by" => !empty($this->user) ? $this->user->id : 0,
                 "date_created" => date('Y-m-d H:i:s')
             );
             $this->db->insert('tbl_user',$data); //insert data to tbl_user
@@ -48,7 +48,7 @@ class Admin_model extends CI_Model{
                 "position" => $_POST['position'],
                 "department_id" => $dept,
                 "specialization_id" => $spec,
-                "created_by" => $this->user->id,
+                "created_by" => !empty($this->user) ? $this->user->id : 0,
                 "date_created" => date('Y-m-d H:i:s')
             );
             $this->db->insert('tbl_user_info',$data); //insert data to tbl_user_info
@@ -159,7 +159,9 @@ class Admin_model extends CI_Model{
         return $query->result();
     }
     public function getAllResearhTwg(){
-		$researcher = $this->user->id;//this is from the session declared in function __construct
+        $user = $this->user->id;//this is from the session declared in function __construct
+        $getInfo = $this->db->get_where('tbl_user_info', array('user_id' => $user));
+        $getInfo = $getInfo->result();
         // get data from joined tables
         $this->db->select('r.*, rp.id research_progress_id, rp.levels,rp.`status`, ra.name file_name, ra.type file_type, ra.size file_size,
             CONCAT(ui.last_name,", ",ui.first_name," ",ui.middle_name) researcher, r.series_number, rd.duration_date')
@@ -169,6 +171,7 @@ class Admin_model extends CI_Model{
         ->join('tbl_research_attachment ra', 'ra.research_id = r.id', 'left')
         ->join('tbl_research_duration rd', 'rd.research_id = r.id', 'left');
         $this->db->where('rp.status','admin_approved');
+        $this->db->where('ui.specialization_id', $getInfo[0]->specialization_id);
         $this->db->or_where('rp.status','twg_approved');
         $this->db->or_where('rp.status','twg_disapproved');
         $this->db->or_where('rp.status','twg_remarks');
@@ -490,7 +493,7 @@ class Admin_model extends CI_Model{
         echo json_encode($query->result());
     }
     public function notifications(){
-        $researcher = $this->user->id;//this is from the session declared in function __construct
+        $user = $this->user->id;//this is from the session declared in function __construct
         if($this->user->user_type == 'admin'){
 
             // get data from joined tables
@@ -515,12 +518,14 @@ class Admin_model extends CI_Model{
             ->join('tbl_user_info ui', 'ui.user_id = rn.created_by', 'left')
             ->join('tbl_user u', 'u.id = ui.user_id', 'left');
             $this->db->where('rn.notif','unread');
+            // $this->db->where('u.id',$user);
             $this->db->order_by('rn.id','DESC');
             $this->db->group_by('r.id');
             $query = $this->db->get();
             return $query->result();
         } else if($this->user->user_type == 'twg'){
-
+            $getInfo = $this->db->get_where('tbl_user_info', array('user_id' => $user));
+            $getInfo = $getInfo->result();
             // get data from joined tables
             $this->db->select('an.*, rp.levels, r.title, r.details, 
             CONCAT(ui.last_name,", ",ui.first_name," ",ui.middle_name) researcher, r.series_number, u.user_type')
@@ -530,6 +535,7 @@ class Admin_model extends CI_Model{
             ->join('tbl_user_info ui', 'ui.user_id = r.created_by', 'left')
             ->join('tbl_user u', 'u.id = ui.user_id', 'left');
             $this->db->where('an.notif','unread');
+            $this->db->where('ui.specialization_id', $getInfo[0]->specialization_id);
             $this->db->order_by('an.id','DESC');
             $this->db->group_by('r.id');
             $query = $this->db->get();
@@ -589,5 +595,13 @@ class Admin_model extends CI_Model{
             $this->db->update('tbl_pres_notif');
         }
     }
-
+    public function saveMessage(){
+         //data that will be inserted to tbl_contact
+         $data = array(
+            "message" => $_POST['message'], 
+            "created_by" => $this->user->id,
+            "date_created" => date('Y-m-d H:i:s')
+        );
+        $this->db->insert('tbl_contact',$data); //insert data to tbl_contact
+    }
 }

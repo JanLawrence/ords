@@ -25,9 +25,11 @@ $(function(){
                 if(returnData == 1){ // if existing username
                     alert('Exisiting Username') // alert error
                 } else {
+                    alert('Registration Successfull!')
                     location.reload(); // reload if success
                 }
             })
+            return false;
         } else {
             alert('Password do not match.'); // alert error if pass not match
         }

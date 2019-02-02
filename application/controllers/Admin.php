@@ -261,4 +261,7 @@ class Admin extends CI_Controller {
     public function editSpecialization(){
         $this->admin_model->editSpecialization(); // edit Specialization controller
     }
+    public function saveMessage(){
+        $this->admin_model->saveMessage(); // save message controller
+    }
 }

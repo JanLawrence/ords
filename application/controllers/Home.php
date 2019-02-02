@@ -22,7 +22,9 @@ class Home extends CI_Controller {
                 $userSession = $this->session->userdata['user'];
                 $this->redirect_login($userSession->user_type);
             } else {
-                $this->load->view('home/login');  // redirect to login page if validation failed
+                $data['deptList'] = $this->admin_model->deptList();
+                $data['specialization'] = $this->admin_model->specializationList();
+                $this->load->view('home/login', $data);  // redirect to login page if validation failed
             }
         } else { // if there is a session redirect to specific link in redirect_admin method
             $userSession = $this->session->userdata['user'];

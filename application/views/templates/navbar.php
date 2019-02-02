@@ -72,6 +72,9 @@
                     <a class="nav-link <?= $controller.'/'.$method == 'admin/researchList' ? 'active' : ''?>" href="<?= base_url()?>admin/researchList"><i class="ti-write"></i> Research List</a>
 				</li>
 			<?php endif;?>
+			<li class="nav-item" >
+				<a class="nav-link <?= $controller.'/'.$method == 'contactus/index' ? 'active' : ''?>" href="<?= base_url()?>contactus"><i class="ti-email"></i> Contact Us</a>
+			</li>
 		</ul>
 		<ul class="navbar-nav ml-auto nav-tabs-standard">
 
