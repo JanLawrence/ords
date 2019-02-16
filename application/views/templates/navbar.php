@@ -41,7 +41,7 @@
 					</a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 						<a class="dropdown-item" href="<?= base_url()?>research/monthly">Monthly</a>
-						<a class="dropdown-item" href="<?= base_url()?>research/midterm">Midterm</a>
+						<!-- <a class="dropdown-item" href="<?= base_url()?>research/midterm">Midterm</a> -->
 						<a class="dropdown-item" href="<?= base_url()?>research/terminal">Terminal</a>
 					</div>
 				</li>
