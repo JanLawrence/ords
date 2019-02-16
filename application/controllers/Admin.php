@@ -264,4 +264,22 @@ class Admin extends CI_Controller {
     public function saveMessage(){
         $this->admin_model->saveMessage(); // save message controller
     }
+    public function userLogs()
+	{
+        if(!empty($this->session->userdata['user'])){ // if has session
+            if($this->session->userdata['user']->user_type == 'admin'){ // if user type admin 
+
+                // load view
+                $data['logs'] = $this->admin_model->logsList();
+                $this->load->view('templates/header');
+                $this->load->view('admin/logs',$data);
+                $this->load->view('templates/footer');
+                
+            } else { 
+                show_404(); // show 404 error page
+            }
+        } else {
+            show_404(); // show 404 error page
+        }   
+    }
 }

@@ -54,6 +54,15 @@ class Admin_model extends CI_Model{
                 "date_created" => date('Y-m-d H:i:s')
             );
             $this->db->insert('tbl_user_info',$data); //insert data to tbl_user_info
+
+            $data = array(
+                "user_id" => $this->user->id,
+                "username" => '',
+                "transaction" => 'Added User',
+                "created_by" => !empty($this->user) ? $this->user->id : 0,
+                "date_created" => date('Y-m-d H:i:s')
+            );
+            $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
         } else { // if existing print 1
             echo 1; 
         }
@@ -88,6 +97,15 @@ class Admin_model extends CI_Model{
                 $this->db->set('date_modified', date('Y-m-d H:i:s'));
                 $this->db->where('user_id', $_POST['id']);
                 $this->db->update('tbl_user_info');
+
+                $data = array(
+                    "user_id" => $this->user->id,
+                    "username" => '',
+                    "transaction" => 'Updated User',
+                    "created_by" => !empty($this->user) ? $this->user->id : 0,
+                    "date_created" => date('Y-m-d H:i:s')
+                );
+                $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
             } else {
                 echo 1;
             }
@@ -111,6 +129,15 @@ class Admin_model extends CI_Model{
             $this->db->set('date_modified', date('Y-m-d H:i:s'));
             $this->db->where('user_id', $_POST['id']);
             $this->db->update('tbl_user_info');
+
+            $data = array(
+                "user_id" => $this->user->id,
+                "username" => '',
+                "transaction" => 'Updated User',
+                "created_by" => !empty($this->user) ? $this->user->id : 0,
+                "date_created" => date('Y-m-d H:i:s')
+            );
+            $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
         }
     }   
     public function getAllResearh(){
@@ -278,6 +305,23 @@ class Admin_model extends CI_Model{
                 );
                 $this->db->insert('tbl_pres_notif',$data); //insert data to tbl_pres_notif
             }
+            $data = array(
+                "user_id" => $this->user->id,
+                "username" => '',
+                "transaction" => 'Approved Research',
+                "created_by" => !empty($this->user) ? $this->user->id : 0,
+                "date_created" => date('Y-m-d H:i:s')
+            );
+            $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
+        } else {
+            $data = array(
+                "user_id" => $this->user->id,
+                "username" => '',
+                "transaction" => 'Disapproved Research',
+                "created_by" => !empty($this->user) ? $this->user->id : 0,
+                "date_created" => date('Y-m-d H:i:s')
+            );
+            $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
         }
     }
     public function classificationList(){
@@ -298,6 +342,15 @@ class Admin_model extends CI_Model{
                 "date_created" => date('Y-m-d H:i:s')
             );
             $this->db->insert('tbl_research_classification',$data); //insert data to tbl_research_classification
+
+            $data = array(
+                "user_id" => $this->user->id,
+                "username" => '',
+                "transaction" => 'Added Classification',
+                "created_by" => !empty($this->user) ? $this->user->id : 0,
+                "date_created" => date('Y-m-d H:i:s')
+            );
+            $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
         } else { // if existing print 1
             echo 1; 
         }
@@ -315,6 +368,15 @@ class Admin_model extends CI_Model{
                 $this->db->set('date_modified', date('Y-m-d H:i:s'));
                 $this->db->where('id', $_POST['id']);
                 $this->db->update('tbl_research_classification'); //update data to tbl_research_classification
+
+                $data = array(
+                    "user_id" => $this->user->id,
+                    "username" => '',
+                    "transaction" => 'Updated Classfication',
+                    "created_by" => !empty($this->user) ? $this->user->id : 0,
+                    "date_created" => date('Y-m-d H:i:s')
+                );
+                $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
             } else {
                 echo 1;
             }
@@ -325,6 +387,15 @@ class Admin_model extends CI_Model{
             $this->db->set('date_modified', date('Y-m-d H:i:s'));
             $this->db->where('id', $_POST['id']);
             $this->db->update('tbl_research_classification'); //update data to tbl_research_classification
+
+            $data = array(
+                "user_id" => $this->user->id,
+                "username" => '',
+                "transaction" => 'Updated Classfication',
+                "created_by" => !empty($this->user) ? $this->user->id : 0,
+                "date_created" => date('Y-m-d H:i:s')
+            );
+            $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
         }
     }
     public function deptList(){
@@ -341,6 +412,15 @@ class Admin_model extends CI_Model{
                 "date_created" => date('Y-m-d H:i:s')
             );
             $this->db->insert('tbl_department',$data); //insert data to tbl_department
+
+            $data = array(
+                "user_id" => $this->user->id,
+                "username" => '',
+                "transaction" => 'Added Department',
+                "created_by" => !empty($this->user) ? $this->user->id : 0,
+                "date_created" => date('Y-m-d H:i:s')
+            );
+            $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
         } else { // if existing print 1
             echo 1; 
         }
@@ -358,6 +438,14 @@ class Admin_model extends CI_Model{
                 $this->db->set('date_modified', date('Y-m-d H:i:s'));
                 $this->db->where('id', $_POST['id']);
                 $this->db->update('tbl_department'); //update data to tbl_department
+                $data = array(
+                    "user_id" => $this->user->id,
+                    "username" => '',
+                    "transaction" => 'Updated Department',
+                    "created_by" => !empty($this->user) ? $this->user->id : 0,
+                    "date_created" => date('Y-m-d H:i:s')
+                );
+                $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
             } else {
                 echo 1;
             }
@@ -368,6 +456,14 @@ class Admin_model extends CI_Model{
             $this->db->set('date_modified', date('Y-m-d H:i:s'));
             $this->db->where('id', $_POST['id']);
             $this->db->update('tbl_department'); //update data to tbl_department
+            $data = array(
+                "user_id" => $this->user->id,
+                "username" => '',
+                "transaction" => 'Updated Department',
+                "created_by" => !empty($this->user) ? $this->user->id : 0,
+                "date_created" => date('Y-m-d H:i:s')
+            );
+            $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
         }
     }
     public function specializationList(){
@@ -384,6 +480,14 @@ class Admin_model extends CI_Model{
                 "date_created" => date('Y-m-d H:i:s')
             );
             $this->db->insert('tbl_specialization',$data); //insert data to tbl_specialization
+            $data = array(
+                "user_id" => $this->user->id,
+                "username" => '',
+                "transaction" => 'Added Specialization',
+                "created_by" => !empty($this->user) ? $this->user->id : 0,
+                "date_created" => date('Y-m-d H:i:s')
+            );
+            $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
         } else { // if existing print 1
             echo 1; 
         }
@@ -400,6 +504,14 @@ class Admin_model extends CI_Model{
                 $this->db->set('date_modified', date('Y-m-d H:i:s'));
                 $this->db->where('id', $_POST['id']);
                 $this->db->update('tbl_specialization'); //update data to tbl_specialization
+                $data = array(
+                    "user_id" => $this->user->id,
+                    "username" => '',
+                    "transaction" => 'Updated Specialization',
+                    "created_by" => !empty($this->user) ? $this->user->id : 0,
+                    "date_created" => date('Y-m-d H:i:s')
+                );
+                $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
             } else {
                 echo 1;
             }
@@ -410,6 +522,14 @@ class Admin_model extends CI_Model{
             $this->db->set('date_modified', date('Y-m-d H:i:s'));
             $this->db->where('id', $_POST['id']);
             $this->db->update('tbl_specialization'); //update data to tbl_specialization
+            $data = array(
+                "user_id" => $this->user->id,
+                "username" => '',
+                "transaction" => 'Updated Specialization',
+                "created_by" => !empty($this->user) ? $this->user->id : 0,
+                "date_created" => date('Y-m-d H:i:s')
+            );
+            $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
         }
     }
     public function setDuration(){
@@ -421,6 +541,15 @@ class Admin_model extends CI_Model{
            "date_created" => date('Y-m-d H:i:s')
        );
        $this->db->insert('tbl_research_duration',$data); //insert data to tbl_research_notes
+
+        $data = array(
+            "user_id" => $this->user->id,
+            "username" => '',
+            "transaction" => 'Updated Research Duration',
+            "created_by" => !empty($this->user) ? $this->user->id : 0,
+            "date_created" => date('Y-m-d H:i:s')
+        );
+        $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
     }
     public function addNotes(){
          //data that will be inserted to tbl_research_notes
@@ -451,6 +580,15 @@ class Admin_model extends CI_Model{
         $this->db->set('status', $this->user->user_type.'_remarks');
         $this->db->where('id', $_POST['progress_id']);
         $this->db->update('tbl_research_progress');
+
+        $data = array(
+            "user_id" => $this->user->id,
+            "username" => '',
+            "transaction" => 'Added Notes Research',
+            "created_by" => !empty($this->user) ? $this->user->id : 0,
+            "date_created" => date('Y-m-d H:i:s')
+        );
+        $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
     }
     public function viewNotesPerResearch($id){
 
@@ -473,6 +611,14 @@ class Admin_model extends CI_Model{
         );
         $this->db->insert('tbl_calendar_activity',$data); //insert data to tbl_user
         $userid = $this->db->insert_id(); // getting the id of the inserted data
+        $data = array(
+            "user_id" => $this->user->id,
+            "username" => '',
+            "transaction" => 'Added Event',
+            "created_by" => !empty($this->user) ? $this->user->id : 0,
+            "date_created" => date('Y-m-d H:i:s')
+        );
+        $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
     }
     public function deleteEvent(){
         $this->db->delete('tbl_calendar_activity', array('id' => $_POST['id'])); 
@@ -485,6 +631,14 @@ class Admin_model extends CI_Model{
         $this->db->set('date_modified', date('Y-m-d H:i:s'));
         $this->db->where('id', $_POST['id']);
         $this->db->update('tbl_calendar_activity');
+        $data = array(
+            "user_id" => $this->user->id,
+            "username" => '',
+            "transaction" => 'Updated Event',
+            "created_by" => !empty($this->user) ? $this->user->id : 0,
+            "date_created" => date('Y-m-d H:i:s')
+        );
+        $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
     }
     public function getEventByDate(){
         // get event data per date
@@ -607,5 +761,23 @@ class Admin_model extends CI_Model{
             "date_created" => date('Y-m-d H:i:s')
         );
         $this->db->insert('tbl_contact',$data); //insert data to tbl_contact
+
+        $data = array(
+            "user_id" => $this->user->id,
+            "username" => '',
+            "transaction" => 'Added Contact',
+            "created_by" => !empty($this->user) ? $this->user->id : 0,
+            "date_created" => date('Y-m-d H:i:s')
+        );
+        $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
+    }
+    public function logsList(){
+        $this->db->select('ul.date_created, CONCAT(ui.last_name,", ",ui.first_name," ",ui.middle_name) name, ul.transaction')
+        ->from('tbl_user_logs ul')
+        ->join('tbl_user u', "u.id = ul.created_by", "left")
+        ->join('tbl_user_info ui', "ui.user_id = u.id", "left");
+        $this->db->order_by('ul.date_created DESC');
+        $query = $this->db->get();
+        return $query->result();
     }
 }

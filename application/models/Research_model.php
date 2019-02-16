@@ -38,6 +38,15 @@ class Research_model extends CI_Model {
 			);
 			$this->db->insert('tbl_research_attachment', $data);
 
+			$data = array(
+				"user_id" => $this->user->id,
+				"username" => '',
+				"transaction" => 'Uploaded Research',
+				"created_by" => !empty($this->user) ? $this->user->id : 0,
+				"date_created" => date('Y-m-d H:i:s')
+			);
+			$this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
+
         }
 	}
 	public function add()
@@ -113,6 +122,15 @@ class Research_model extends CI_Model {
 		
 		$this->db->insert('tbl_admin_notif', $data);
 
+		$data = array(
+            "user_id" => $this->user->id,
+            "username" => '',
+            "transaction" => 'Added Research',
+            "created_by" => !empty($this->user) ? $this->user->id : 0,
+            "date_created" => date('Y-m-d H:i:s')
+        );
+        $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
+
 	}
 	public function seriesIDResearch(){
 		//get data of NEW research series number
@@ -130,6 +148,14 @@ class Research_model extends CI_Model {
 	}
 	public function download(){
 		//for attachment download
+		$data = array(
+            "user_id" => $this->user->id,
+            "username" => '',
+            "transaction" => 'Downloaded Research',
+            "created_by" => !empty($this->user) ? $this->user->id : 0,
+            "date_created" => date('Y-m-d H:i:s')
+        );
+        $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
 		$this->db->order_by('ra.id', "DESC");
 		$query = $this->db->get_where('tbl_research_attachment ra', array('research_id'=> $_REQUEST['id']));
 		$researchData = $query->result();
@@ -285,6 +311,14 @@ class Research_model extends CI_Model {
 			);	
 			$this->db->insert('tbl_pres_notif', $data);
 		}
+		$data = array(
+            "user_id" => $this->user->id,
+            "username" => '',
+            "transaction" => 'Updated Research',
+            "created_by" => !empty($this->user) ? $this->user->id : 0,
+            "date_created" => date('Y-m-d H:i:s')
+        );
+        $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
 	}
 
 }

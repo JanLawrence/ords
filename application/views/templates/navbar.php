@@ -62,6 +62,9 @@
 					<li class="nav-item">
 						<a class="nav-link <?= $controller.'/'.$method == 'admin/specialization' ? 'active' : ''?>" href="<?= base_url()?>admin/specialization"><i class="ti-layers-alt"></i> Specialization</a>
 					</li>
+					<li class="nav-item">
+						<a class="nav-link <?= $controller.'/'.$method == 'admin/userLogs' ? 'active' : ''?>" href="<?= base_url()?>admin/userLogs"><i class="ti-user"></i> User Logs</a>
+					</li>
 				<?php endif;?>
 				<?php if($userSession->user_type == 'pres' || $userSession->user_type == 'rde' || $userSession->user_type == 'twg'):?>
 					<li class="nav-item">
