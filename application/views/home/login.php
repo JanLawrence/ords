@@ -27,6 +27,9 @@
                 <h2><strong>ORDS</strong><br></h2>
                 <p>Research Evaluation, Implementation and Monitoring System</p>
             </div>
+            <div class="login-main-text" style="margin-top:400px;">
+                <p><a href="<?= base_url()?>contactus"><i class="ti-email"></i> Contact Us</a></p>
+            </div>
         </div>
         <!-- login form -->
         <div class="main">

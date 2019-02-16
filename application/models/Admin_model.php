@@ -757,19 +757,20 @@ class Admin_model extends CI_Model{
             "name" => $_POST['name'], 
             "email" => $_POST['email'], 
             "message" => $_POST['message'], 
-            "created_by" => $this->user->id,
+            "created_by" => 0,
             "date_created" => date('Y-m-d H:i:s')
         );
-        $this->db->insert('tbl_contact',$data); //insert data to tbl_contact
 
-        $data = array(
-            "user_id" => $this->user->id,
-            "username" => '',
-            "transaction" => 'Added Contact',
-            "created_by" => !empty($this->user) ? $this->user->id : 0,
-            "date_created" => date('Y-m-d H:i:s')
-        );
-        $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
+        $id = $this->db->insert('tbl_contact',$data); //insert data to tbl_contact
+
+        // $data = array(
+        //     "user_id" => $this->user->id,
+        //     "username" => '',
+        //     "transaction" => 'Added Contact',
+        //     "created_by" => !empty($this->user) ? $this->user->id : 0,
+        //     "date_created" => date('Y-m-d H:i:s')
+        // );
+        // $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
     }
     public function logsList(){
         $this->db->select('ul.date_created, CONCAT(ui.last_name,", ",ui.first_name," ",ui.middle_name) name, ul.transaction')
