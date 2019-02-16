@@ -88,7 +88,7 @@
 					<div class="dropdown-divider"></div>
 					<?php if(!empty($notif)):?>
 						<?php foreach($notif as $each):?>
-						<a class="dropdown-item" href="#">
+						<a class="dropdown-item" href="<?= ($userSession->user_type == 'researcher') ? base_url().'research/researchList' :  base_url().'admin/researchList' ?>">
 							<?php if($each->status == 'remarks'):?>
 								<?php if($userSession->user_type == 'researcher'): ?>
 									<span class="badge badge-warning">For <?= ucwords($each->status)?></span>

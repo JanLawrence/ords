@@ -52,13 +52,13 @@
                                     <?php elseif($each->status == 'pres_remarks'):?>
                                     <span class="badge badge-warning">For University President Remarks</span>
                                     <?php elseif($each->status == 'admin_approved'):?>
-                                    <span class="badge badge-success">Approved By Admin</span>
+                                    <span class="badge badge-success">For approval TWG</span>
                                     <?php elseif($each->status == 'twg_approved'):?>
-                                    <span class="badge badge-success">Approved By TWG</span>
+                                    <span class="badge badge-success">For approval RDE</span>
                                     <?php elseif($each->status == 'rde_approved'):?>
-                                    <span class="badge badge-success">Approved By RDE</span>
+                                    <span class="badge badge-success">For approval University Prident</span>
                                     <?php elseif($each->status == 'pres_approved'):?>
-                                    <span class="badge badge-success">Approved By University President</span>
+                                    <span class="badge badge-success">Approved</span>
                                     <?php elseif($each->status == 'admin_disapproved'):?>
                                     <span class="badge badge-danger">Disapproved By Admin</span>
                                     <?php elseif($each->status == 'twg_disapproved'):?>

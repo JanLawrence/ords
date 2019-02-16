@@ -598,6 +598,8 @@ class Admin_model extends CI_Model{
     public function saveMessage(){
          //data that will be inserted to tbl_contact
          $data = array(
+            "name" => $_POST['name'], 
+            "email" => $_POST['email'], 
             "message" => $_POST['message'], 
             "created_by" => $this->user->id,
             "date_created" => date('Y-m-d H:i:s')

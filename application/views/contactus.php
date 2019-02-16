@@ -8,6 +8,12 @@
                         <h3>Contact Us</h3>
                     </div><br>
                     <div class="form-group">
+                        <input class="form-control" name="name" placeholder="Name">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" name="email" placeholder="Email" type="email">
+                    </div>
+                    <div class="form-group">
                         <textarea class="form-control" name="message" rows="10" placeholder="Send us your message"></textarea>
                     </div>
                     <div class="form-group text-right">
