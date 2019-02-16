@@ -20,7 +20,7 @@
       
     </head>
     <body>
-<!-- List of Classification -->
+    <div class="container">
         <div class="row mt-5">
             <div class="col-md-6 offset-3">
                 <div class="card rounded-0">
@@ -46,6 +46,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </body>
 </html>
 <script>
