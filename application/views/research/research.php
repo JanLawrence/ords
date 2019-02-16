@@ -92,5 +92,101 @@
         </form>
     </div>
 </div>
+<div id="notifTerminalModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"><i class="pe-7s-date pe-lg"></i> Please submit your research listed below</h5>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <table class="table table-bordered" id="table-terminal">
+                <thead>
+                    <tr>
+                        <th>Research No.</th>
+                        <th>Title</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+
+    </div>
+</div>
+<div id="notifMonthlyModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"><i class="pe-7s-date pe-lg"></i> Please submit your research listed below, you have only 1 month before submission</h5>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <table class="table table-bordered" id="table-monthly">
+                <thead>
+                    <tr>
+                        <th>Research No.</th>
+                        <th>Title</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+
+    </div>
+</div>
 <!-- Point to external Javascript file -->
 <script src="<?= base_url()?>assets/modules/js/research.js"></script>
+<script>
+    $(function(){
+        notifTerminal();
+        researchDurNotifMonthly();
+    })
+    function notifTerminal(){
+        $.post(URL + 'research/researchDurNotifTerminal')
+        .done(function(returnData){
+            if(returnData != '[]'){
+                var data = $.parseJSON(returnData);
+                var append = '';
+                $.each(data,function(key,a){
+                    append += '<tr>'+
+                                '<td>'+a.series_number+'</td>'+
+                                '<td>'+a.title+'</td>'+
+                                '<td>'+a.duration_date+'</td>'+
+                            '</tr>';
+                })
+                $('#table-terminal tbody').html(append);
+                $('#notifTerminalModal').modal('toggle');
+            }
+        })
+    }
+    function researchDurNotifMonthly(){
+        $.post(URL + 'research/researchDurNotifMonthly')
+        .done(function(returnData){
+            if(returnData != '[]'){
+                var data = $.parseJSON(returnData);
+                var append = '';
+                $.each(data,function(key,a){
+                    append += '<tr>'+
+                                '<td>'+a.series_number+'</td>'+
+                                '<td>'+a.title+'</td>'+
+                                '<td>'+a.duration_date+'</td>'+
+                            '</tr>';
+                })
+                $('#table-monthly tbody').html(append);
+                $('#notifMonthlyModal').modal('toggle');
+            }
+        })
+    }
+</script>

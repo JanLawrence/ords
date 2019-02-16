@@ -113,6 +113,39 @@ class Research extends CI_Controller {
 	{
 		$this->research_model->download(); // download research controller
 	}
+	public function researchDurNotifTerminal()
+	{
+		$user = $this->session->userdata['user'];
+		$sql = "SELECT r.series_number, r.title, rd.duration_date
+				FROM tbl_research r
+				INNER JOIN 
+					tbl_user_info ui
+				ON r.created_by = ui.user_id
+				INNER JOIN
+					tbl_research_duration rd
+				ON rd.research_id = r.id
+				WHERE ui.user_id = $user->id
+				AND rd.duration_date = '".date('Y-m-d')."'";
+		$query = $this->db->query($sql);
+        echo json_encode($query->result());
+	}
+	public function researchDurNotifMonthly()
+	{
+		$date = date("Y-m-d", strtotime("+1 month"));
+		$user = $this->session->userdata['user'];
+		$sql = "SELECT r.series_number, r.title, rd.duration_date
+				FROM tbl_research r
+				INNER JOIN 
+					tbl_user_info ui
+				ON r.created_by = ui.user_id
+				INNER JOIN
+					tbl_research_duration rd
+				ON rd.research_id = r.id
+				WHERE ui.user_id = $user->id
+				AND rd.duration_date = '".$date."'";
+		$query = $this->db->query($sql);
+        echo json_encode($query->result());
+	}
 	public function dashboard()
 	{
 		if(!empty($this->session->userdata['user'])){ // if has session
