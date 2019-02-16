@@ -8,10 +8,12 @@ class Admin_model extends CI_Model{
     public function userList(){
         // get data from tbl_user_info and tbl_user
         $this->db->select("ui.user_id,CONCAT(ui.last_name, ', ' ,ui.first_name, ' ', ui.middle_name) name, u.user_type,
-            ui.first_name f_name,ui.last_name l_name, ui.middle_name m_name , ui.email, ui.position, u.username, u.password, ui.department_id, ui.specialization_id
+            ui.first_name f_name,ui.last_name l_name, ui.middle_name m_name , ui.email, ui.position, u.username, u.password, ui.department_id, ui.specialization_id, 
+            IF(s.specialization IS NOT NULL, s.specialization, '') specialization
         ")
         ->from("tbl_user_info ui")
-        ->join("tbl_user u","ON u.id = ui.user_id","inner");
+        ->join("tbl_user u","ON u.id = ui.user_id","inner")
+        ->join("tbl_specialization s","ON s.id = ui.specialization_id","left");
         $this->db->order_by("ui.last_name");
         $query = $this->db->get();
     

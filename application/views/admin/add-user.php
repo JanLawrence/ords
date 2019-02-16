@@ -11,8 +11,9 @@
                         <tr>
                             <th style="width: 20%">#</th>
                             <th style="width: 50%">Name</th>
-                            <th style="width: 30%">Type</th>
-                            <th style="width: 30%"><i class="ti-settings"></i></th>
+                            <th style="width: 25%">Type</th>
+                            <th style="width: 15%">Specialization</th>
+                            <th style="width: 20%"><i class="ti-settings"></i></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -26,6 +27,7 @@
                                 <td><?= $ctr++?></td>
                                 <td><?= $each->name?></td>
                                 <td><?= $each->user_type?></td>
+                                <td><?= $each->specialization?></td>
                                 <td>
                                     <button class="btn btn-primary btn-sm btn-edit" 
                                     userid="<?= $each->user_id?>" 
