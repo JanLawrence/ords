@@ -183,6 +183,9 @@ class Admin extends CI_Controller {
     public function setDuration(){
         $this->admin_model->setDuration(); // setDuration controller
     }
+    public function deleteUser(){
+        $this->admin_model->deleteUser(); // deleteUser controller
+    }
 	public function researchList() 
 	{
         if(!empty($this->session->userdata['user'])){ // if has session

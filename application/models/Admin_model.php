@@ -14,6 +14,7 @@ class Admin_model extends CI_Model{
         ->from("tbl_user_info ui")
         ->join("tbl_user u","ON u.id = ui.user_id","inner")
         ->join("tbl_specialization s","ON s.id = ui.specialization_id","left");
+        $this->db->where("u.status", "yes");
         $this->db->order_by("ui.last_name");
         $query = $this->db->get();
     
@@ -34,6 +35,7 @@ class Admin_model extends CI_Model{
                 "username" => $_POST['username'],
                 "password" => $this->encryptpass->pass_crypt($_POST['password']),
                 "user_type" => $_POST['usertype'],
+                "status" => 'yes',
                 "created_by" => !empty($this->user) ? $this->user->id : 0,
                 "date_created" => date('Y-m-d H:i:s')
             );
@@ -140,6 +142,13 @@ class Admin_model extends CI_Model{
             $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
         }
     }   
+    public function deleteUser(){
+        $this->db->set('status', 'no');
+        $this->db->set('modified_by', $this->user->id);
+        $this->db->set('date_modified', date('Y-m-d H:i:s'));
+        $this->db->where('id', $_POST['id']);
+        $this->db->update('tbl_user');
+    }
     public function getAllResearh(){
         $researcher = $this->user->id; //this is from the session declared in function __construct
 

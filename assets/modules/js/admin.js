@@ -35,6 +35,16 @@ $(function(){
         }
         return false;
     })
+    $("#tableList").on('click','.btn-delete',function(){ 
+        var uid = $(this).attr('userid');
+        if(confirm("Are you sure you want to delete this user?")){
+            $.post(URL+'admin/deleteUser',{'id':uid})
+            .done(function(returnData){
+                alert('User Deleted Successfully');
+                location.reload();
+            })
+        }
+    })
     $("#tableList").on('click','.btn-edit',function(){ // on click edit button on user list
         $('#editModal').modal('toggle'); // toggle edit modal
         

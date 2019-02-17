@@ -53,12 +53,12 @@ class Home extends CI_Controller {
             // query user by username and user type is equal to admin or president
             $this->db->select('*')
                     ->from('tbl_user');
-            $this->db->where("username = '$user'");
+            $this->db->where("username = '$user' AND status = 'yes'");
             $query = $this->db->get();
             $data = $query->result();
 
             if(empty($data)){ // if empty query ($data) validation false (invalid username)
-                $this->form_validation->set_message('validate', 'Invalid Usernamess '.$user);
+                $this->form_validation->set_message('validate', 'Invalid Username'.$user);
                 return FALSE;
             } else {  // if not empty $data (query)
                 if($pass != ''){   // if password is inputed

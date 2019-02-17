@@ -43,6 +43,10 @@
                                     u_password="<?= $each->password?>">
                                         <i class="ti-pencil-alt"></i> 
                                     </button>
+                                    <button class="btn btn-danger btn-sm btn-delete" 
+                                    userid="<?= $each->user_id?>">
+                                        <i class="ti-trash"></i> 
+                                    </button>
                                 </td>
                             </tr>
                         <?php } ?>
