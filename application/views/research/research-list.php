@@ -6,12 +6,14 @@
                     <table class="table table-bordered table-striped table-hovered" id="researchList">
                         <thead>
                             <tr>
-                                <th style="width: 15%">Control Number</th>
-                                <th style="width: 35%">Title & Details</th>
+                                <th style="width: 10%">Control Number</th>
+                                <th style="width: 30%">Title & Details</th>
+                                <th style="width: 10%">Department</th>
+                                <th style="width: 10%">College</th>
                                 <!-- <th style="width: 10%">Classification</th>
                                 <th style="width: 5%">Deadline</th> -->
-                                <th style="width: 15%">Date Submitted</th>
-                                <th style="width: 10%">Status</th>
+                                <th style="width: 10%">Date Submitted</th>
+                                <th style="width: 5%">Status</th>
                                 <th style="width: 10%"><i class="ti-settings"></i></th>
                             </tr>
                         </thead>
@@ -38,12 +40,14 @@
                                     </td>
                                     <!-- <td><?= $each->classification ?></td>
                                     <td><?= date('F d, Y' , strtotime($each->deadline)) ?></td> -->
+                                    <td><?= $each->department ?></td>
+                                    <td><?= $each->moi ?></td>
                                     <td><?= date('F d, Y  h:i A' , strtotime($each->date_created)) ?></td>
                                     <td class="text-center">
                                         <?php if($each->status == 'open'):?>
                                         <span class="badge badge-warning"><?= ucwords($each->status);?></span>
                                         <?php elseif($each->status == 'admin_remarks'):?>
-                                        <span class="badge badge-warning">For Admin Remarks</span>
+                                        <span class="badge badge-warning">For RND Remarks</span>
                                         <?php elseif($each->status == 'twg_remarks'):?>
                                         <span class="badge badge-warning">For TWG Remarks</span>
                                         <?php elseif($each->status == 'rde_remarks'):?>
@@ -55,11 +59,11 @@
                                         <?php elseif($each->status == 'twg_approved'):?>
                                         <span class="badge badge-success">For approval RDE</span>
                                         <?php elseif($each->status == 'rde_approved'):?>
-                                        <span class="badge badge-success">For approval University Prident</span>
+                                        <span class="badge badge-success">For approval University President</span>
                                         <?php elseif($each->status == 'pres_approved'):?>
                                         <span class="badge badge-success">Approved</span>
                                         <?php elseif($each->status == 'admin_disapproved'):?>
-                                        <span class="badge badge-danger">Disapproved By Admin</span>
+                                        <span class="badge badge-danger">Disapproved By RND</span>
                                         <?php elseif($each->status == 'twg_disapproved'):?>
                                         <span class="badge badge-danger">Disapproved By TWG</span>
                                         <?php elseif($each->status == 'rde_disapproved'):?>

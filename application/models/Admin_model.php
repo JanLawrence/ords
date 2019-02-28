@@ -185,12 +185,15 @@ class Admin_model extends CI_Model{
 		$researcher = $this->user->id;//this is from the session declared in function __construct
         // get data from joined tables
         $this->db->select('r.*, rp.id research_progress_id, rp.levels,rp.`status`, ra.name file_name, ra.type file_type, ra.size file_size,
-            CONCAT(ui.last_name,", ",ui.first_name," ",ui.middle_name) researcher, r.series_number , rd.duration_date')
+            CONCAT(ui.last_name,", ",ui.first_name," ",ui.middle_name) researcher, r.series_number , rd.duration_date, d.department,  group_concat(agenda.agenda separator ", ") agenda')
         ->from('tbl_research_progress rp')
         ->join('tbl_research r', 'r.id = rp.research_id', 'left')
         ->join('tbl_user_info ui', 'ui.user_id = r.created_by', 'left')
+        ->join('tbl_department d', 'd.id = ui.department_id', 'left')
         ->join('tbl_research_attachment ra', 'ra.research_id = r.id', 'left')
-        ->join('tbl_research_duration rd', 'rd.research_id = r.id', 'left');
+        ->join('tbl_research_duration rd', 'rd.research_id = r.id', 'left')
+        ->join('tbl_research_agenda research_agenda', 'research_agenda.research_id = r.id', 'left')
+        ->join('tbl_priority_agenda agenda', 'research_agenda.agenda_id = agenda.id', 'left');
         $this->db->order_by('r.date_created','DESC');
         $this->db->group_by('r.id');
         $query = $this->db->get();
@@ -202,12 +205,14 @@ class Admin_model extends CI_Model{
         $getInfo = $getInfo->result();
         // get data from joined tables
         $this->db->select('r.*, rp.id research_progress_id, rp.levels,rp.`status`, ra.name file_name, ra.type file_type, ra.size file_size,
-            CONCAT(ui.last_name,", ",ui.first_name," ",ui.middle_name) researcher, r.series_number, rd.duration_date')
+            CONCAT(ui.last_name,", ",ui.first_name," ",ui.middle_name) researcher, r.series_number, rd.duration_date, d.department, group_concat(agenda.agenda separator ", ") agenda')
         ->from('tbl_research_progress rp')
         ->join('tbl_research r', 'r.id = rp.research_id', 'left')
         ->join('tbl_user_info ui', 'ui.user_id = r.created_by', 'left')
         ->join('tbl_research_attachment ra', 'ra.research_id = r.id', 'left')
-        ->join('tbl_research_duration rd', 'rd.research_id = r.id', 'left');
+        ->join('tbl_research_duration rd', 'rd.research_id = r.id', 'left')
+        ->join('tbl_research_agenda research_agenda', 'research_agenda.research_id = r.id', 'left')
+        ->join('tbl_priority_agenda agenda', 'research_agenda.agenda_id = agenda.id', 'left');
         $this->db->where('rp.status','admin_approved');
         $this->db->where('ui.specialization_id', $getInfo[0]->specialization_id);
         $this->db->or_where('rp.status','twg_approved');
@@ -222,12 +227,14 @@ class Admin_model extends CI_Model{
 		$researcher = $this->user->id;//this is from the session declared in function __construct
         // get data from joined tables
         $this->db->select('r.*, rp.id research_progress_id, rp.levels,rp.`status`, ra.name file_name, ra.type file_type, ra.size file_size,
-            CONCAT(ui.last_name,", ",ui.first_name," ",ui.middle_name) researcher, r.series_number, rd.duration_date')
+            CONCAT(ui.last_name,", ",ui.first_name," ",ui.middle_name) researcher, r.series_number, rd.duration_date, d.department, group_concat(agenda.agenda separator ", ") agenda')
         ->from('tbl_research_progress rp')
         ->join('tbl_research r', 'r.id = rp.research_id', 'left')
         ->join('tbl_user_info ui', 'ui.user_id = r.created_by', 'left')
         ->join('tbl_research_attachment ra', 'ra.research_id = r.id', 'left')
-        ->join('tbl_research_duration rd', 'rd.research_id = r.id', 'left');
+        ->join('tbl_research_duration rd', 'rd.research_id = r.id', 'left')
+        ->join('tbl_research_agenda research_agenda', 'research_agenda.research_id = r.id', 'left')
+        ->join('tbl_priority_agenda agenda', 'research_agenda.agenda_id = agenda.id', 'left');
         $this->db->where('rp.status','admin_approved');
         $this->db->or_where('rp.status','twg_approved');
         $this->db->or_where('rp.status','twg_disapproved');
@@ -244,12 +251,14 @@ class Admin_model extends CI_Model{
 		$researcher = $this->user->id;//this is from the session declared in function __construct
         // get data from joined tables
         $this->db->select('r.*, rp.id research_progress_id, rp.levels,rp.`status`, ra.name file_name, ra.type file_type, ra.size file_size,
-            CONCAT(ui.last_name,", ",ui.first_name," ",ui.middle_name) researcher, r.series_number, rd.duration_date')
+            CONCAT(ui.last_name,", ",ui.first_name," ",ui.middle_name) researcher, r.series_number, rd.duration_date, d.department, group_concat(agenda.agenda separator ", ") agenda')
         ->from('tbl_research_progress rp')
         ->join('tbl_research r', 'r.id = rp.research_id', 'left')
         ->join('tbl_user_info ui', 'ui.user_id = r.created_by', 'left')
         ->join('tbl_research_attachment ra', 'ra.research_id = r.id', 'left')
-        ->join('tbl_research_duration rd', 'rd.research_id = r.id', 'left');
+        ->join('tbl_research_duration rd', 'rd.research_id = r.id', 'left')
+        ->join('tbl_research_agenda research_agenda', 'research_agenda.research_id = r.id', 'left')
+        ->join('tbl_priority_agenda agenda', 'research_agenda.agenda_id = agenda.id', 'left');
         $this->db->where('rp.status','rde_approved');
         $this->db->or_where('rp.status','pres_approved');
         $this->db->or_where('rp.status','pres_disapproved');
@@ -276,7 +285,7 @@ class Admin_model extends CI_Model{
         );
         $this->db->insert('tbl_researcher_notif',$data); //insert data to tbl_researcher_notif
         if($_POST['status'] == 'approved'){
-            if($this->user->user_type == 'admin'){
+            if($this->user->user_type == 'rnd'){
                 $data = array(
                     'research_progress_id' => $_POST['progress_id'],
                     'notif' => 'unread',
@@ -475,6 +484,70 @@ class Admin_model extends CI_Model{
             $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
         }
     }
+    public function saveAgenda(){
+        $check = $this->db->get_where('tbl_priority_agenda', array('agenda'=>$_POST['agenda'])); //check if agenda inputed is exisiting
+        if(empty($check->result())){ // if not existing insert agenda
+            //data that will be inserted to tbl_priority_agenda
+            $data = array(
+                "agenda" => $_POST['agenda'],
+                "created_by" => $this->user->id,
+                "date_created" => date('Y-m-d H:i:s')
+            );
+            $this->db->insert('tbl_priority_agenda',$data); //insert data to tbl_priority_agenda
+
+            $data = array(
+                "user_id" => $this->user->id,
+                "username" => '',
+                "transaction" => 'Added Agenda',
+                "created_by" => !empty($this->user) ? $this->user->id : 0,
+                "date_created" => date('Y-m-d H:i:s')
+            );
+            $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
+        } else { // if existing print 1
+            echo 1; 
+        }
+    }
+    public function editAgenda(){
+
+        $checkById = $this->db->get_where('tbl_priority_agenda', array('id' => $_POST['id'])); //get data by agenda id
+        $checkById= $checkById->result();
+        $check = $this->db->get_where('tbl_priority_agenda', array('agenda' => $_POST['agenda'])); //check if agenda inputed is exisiting
+        if(!empty($check->result())){ // if existing agenda
+            if($checkById[0]->agenda == $_POST['agenda']){ // if inputed is same in data by agenda id
+                //data that will be updated to tbl_priority_agenda
+                $this->db->set('agenda', $_POST['agenda']);
+                $this->db->set('modified_by', $this->user->id);
+                $this->db->set('date_modified', date('Y-m-d H:i:s'));
+                $this->db->where('id', $_POST['id']);
+                $this->db->update('tbl_priority_agenda'); //update data to tbl_priority_agenda
+                $data = array(
+                    "user_id" => $this->user->id,
+                    "username" => '',
+                    "transaction" => 'Updated Agenda',
+                    "created_by" => !empty($this->user) ? $this->user->id : 0,
+                    "date_created" => date('Y-m-d H:i:s')
+                );
+                $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
+            } else {
+                echo 1;
+            }
+        } else {
+            //data that will be updated to tbl_priority_agenda
+            $this->db->set('agenda', $_POST['agenda']);
+            $this->db->set('modified_by', $this->user->id);
+            $this->db->set('date_modified', date('Y-m-d H:i:s'));
+            $this->db->where('id', $_POST['id']);
+            $this->db->update('tbl_priority_agenda'); //update data to tbl_priority_agenda
+            $data = array(
+                "user_id" => $this->user->id,
+                "username" => '',
+                "transaction" => 'Updated Agenda',
+                "created_by" => !empty($this->user) ? $this->user->id : 0,
+                "date_created" => date('Y-m-d H:i:s')
+            );
+            $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
+        }
+    }
     public function specializationList(){
         $query = $this->db->get('tbl_specialization');
         return $query->result();
@@ -659,7 +732,7 @@ class Admin_model extends CI_Model{
     }
     public function notifications(){
         $user = $this->user->id;//this is from the session declared in function __construct
-        if($this->user->user_type == 'admin'){
+        if($this->user->user_type == 'rnd'){
 
             // get data from joined tables
             $this->db->select('an.*, rp.levels, r.title, r.details, 
@@ -738,7 +811,7 @@ class Admin_model extends CI_Model{
         }
     }
     public function readNotifs(){
-        if($this->user->user_type == 'admin'){
+        if($this->user->user_type == 'rnd'){
             //data that will be inserted to tbl_admin_notif
             $this->db->set('notif', 'read');
             $this->db->update('tbl_admin_notif');

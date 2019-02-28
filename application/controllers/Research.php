@@ -166,9 +166,9 @@ class Research extends CI_Controller {
 		if(!empty($this->session->userdata['user'])){ // if has session
 			$data['research'] = $this->research_model->getResearch($_REQUEST['id']); // load research per edit id
 			$data['agendaList'] = $this->admin_model->agendaList(); // load agenda in admin model
-			$this->load->view('templates/header');
+			// $this->load->view('templates/header');
 			$this->load->view('research/research-show', $data);
-			$this->load->view('templates/footer');
+			// $this->load->view('templates/footer');
 		} else {
 			show_404(); // show 404 error page
 		}

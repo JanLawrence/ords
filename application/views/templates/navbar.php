@@ -45,7 +45,7 @@
 						<a class="dropdown-item" href="<?= base_url()?>research/terminal">Terminal</a>
 					</div>
 				</li>
-			<?php elseif($userSession->user_type == 'admin' || $userSession->user_type == 'pres' || $userSession->user_type == 'rde' || $userSession->user_type == 'twg'): ?>
+			<?php elseif($userSession->user_type == 'admin' || $userSession->user_type == 'pres' || $userSession->user_type == 'rde' || $userSession->user_type == 'twg' || $userSession->user_type == 'rnd'): ?>
 				<?php if($userSession->user_type == 'admin'):?>
 					<li class="nav-item">
 						<a class="nav-link <?= $controller.'/'.$method == 'admin/addUser' ? 'active' : ''?>" href="<?= base_url()?>admin/addUser"><i class="ti-user"></i> User List</a>
@@ -62,15 +62,18 @@
 					<li class="nav-item">
 						<a class="nav-link <?= $controller.'/'.$method == 'admin/specialization' ? 'active' : ''?>" href="<?= base_url()?>admin/specialization"><i class="ti-layers-alt"></i> Specialization</a>
 					</li>
+					<li class="nav-item">
+						<a class="nav-link <?= $controller.'/'.$method == 'admin/agenda' ? 'active' : ''?>" href="<?= base_url()?>admin/agenda"><i class="ti-layers-alt"></i> Agenda</a>
+					</li>
 				<?php endif;?>
-				<?php if($userSession->user_type == 'pres' || $userSession->user_type == 'rde' || $userSession->user_type == 'twg'):?>
+				<?php if($userSession->user_type == 'rnd' || $userSession->user_type == 'pres' || $userSession->user_type == 'rde' || $userSession->user_type == 'twg'):?>
 					<li class="nav-item">
 						<a class="nav-link <?= $controller.'/'.$method == 'admin/dashboard' ? 'active' : ''?>" href="<?= base_url()?>admin/dashboard"><i class="ti-dashboard"></i> Dashboard</a>
 					</li>
+					<li class="nav-item" >
+						<a class="nav-link <?= $controller.'/'.$method == 'admin/researchList' ? 'active' : ''?>" href="<?= base_url()?>admin/researchList"><i class="ti-write"></i> Research List</a>
+					</li>
 				<?php endif;?>
-                <li class="nav-item" >
-                    <a class="nav-link <?= $controller.'/'.$method == 'admin/researchList' ? 'active' : ''?>" href="<?= base_url()?>admin/researchList"><i class="ti-write"></i> Research List</a>
-				</li>
 			<?php endif;?>
 			<li class="nav-item d-none" >
 				<a class="nav-link <?= $controller.'/'.$method == 'contactus/index' ? 'active' : ''?>" href="<?= base_url()?>contactus"><i class="ti-email"></i> Contact Us</a>
@@ -102,7 +105,7 @@
 							<?php elseif($each->status == 'disapproved'):?>
 							<span class="badge badge-danger"><?= ucwords($each->status)?></span>
 							<?php elseif($each->status == 'twg'):?>
-							<span class="badge badge-warning">Approved By Admin</span>
+							<span class="badge badge-warning">Approved By RND</span>
 							<?php endif;?>
 						
 						 | <strong><?= $each->series_number?></strong> - <?= $each->title?> | by: <?= $each->researcher?> <br>

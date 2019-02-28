@@ -8,13 +8,16 @@
                 <table class="table table-bordered table-striped table-hovered" id="researchList">
                     <thead>
                         <tr>
-                            <th style="width: 15%">Control Number</th>
-                            <th style="width: 35%">Title & Details</th>
+                            <th style="width: 10%">Control Number</th>
+                            <th style="width: 25%">Title & Details</th>
+                            <th style="width: 10%">Department</th>
+                            <th style="width: 10%">College</th>
+                            <th style="width: 10%">Priority Agenda</th>
                             <!-- <th style="width: 10%">Classification</th>
                             <th style="width: 5%">Deadline</th> -->
-                            <th style="width: 15%">Date Submitted</th>
-                            <th style="width: 10%">Status</th>
-                            <th style="width: 10%"><i class="ti-settings"></i></th>
+                            <th style="width: 10%">Date Submitted</th>
+                            <th style="width: 5%">Status</th>
+                            <th style="width: 5%"><i class="ti-settings"></i></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -27,7 +30,8 @@
                                 <td>
                                     <h5><?= $each->title?></h5><hr>
                                     <p><?= $each->details ?></p>
-                                    <a target="_blank" href="<?= base_url()?>research/showContent?id=<?=$each->id?>"><small>View Content</small></a>
+                                    <!-- <a target="_blank" href="<?= base_url()?>research/showContent?id=<?=$each->id?>" class="showContentBtn"><small>View Content</small></a> -->
+                                    <a r-id="<?=$each->id?>" href="#" class="showContentBtn"><small>View Content</small></a>
                                         <?php if($each->file_name != ''):?>
                                              <?= ' | '?> 
                                             <a target="_blank" href="<?= base_url()?>research/download?id=<?=$each->id?>"><small>Download File</small></a> 
@@ -39,6 +43,9 @@
                                 </td>
                                 <!-- <td><?= $each->classification ?></td>
                                 <td><?= date('F d, Y' , strtotime($each->deadline)) ?></td> -->
+                                <td><?= $each->department ?></td>
+                                <td><?= $each->moi ?></td>
+                                <td><?= $each->agenda ?></td>
                                 <td><?= date('F d, Y  h:i A' , strtotime($each->date_created)) ?></td>
                                 <td class="text-center">
                                     <?php if($each->status == 'open'):?>
@@ -79,7 +86,7 @@
                                     <?php endif;?>
                                 </td>
                                 <td>
-                                    <?php if($user->user_type == 'admin'): ?>
+                                    <?php if($user->user_type == 'rnd'): ?>
                                         <?php if($each->status == 'open' || $each->status == 'admin_remarks'):?>
                                         <button class="btn btn-success btn-sm btn-status" rid="<?= $each->id ?>" rpid="<?=$each->research_progress_id?>" status="approved" type="button">Send</button>
                                         <!-- <button class="btn btn-danger btn-sm btn-status" rid="<?= $each->id ?>" rpid="<?=$each->research_progress_id?>" status="disapproved" type="button">Disapprove</button> -->
@@ -199,4 +206,27 @@
         </div>
     </div>   
 </div>
+<div class="modal" id="showContentModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body" id="contentContainer">
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-danger btn-sm" data-dismiss="modal"><i class="ti-close"></i> Close</a>
+            </div>
+        </div>
+    </div>   
+</div>
+<script>
+    $(function(){
+        $('.showContentBtn').click(function(){
+            var id = $(this).attr('r-id');
+            $.post(URL+'research/showContent', {'id': id})
+            .done(function(returnData){
+                $('#contentContainer').html(returnData);
+                $('#showContentModal').modal('show');
+            })
+        })
+    })
+</script>
 <script src="<?= base_url()?>assets/modules/js/admin.js"></script>

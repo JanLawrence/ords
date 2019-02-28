@@ -32,7 +32,7 @@ class Admin extends CI_Controller {
     public function redirect_admin($type){ // redirect based on user_type 
         if($type == 'admin'){
             redirect('admin/addUser');
-        } else if($type == 'pres' || $type == 'twg' || $type == 'rde'){
+        } else if($type == 'pres' || $type == 'twg' || $type == 'rde' || $type = 'rnd'){
             redirect('admin/researchList');
         } else {
             show_404(); // show 404 error page
@@ -131,7 +131,7 @@ class Admin extends CI_Controller {
 	public function dashboard()
 	{
         if(!empty($this->session->userdata['user'])){ // if has session
-            if($this->session->userdata['user']->user_type == 'pres' || $this->session->userdata['user']->user_type == 'twg' || $this->session->userdata['user']->user_type == 'rde'){ // if user type admin 
+            if($this->session->userdata['user']->user_type == 'pres' || $this->session->userdata['user']->user_type == 'twg' || $this->session->userdata['user']->user_type == 'rde' || $this->session->userdata['user']->user_type == 'rnd'){ // if user type admin 
 
                 // load view
                 $this->load->view('templates/header');
@@ -191,8 +191,8 @@ class Admin extends CI_Controller {
         if(!empty($this->session->userdata['user'])){ // if has session
 
             // if user type is equal to admin or president
-            if($this->session->userdata['user']->user_type == 'admin' || $this->session->userdata['user']->user_type == 'pres' || $this->session->userdata['user']->user_type == 'twg' || $this->session->userdata['user']->user_type == 'rde'){
-                if($this->session->userdata['user']->user_type == 'admin'){
+            if($this->session->userdata['user']->user_type == 'rnd' || $this->session->userdata['user']->user_type == 'pres' || $this->session->userdata['user']->user_type == 'twg' || $this->session->userdata['user']->user_type == 'rde'){
+                if($this->session->userdata['user']->user_type == 'rnd'){
                     $data['research'] = $this->admin_model->getAllResearhAdmin2();
                 } else if($this->session->userdata['user']->user_type == 'twg'){ 
                     $data['research'] = $this->admin_model->getAllResearhTwg();
@@ -236,6 +236,31 @@ class Admin extends CI_Controller {
     }
     public function editDept(){
         $this->admin_model->editDept(); // edit Departmenr controller
+    }
+	public function agenda()
+	{
+        if(!empty($this->session->userdata['user'])){ // if has session
+            if($this->session->userdata['user']->user_type == 'admin'){ // if user type admin 
+
+                // load view
+                $data['agenda'] = $this->admin_model->agendaList();
+                $this->load->view('templates/header');
+                $this->load->view('admin/agenda',$data);
+                $this->load->view('templates/footer');
+                
+            } else { 
+                show_404(); // show 404 error page
+            }
+        } else {
+            show_404(); // show 404 error page
+        }
+        
+    }
+    public function saveAgenda(){
+        $this->admin_model->saveAgenda(); // save Departmenr controller
+    }
+    public function editAgenda(){
+        $this->admin_model->editAgenda(); // edit Departmenr controller
     }
     public function readNotifs(){
         $this->admin_model->readNotifs();

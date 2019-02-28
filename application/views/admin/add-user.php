@@ -4,7 +4,7 @@
         <div class="card rounded-0">
             <div class="card-body">
                 <div class="text-right">
-                    <!-- <a href="#" class="btn btn-secondary btn-sm mb-4" data-toggle="modal" data-target="#addModal"><i class="ti-plus"></i> Add User</a> -->
+                    <a href="#" class="btn btn-secondary btn-sm mb-4" data-toggle="modal" data-target="#addModal"><i class="ti-plus"></i> Add User</a>
                 </div>
                 <table class="table table-bordered table-striped table-hovered" id="tableList">
                     <thead>
@@ -131,6 +131,7 @@
                                         <option value="pres">University President</option>
                                         <option value="twg">TWG</option>
                                         <option value="rde">RDE</option>
+                                        <option value="rnd">RND</option>
                                     </select>
                                 </div>
                             </div>
