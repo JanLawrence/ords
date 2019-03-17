@@ -131,11 +131,14 @@ class Admin extends CI_Controller {
 	public function dashboard()
 	{
         if(!empty($this->session->userdata['user'])){ // if has session
-            if($this->session->userdata['user']->user_type == 'pres' || $this->session->userdata['user']->user_type == 'twg' || $this->session->userdata['user']->user_type == 'rde' || $this->session->userdata['user']->user_type == 'rnd'){ // if user type admin 
+            if($this->session->userdata['user']->user_type == 'twg' || $this->session->userdata['user']->user_type == 'pres' || $this->session->userdata['user']->user_type == 'twg' || $this->session->userdata['user']->user_type == 'rde' || $this->session->userdata['user']->user_type == 'rnd'){ // if user type admin 
 
                 // load view
+                $data['submitted'] = $this->admin_model->submittedResearch();
+				$data['forapproval'] = $this->admin_model->forApprovalResearch();
+				$data['attachment'] = $this->admin_model->attachmentResearch();
                 $this->load->view('templates/header');
-                $this->load->view('admin/dashboard');
+                $this->load->view('admin/dashboard', $data);
                 $this->load->view('templates/footer');
                 
             } else { 
@@ -164,8 +167,14 @@ class Admin extends CI_Controller {
     public function editClassification(){
         $this->admin_model->editClassification(); // edit Classification controller
     }
+    public function setUser(){
+        $this->admin_model->setUser(); // save user controller
+    }
     public function saveUser(){
         $this->admin_model->saveUser(); // save user controller
+    }
+    public function registerUser(){
+        $this->admin_model->registerUser(); // save user controller
     }
     public function editUser(){
         $this->admin_model->editUser(); // edit user controller
@@ -191,15 +200,17 @@ class Admin extends CI_Controller {
         if(!empty($this->session->userdata['user'])){ // if has session
 
             // if user type is equal to admin or president
+            $from = isset($_GET['from']) && $_GET['from'] != '' ? $_GET['from'] : date('Y-m-d');
+			$to = isset($_GET['to']) &&  $_GET['from'] != '' ? $_GET['to'] : date('Y-m-d');
             if($this->session->userdata['user']->user_type == 'rnd' || $this->session->userdata['user']->user_type == 'pres' || $this->session->userdata['user']->user_type == 'twg' || $this->session->userdata['user']->user_type == 'rde'){
-                if($this->session->userdata['user']->user_type == 'rnd'){
-                    $data['research'] = $this->admin_model->getAllResearhAdmin2();
+                if($this->session->userdata['user']->user_type == 'rnd' || $this->session->userdata['user']->user_type == 'staff'){
+                    $data['research'] = $this->admin_model->getAllResearhAdmin2($from, $to);
                 } else if($this->session->userdata['user']->user_type == 'twg'){ 
-                    $data['research'] = $this->admin_model->getAllResearhTwg();
+                    $data['research'] = $this->admin_model->getAllResearhTwg($from, $to);
                 } else if($this->session->userdata['user']->user_type == 'rde'){ 
-                    $data['research'] = $this->admin_model->getAllResearhRde();
+                    $data['research'] = $this->admin_model->getAllResearhRde($from, $to);
                 } else if($this->session->userdata['user']->user_type == 'pres'){ 
-                    $data['research'] = $this->admin_model->getAllResearhPres();
+                    $data['research'] = $this->admin_model->getAllResearhPres($from, $to);
                 }
                 // load view
                 $this->load->view('templates/header');

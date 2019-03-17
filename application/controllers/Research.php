@@ -56,8 +56,10 @@ class Research extends CI_Controller {
 	public function researchList()
 	{
 		if(!empty($this->session->userdata['user'])){ // if has session
-            if($this->session->userdata['user']->user_type == 'researcher'){ // if user type researcher
-				$data['research'] = $this->research_model->getResearchByResearcher(); // load research per researcher
+			if($this->session->userdata['user']->user_type == 'researcher'){ // if user type researcher
+				$from = isset($_GET['from']) && $_GET['from'] != '' ? $_GET['from'] : date('Y-m-d');
+				$to = isset($_GET['to']) &&  $_GET['from'] != '' ? $_GET['to'] : date('Y-m-d');
+				$data['research'] = $this->research_model->getResearchByResearcher($from, $to); // load research per researcher
 
 				// load view
 				$this->load->view('templates/header');
@@ -99,7 +101,9 @@ class Research extends CI_Controller {
 	public function terminal()
 	{
 		if(!empty($this->session->userdata['user'])){ // if has session
-			$data['research'] = $this->research_model->getResearchByResearcherTerminal(); // load research per researcher
+			$from = isset($_GET['from']) && $_GET['from'] != '' ? $_GET['from'] : date('Y-m-d');
+			$to = isset($_GET['to']) && $_GET['from'] != '' ? $_GET['to'] : date('Y-m-d');
+			$data['research'] = $this->research_model->getResearchByResearcherTerminal($from, $to); // load research per researcher
 			// load view
 			$this->load->view('templates/header');
 			$this->load->view('research/reports/terminal', $data);
@@ -112,6 +116,10 @@ class Research extends CI_Controller {
 	public function download()
 	{
 		$this->research_model->download(); // download research controller
+	}
+	public function addMonthly()
+	{
+		$this->research_model->addMonthly(); // download research controller
 	}
 	public function researchDurNotifTerminal()
 	{
@@ -151,8 +159,11 @@ class Research extends CI_Controller {
 		if(!empty($this->session->userdata['user'])){ // if has session
             if($this->session->userdata['user']->user_type == 'researcher'){ // if user type researcher
 				// load view
+				$data['submitted'] = $this->admin_model->submittedResearch();
+				$data['forapproval'] = $this->admin_model->forApprovalResearch();
+				$data['attachment'] = $this->admin_model->attachmentResearch();
 				$this->load->view('templates/header');
-				$this->load->view('research/dashboard');
+				$this->load->view('research/dashboard', $data);
 				$this->load->view('templates/footer');
 			} else { 
 				show_404(); // show 404 error page

@@ -112,6 +112,36 @@
 	}
 </style>
 <div class="row">
+	<div class="col-md-4">
+		<a href="<?= base_url('research/researchList');?>">
+			<div class="card text-white bg-dark mb-3 pt-1">
+				<div class="card-header text-center"><h6>Submitted Research/Proposal</h6></div>
+				<div class="card-body">
+					<h1 class="card-title text-center"><?= count($submitted)?></h1>
+				</div>
+			</div>
+		</a>
+    </div>
+    <div class="col-md-4">
+		<a href="<?= base_url('research/researchList');?>">
+			<div class="card text-white bg-dark mb-3 pt-1">
+				<div class="card-header text-center"><h6>For Approval Proposal</h6></div>
+				<div class="card-body">
+					<h1 class="card-title text-center"><?= count($forapproval)?></h1>
+				</div>
+			</div>
+		</a>
+    </div>
+    <div class="col-md-4">
+		<a href="<?= base_url('research/researchList');?>">
+			<div class="card text-white bg-dark mb-3 pt-1">
+				<div class="card-header text-center"><h6>Submitted Reports</h6></div>
+				<div class="card-body">
+					<h1 class="card-title text-center"><?= count($attachment)?></h1>
+				</div>
+			</div>
+		</a>
+    </div>
     <div class="col-md-12">
         <div class="card rounded-0">
             <div class="card-body">

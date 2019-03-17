@@ -1,5 +1,4 @@
 $(function(){
-
     $('select[name=usertype]').change(function(){
         if($(this).val() == 'researcher'){
             $('.dept').removeClass('d-none');
@@ -77,6 +76,16 @@ $(function(){
 
         return false;
     })
+    $("#tableList").on('click','.btn-set',function(){ // on click edit button on user list
+        $('#setModal').modal('toggle'); // toggle edit modal
+        
+         // get values on attr of the button clicked
+        var uid = $(this).attr('userid');
+        // put attr values on each specific input 
+        $('#setForm').find('input[name="id"]').val(uid);
+
+        return false;
+    })
     $('#editForm').submit(function(){ // submit edit user form
         var pass = $(this).find('input[name="password"]').val();
         var confirmpass = $(this).find('input[name="confirmpass"]').val();
@@ -87,6 +96,26 @@ $(function(){
                 if(returnData == 1){ // if existing username
                     alert('Exisiting Username') // alert error
                 } else {
+                    alert('Update Successfull!');
+                    location.reload(); // reload if success
+                }
+            })
+        } else {
+            alert('Password do not match.'); // alert error if pass not match
+        }
+        return false;
+    })
+    $('#setForm').submit(function(){ // submit edit user form
+        var pass = $(this).find('input[name="password"]').val();
+        var confirmpass = $(this).find('input[name="confirmpass"]').val();
+        var that = $(this);
+        if(pass == confirmpass){ // validation password and confirm pass
+            $.post(URL+'admin/setUser',that.serialize()) // post to admin/editUser
+            .done(function(returnData){
+                if(returnData == 1){ // if existing username
+                    alert('Exisiting Username') // alert error
+                } else {
+                    alert('Update Successfull!');
                     location.reload(); // reload if success
                 }
             })

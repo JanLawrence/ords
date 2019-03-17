@@ -33,17 +33,17 @@ class Home extends CI_Controller {
     }
     public function redirect_login($type){  // redirect based on user_type 
         if($type == 'researcher'){
-            redirect('research');
+            redirect('research/dashboard');
         } else if($type == 'admin'){
             redirect('admin/addUser');
         } else if($type == 'pres'){
-            redirect('admin/researchList');
+            redirect('admin/dashboard');
         } else if($type == 'twg'){
-            redirect('admin/researchList');
+            redirect('admin/dashboard');
         } else if($type == 'rde'){
-            redirect('admin/researchList');
+            redirect('admin/dashboard');
         } else if($type == 'rnd'){
-            redirect('admin/researchList');
+            redirect('admin/dashboard');
         } else {
             show_404(); // show 404 error page
         }

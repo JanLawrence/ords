@@ -5,6 +5,21 @@
     <div class="col-md-12">
         <div class="card rounded-0">
             <div class="card-body">
+                <form method="get">
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label>From</label>
+                            <input type="date" class="form-control" name="from" value="<?= isset($_GET['from']) && $_GET['from'] != '' ? $_GET['from'] : ''?>">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>To</label>
+                            <input type="date" class="form-control" name="to" value="<?= isset($_GET['to']) && $_GET['to'] != '' ? $_GET['to'] : ''?>">
+                        </div>
+                        <div class="form-group col-md-3 mt-4">
+                            <button type="submit" class="btn btn-info"> Generate</button>
+                        </div>
+                    </div>
+                </form>
                 <table class="table table-bordered table-striped table-hovered" id="researchList">
                     <thead>
                         <tr>
@@ -21,7 +36,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if(!empty($research)):?>
                         <?php foreach($research as $each): ?>
                             <tr>
                                 <td>
@@ -51,7 +65,7 @@
                                     <?php if($each->status == 'open'):?>
                                     <span class="badge badge-warning"><?= ucwords($each->status);?></span>
                                     <?php elseif($each->status == 'admin_remarks'):?>
-                                    <span class="badge badge-warning">For Admin Remarks</span>
+                                    <span class="badge badge-warning">For Director Remarks</span>
                                     <?php elseif($each->status == 'twg_remarks'):?>
                                     <span class="badge badge-warning">For TWG Remarks</span>
                                     <?php elseif($each->status == 'rde_remarks'):?>
@@ -63,7 +77,7 @@
                                     <?php elseif($each->status == 'twg_approved'):?>
                                     <span class="badge badge-success">For approval RDE</span>
                                     <?php elseif($each->status == 'rde_approved'):?>
-                                    <span class="badge badge-success">For approval University Prident</span>
+                                    <span class="badge badge-success">Approved</span>
                                     <?php elseif($each->status == 'pres_approved'):?>
                                     <span class="badge badge-success">Approved</span>
                                     <?php elseif($each->status == 'admin_disapproved'):?>
@@ -92,7 +106,7 @@
                                         <!-- <button class="btn btn-danger btn-sm btn-status" rid="<?= $each->id ?>" rpid="<?=$each->research_progress_id?>" status="disapproved" type="button">Disapprove</button> -->
                                         <button class="btn btn-info btn-sm btn-notes" rid="<?= $each->id ?>" rpid="<?=$each->research_progress_id?>" type="button"><i class="ti-plus"></i> Add Notes</button>
                                         <?php endif;?>
-                                        <?php if($each->status == 'pres_approved' && $each->duration_date == ''):?>
+                                        <?php if($each->status == 'rde_approved' && $each->duration_date == ''):?>
                                         <button class="btn btn-info btn-sm btn-deadline" rid="<?= $each->id ?>" rpid="<?=$each->research_progress_id?>" type="button"><i class="ti-calendar"></i> Set Deadline</button>
                                         <?php endif;?>
                                     <?php elseif($user->user_type == 'twg'): ?>
@@ -107,11 +121,13 @@
                                         <button class="btn btn-danger btn-sm btn-status" rid="<?= $each->id ?>" rpid="<?=$each->research_progress_id?>" status="disapproved" type="button">Disapprove</button>
                                         <button class="btn btn-info btn-sm btn-notes" rid="<?= $each->id ?>" rpid="<?=$each->research_progress_id?>" type="button"><i class="ti-plus"></i> Add Notes</button>
                                         <?php endif;?>
+                                    <?php elseif($user->user_type == 'staff'): ?>
+                                            
                                     <?php elseif($user->user_type == 'pres'): ?>
                                         <?php if($each->status == 'open' || $each->status == 'pres_remarks' || $each->status == 'rde_approved'):?>
-                                        <button class="btn btn-success btn-sm btn-status" rid="<?= $each->id ?>" rpid="<?=$each->research_progress_id?>" status="approved" type="button">Approve</button>
+                                        <!-- <button class="btn btn-success btn-sm btn-status" rid="<?= $each->id ?>" rpid="<?=$each->research_progress_id?>" status="approved" type="button">Approve</button>
                                         <button class="btn btn-danger btn-sm btn-status" rid="<?= $each->id ?>" rpid="<?=$each->research_progress_id?>" status="disapproved" type="button">Disapprove</button>
-                                        <button class="btn btn-info btn-sm btn-notes" rid="<?= $each->id ?>" rpid="<?=$each->research_progress_id?>" type="button"><i class="ti-plus"></i> Add Notes</button>
+                                        <button class="btn btn-info btn-sm btn-notes" rid="<?= $each->id ?>" rpid="<?=$each->research_progress_id?>" type="button"><i class="ti-plus"></i> Add Notes</button> -->
                                         <?php endif;?>
                                     <?php endif;?>
                                 <?php //elseif($this->session->userdata['user']->user_type == 'university president'):?>
@@ -123,11 +139,6 @@
                                 </td>
                             </tr>
                         <?php endforeach;?>
-                        <?php else:?>
-                            <tr>
-                                <td colspan = "6" class="text-center"> No pending research found. </td>
-                            </tr>
-                        <?php endif;?>
                     </tbody>
                 </table> 
             </div>
@@ -219,6 +230,7 @@
 </div>
 <script>
     $(function(){
+        $('#researchList').DataTable();
         $('.showContentBtn').click(function(){
             var id = $(this).attr('r-id');
             $.post(URL+'research/showContent', {'id': id})

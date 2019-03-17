@@ -10,67 +10,82 @@
                         <h3>Monthly Report</h3>
                     </div>
                     <div class="float-right text-right">
-                        <a class="btn btn-info" href="<?= base_url()?>files/logo.jpg" download> Download</a> 
+                        <button class="btn btn-info addBtn" type="button"> Add</button> 
+                        <button class="btn btn-info" type="submit" form="monthlyForm"> Submit</button> 
                     </div>
                 </div>
-				<hr>
-				<table class="table table-bordered table-striped table-hovered" id="researchList">
+                <hr>
+                <form id="monthlyForm" method="post">
+				<table class="table table-bordered table-striped table-hovered" id="monthlyReport">
 					<thead>
 						<tr>
-							<th style="width: 15%">Control Number</th>
-							<th style="width: 35%">Title</th>
-							<th style="width: 5%">Duration</th>
-							<th style="width: 15%">Date Submitted</th>
-							<th style="width: 10%">Status</th>
+							<th rowspan="2">Objectives</th>
+							<th rowspan="2">Activities</th>
+							<th colspan="2">Person</th>
+							<th rowspan="2">Schedule</th>
+							<th rowspan="2">Resource</th>
+							<th rowspan="2">Output</th>
+							<th rowspan="2"></th>
+						</tr>
+						<tr>
+							<th>Responsible</th>
+							<th>Involved</th>
 						</tr>
 					</thead>
 					<tbody>
-                        <?php if(!empty($research)):?> <!-- if variable research is not empty proceed to foreach -->
-                            <?php foreach($research as $each): ?> <!-- foreach loop: this displays array of data  -->
-                                <tr>
-                                    <td><strong><?= $each->series_number?></strong></td>
-                                    <td><?= $each->title?></td>
-                                    <td><?= $each->duration_date?></td>
-                                    <td><?= date('F d, Y  h:i A' , strtotime($each->date_created)) ?></td>
-                                    <td class="text-center">
-                                        <?php if($each->status == 'open'):?>
-                                        <span class="badge badge-warning"><?= ucwords($each->status);?></span>
-                                        <?php elseif($each->status == 'admin_remarks'):?>
-                                        <span class="badge badge-warning">For Admin Remarks</span>
-                                        <?php elseif($each->status == 'twg_remarks'):?>
-                                        <span class="badge badge-warning">For TWG Remarks</span>
-                                        <?php elseif($each->status == 'rde_remarks'):?>
-                                        <span class="badge badge-warning">For RDE Remarks</span>
-                                        <?php elseif($each->status == 'pres_remarks'):?>
-                                        <span class="badge badge-warning">For University President Remarks</span>
-                                        <?php elseif($each->status == 'admin_approved'):?>
-                                        <span class="badge badge-success">For approval TWG</span>
-                                        <?php elseif($each->status == 'twg_approved'):?>
-                                        <span class="badge badge-success">For approval RDE</span>
-                                        <?php elseif($each->status == 'rde_approved'):?>
-                                        <span class="badge badge-success">For approval University President</span>
-                                        <?php elseif($each->status == 'pres_approved'):?>
-                                        <span class="badge badge-success">Approved</span>
-                                        <?php elseif($each->status == 'admin_disapproved'):?>
-                                        <span class="badge badge-danger">Disapproved By Admin</span>
-                                        <?php elseif($each->status == 'twg_disapproved'):?>
-                                        <span class="badge badge-danger">Disapproved By TWG</span>
-                                        <?php elseif($each->status == 'rde_disapproved'):?>
-                                        <span class="badge badge-danger">Disapproved By RDE</span>
-                                        <?php elseif($each->status == 'pres_disapproved'):?>
-                                        <span class="badge badge-danger">Disapproved By University President</span>
-                                        <?php endif;?> 
-                                    </td>
-                                </tr>
-                            <?php endforeach;?>
-                        <?php else:?>
+                        <?php foreach($research as $each): ?> <!-- foreach loop: this displays array of data  -->
                             <tr>
-                                <td colspan = "6" class="text-center"> No result </td>
+                                <td class="text-center"><?= $each->objectives?></td>
+                                <td class="text-center"><?= $each->activities?></td>
+                                <td class="text-center"><?= $each->responsible?></td>
+                                <td class="text-center"><?= $each->involved?></td>
+                                <td class="text-center"><?= $each->schedule?></td>
+                                <td class="text-center"><?= $each->resources?></td>
+                                <td class="text-center"><?= $each->output?></td>
+                                <td class="text-center"></td>
                             </tr>
-                        <?php endif;?>
+                        <?php endforeach;?>
 					</tbody>
-				</table>
+                </table>
+                </form>
 			</div>
 		</div>
 	</div>
 </div>
+<script>
+    $(function(){
+        var table = $('#monthlyReport').DataTable();
+        var append = `<tr>
+                        <td class="text-center"><input class="form-control" required type="text" name="objectives[]"></td>
+                        <td class="text-center"><input class="form-control" required type="text" name="activities[]"></td>
+                        <td class="text-center"><input class="form-control" required type="text" name="responsible[]"></td>
+                        <td class="text-center"><input class="form-control" required type="text" name="involved[]"></td>
+                        <td class="text-center"><input class="form-control" required type="text" name="schedule[]"></td>
+                        <td class="text-center"><input class="form-control" required type="text" name="resources[]"></td>
+                        <td class="text-center"><input class="form-control" required type="text" name="output[]"></td>
+                        <td class="text-center"><button class="btn btn-danger btn-delete">Delete</button></td>
+                    </tr>`;
+        $('.addBtn').click(function(){
+            $('#monthlyReport tbody').append(append);
+            // table.draw();
+
+            $('.btn-delete').click(function(){
+                $(this).closest('tr').remove();
+            })
+        })
+        $('#monthlyForm').submit(function(){
+            var form = $(this).serialize();
+            if(confirm('Are you sure you want to add this report?')){
+                $.post(URL+'research/addMonthly', form)
+                .done(function(returnData){
+                    alert(returnData);
+                    alert('Saved successfully')
+                    location.reload();
+                })
+                return false;
+            } else {
+                return false;
+            }
+        })
+    })
+</script>

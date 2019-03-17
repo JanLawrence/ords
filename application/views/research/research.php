@@ -1,4 +1,9 @@
 <!-- Landing Page of Researcher User -->
+<?php 
+    $session = $this->session->userdata['user'];
+    $query = $this->db->get_where('tbl_user_info', array('user_id' => $session->id));
+    $userinfo = $query->result();
+?>
 <div class="row">
     <div class="col-md-12">
         <!-- Form for creating new research-->
@@ -34,12 +39,16 @@
                                 <td>
                                     <div class="form-group">
                                         <label>Classification: </label> <br>
-                                        Research: <br><br>
-                                        <input type="radio" name="class_research" value="Basic" required> Basic <br>
-                                        <input type="radio" name="class_research" value="Applied" required> Applied <br> <br>
-                                        Development: <br><br>
-                                        <input type="radio" name="class_dev" required value="Pilot Testing"> Pilot Testing <br>
-                                        <input type="radio" name="class_dev" required value="Tech. Promotion/ Commercialization"> Tech. Promotion/ Commercialization
+                                        Research: <input type="radio" name="classif-radio" value="research"><br><br>
+                                        <div class="research-radio d-none">
+                                            <input type="radio" name="class_research" value="Basic"> Basic <br>
+                                            <input type="radio" name="class_research" value="Applied"> Applied <br> <br>
+                                        </div>
+                                        Development: <input type="radio" name="classif-radio" value="dev"><br><br>
+                                        <div class="development-radio d-none">
+                                            <input type="radio" name="class_dev" value="Pilot Testing"> Pilot Testing <br>
+                                            <input type="radio" name="class_dev" value="Tech. Promotion/ Commercialization"> Tech. Promotion/ Commercialization
+                                        </div>
                                     </div>    
                                 </td>
                                 <td>
@@ -75,9 +84,45 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label>Budget: </label>
+                                        <input class="form-control" type="text" name="budget" required>
+                                    </div>    
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label>Duration: </label>
+                                        <input class="form-control" type="text" name="duration" required>
+                                    </div>    
+                                </td>
+                            </tr>
+                            <tr>
                                 <td colspan="2">
                                     <div class="form-group">
-                                        <label>Details: </label>
+                                        <label>Abstract: </label>
+                                        <input class="form-control" type="text" name="abstract" required>
+                                    </div>    
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="appendAuthor">
+                                    <div class="form-group">
+                                        <label>Author: <a class="addAuthor" style="cursor: pointer; color: #41a8fc">Add</a></label>
+                                        <input class="form-control" type="text" name="author[]" readonly value="<?=  $userinfo[0]->first_name.' '.$userinfo[0]->middle_name.' '.$userinfo[0]->last_name  ?>" required>
+                                    </div>
+                                </td>
+                                <td class="appendKeyword">
+                                    <div class="form-group">
+                                        <label>Keyword: <a class="addKeyword" style="cursor: pointer; color: #41a8fc">Add</a></label>
+                                        <input class="form-control" type="text" name="keyword[]" required>
+                                    </div>    
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <div class="form-group">
+                                        <label>Description: </label>
                                         <input class="form-control" type="text" name="details" required>
                                     </div>
                                 </td>
@@ -152,6 +197,45 @@
     $(function(){
         notifTerminal();
         researchDurNotifMonthly();
+        $('input[name="classif-radio"]').change(function(){
+            var val = $(this).val();
+            if(val == 'research'){
+                $('.research-radio').removeClass('d-none');
+                $('.development-radio').addClass('d-none'); 
+                $('input[name="class_dev"]').prop('checked', false); 
+            } else if(val == 'dev') {
+                $('.research-radio').addClass('d-none');
+                $('.development-radio').removeClass('d-none');
+                $('input[name="class_research"]').prop('checked', false); 
+            }
+        })
+        $('.addAuthor').click(function(){
+            var append = '<div class="input-group mb-3">'+
+                            '<input type="text" class="form-control" name="author[]">'+
+                            '<div class="input-group-append">'+
+                                '<button class="btn btn-danger btnremoveauthor" type="button">Delete</button>'+
+                            '</div>'+
+                        '</div>'
+            $('.appendAuthor').append(append);
+
+            $('.btnremoveauthor').click(function(){
+                $(this).closest('.input-group').remove();
+            })
+        })
+        $('.addKeyword').click(function(){
+            var append = '<div class="input-group mb-3">'+
+                            '<input type="text" class="form-control" name="keyword[]">'+
+                            '<div class="input-group-append">'+
+                                '<button class="btn btn-danger btnremovekeyword" type="button">Delete</button>'+
+                            '</div>'+
+                        '</div>'
+            $('.appendKeyword').append(append);
+            $('.btnremovekeyword').click(function(){
+                $(this).closest('.input-group').remove();
+            })
+        })
+
+
     })
     function notifTerminal(){
         $.post(URL + 'research/researchDurNotifTerminal')

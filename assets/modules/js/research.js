@@ -1,4 +1,5 @@
 $(function(){
+    $('#researchList').DataTable();
     $('#researchList').on('click', '.btn-view-notes', function(){ // on click notes buttons on research list
         var id = $(this).attr('rid'); // get attr values for status and research id
          $.post(URL+'admin/viewNotesPerResearch',{'research': id}) // post to admin/viewNotesPerResearch and pass research id

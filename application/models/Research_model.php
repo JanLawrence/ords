@@ -60,8 +60,8 @@ class Research_model extends CI_Model {
 		$series = $this->seriesIDResearch();
 		//insert data to tbl_research
 		$data = array(
-			'class_research'=> $_POST['class_research'],
-			'class_development'=> $_POST['class_dev'],
+			'class_research'=> isset($_POST['class_research']) ? $_POST['class_research'] : '',
+			'class_development'=> isset($_POST['class_dev']) ? $_POST['class_dev'] : '',
 			'rndsite'=> $_POST['rnd'],
 			'agencies'=> isset($_POST['agency']) ? $_POST['agency'] : '',
 			'moi'=> $_POST['moi'],
@@ -70,6 +70,9 @@ class Research_model extends CI_Model {
 			'series_number' => empty($series) ? 'RSH-0000001' : $series[0]->newnum,
 			'title' => $_POST['title'],
 			'details' => $_POST['details'],
+			'abstract' => $_POST['abstract'],
+			'duration' => $_POST['duration'],
+			'budget' => $_POST['budget'],
 			'content' => isset($_POST['content']) ? $_POST['content'] : '',
 			'created_by' => $this->user->id,
 			'date_created' => date('Y-m-d H:i:s')
@@ -89,6 +92,24 @@ class Research_model extends CI_Model {
 		// 		$fileName = addslashes($fileName);
 		// 	}
 			
+		foreach($_POST['author'] as $each){
+			$data = array(
+				'research_id' => $researchId,
+				'author' => $each,
+				'created_by' => $this->user->id,
+				'date_created' => date('Y-m-d H:i:s')
+			);
+			$this->db->insert('tbl_research_author', $data);
+		}
+		foreach($_POST['keyword'] as $each){
+			$data = array(
+				'research_id' => $researchId,
+				'keyword' => $each,
+				'created_by' => $this->user->id,
+				'date_created' => date('Y-m-d H:i:s')
+			);
+			$this->db->insert('tbl_research_keyword', $data);
+		}
 		foreach($_POST['agenda'] as $each){
 			$data = array(
 				'research_id' => $researchId,
@@ -171,43 +192,62 @@ class Research_model extends CI_Model {
 			echo $content;
 			
 	} 
-	public function getResearchByResearcher(){
+	public function getResearchByResearcher($from, $to){
 		//get data of joined tables
 		$researcher = $this->user->id;
-		$this->db->select('r.*, ra.name file_name, ra.type file_type, ra.size file_size, rp.status, rd.duration_date')
+		$this->db->select('r.*, ra.name file_name, ra.type file_type, ra.size file_size, rp.status, rd.duration_date, d.department,  group_concat(agenda.agenda separator ", ") agenda')
 			->from('tbl_research r')
 			->join('tbl_research_attachment ra', 'ra.research_id = r.id', 'left')
 			->join('tbl_research_progress rp', 'rp.research_id = r.id', 'left')
-			->join('tbl_research_duration rd', 'rd.research_id = r.id', 'left');
+			->join('tbl_research_duration rd', 'rd.research_id = r.id', 'left')
+			->join('tbl_user_info ui', 'ui.user_id = r.created_by', 'left')
+        	->join('tbl_department d', 'd.id = ui.department_id', 'left')
+			->join('tbl_research_agenda research_agenda', 'research_agenda.research_id = r.id', 'left')
+        	->join('tbl_priority_agenda agenda', 'research_agenda.agenda_id = agenda.id', 'left');
 		$this->db->where('r.created_by', $researcher);
+		$this->db->where("DATE(r.date_created) >= '$from' && DATE(r.date_created) <= '$to'");
 		$this->db->order_by('r.date_created','DESC');
 		$this->db->group_by('r.id');
 		$query = $this->db->get();
-        return $query->result();
+		return $query->result();
 	}
 	public function getResearchByResearcherMonthly(){
 		//get data of joined tables
 		$researcher = $this->user->id;
-		$this->db->select('r.*, rp.status, rd.duration_date')
-			->from('tbl_research r')
-			->join('tbl_research_progress rp', 'rp.research_id = r.id', 'left')
-			->join('tbl_research_duration rd', 'rd.research_id = r.id', 'left');
+		$this->db->select('r.*, CONCAT(ui.first_name," ",ui.middle_name," ",ui.last_name) u_name')
+			->from('tbl_monthly_report r')
+			->join('tbl_user_info ui', 'ui.user_id = r.created_by', 'left');
 		$this->db->where('r.created_by', $researcher);
-		$this->db->where("rd.duration_date != '' ");
 		$this->db->order_by('r.date_created','DESC');
-		$this->db->group_by('r.id');
 		$query = $this->db->get();
         return $query->result();
 	}
-	public function getResearchByResearcherTerminal(){
+	// public function getResearchByResearcherMonthly(){
+	// 	//get data of joined tables
+	// 	$researcher = $this->user->id;
+	// 	$this->db->select('r.*, rp.status, rd.duration_date')
+	// 		->from('tbl_research r')
+	// 		->join('tbl_research_progress rp', 'rp.research_id = r.id', 'left')
+	// 		->join('tbl_research_duration rd', 'rd.research_id = r.id', 'left');
+	// 	$this->db->where('r.created_by', $researcher);
+	// 	$this->db->where("rd.duration_date != '' ");
+	// 	$this->db->order_by('r.date_created','DESC');
+	// 	$this->db->group_by('r.id');
+	// 	$query = $this->db->get();
+    //     return $query->result();
+	// }
+	public function getResearchByResearcherTerminal($from, $to){
 		//get data of joined tables
 		$researcher = $this->user->id;
 		$this->db->select('r.*, rp.status, rd.duration_date')
 			->from('tbl_research r')
 			->join('tbl_research_progress rp', 'rp.research_id = r.id', 'left')
 			->join('tbl_research_duration rd', 'rd.research_id = r.id', 'left');
-		$this->db->where('r.created_by', $researcher);
+		if($this->user->user_type == 'researcher'){
+			$this->db->where('r.created_by', $researcher);
+		}
 		$this->db->where("rd.duration_date != '' ");
+		$this->db->where("DATE(r.date_created) >= '$from' && DATE(r.date_created) <= '$to'");
 		$this->db->order_by('r.date_created','DESC');
 		$this->db->group_by('r.id');
 		$query = $this->db->get();
@@ -239,6 +279,30 @@ class Research_model extends CI_Model {
 		$this->db->group_by('r.id');
 		$query = $this->db->get();
         return $query->result();
+	}
+	public function addMonthly(){
+		echo $this->user->id;
+		foreach($_POST['objectives'] as $key => $each){
+			$data = array(
+				'objectives' => $each,
+				'activities' => $_POST['activities'][$key],
+				'responsible' => $_POST['responsible'][$key],
+				'involved' => $_POST['involved'][$key],
+				'schedule' => $_POST['schedule'][$key],
+				'resources' => $_POST['resources'][$key],
+				'output' => $_POST['output'][$key],
+				'created_by' => $this->user->id
+			);
+			$this->db->insert('tbl_monthly_report',$data); //insert data to tbl_monthly_report
+		}
+		$data2 = array(
+            "user_id" => $this->user->id,
+            "username" => '',
+            "transaction" => 'Added Monthly Performance Report',
+            "created_by" => !empty($this->user) ? $this->user->id : 0,
+            "date_created" => date('Y-m-d H:i:s')
+        );
+        $this->db->insert('tbl_user_logs',$data2); //insert data to tbl_user_logs
 	}
 
 	public function edit()

@@ -7,11 +7,14 @@
         <title>ORDS</title>
         <link rel="stylesheet" type="text/css" href="<?= base_url();?>assets/css/bootstrap.min.css" >
         <link rel="stylesheet" type="text/css" href="<?= base_url();?>assets/themify-icons.css" >
+        <link href="<?= base_url(); ?>assets/datatables/datatables.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="<?= base_url();?>assets/css/style.css" >
         <link rel="stylesheet" type="text/css" href="<?= base_url();?>assets/css/style-me.css" >
         <script src="<?= base_url();?>assets/js/jquery.min.js"></script>
         <script src="<?= base_url();?>assets/js/popper.min.js"></script>
         <script src="<?= base_url();?>assets/js/bootstrap.min.js"></script>
         <script src="<?= base_url();?>assets/ckeditor/ckeditor.js"></script>
+        <script src="<?= base_url();?>assets/datatables/datatables.min.js"></script>
         <script>
             var URL = "<?= base_url()?>";
         </script>

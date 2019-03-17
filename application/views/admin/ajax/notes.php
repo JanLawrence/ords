@@ -1,5 +1,5 @@
 <?php foreach($notes as $each):?>
-<?php if($each->user_type == 'admin'): ?>
+<?php if($each->user_type == 'rnd'): ?>
     <div class="card bg-light mb-3">
         <div class="card-body">
             <p class="card-text"><?= $each->notes?></p>

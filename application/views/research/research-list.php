@@ -3,6 +3,21 @@
     <div class="col-md-12">
         <div class="card rounded-0">
             <div class="card-body">
+                    <form method="get">
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label>From</label>
+                                <input type="date" class="form-control" name="from" value="<?= isset($_GET['from']) && $_GET['from'] != '' ? $_GET['from'] : ''?>">
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label>To</label>
+                                <input type="date" class="form-control" name="to" value="<?= isset($_GET['to']) && $_GET['to'] != '' ? $_GET['to'] : ''?>">
+                            </div>
+                            <div class="form-group col-md-3 mt-4">
+                                <button type="submit" class="btn btn-info"> Generate</button>
+                            </div>
+                        </div>
+                    </form>
                     <table class="table table-bordered table-striped table-hovered" id="researchList">
                         <thead>
                             <tr>
@@ -19,7 +34,6 @@
                         </thead>
                         <tbody>
                             <!-- Statements for displaying data -->
-                            <?php if(!empty($research)):?> <!-- if variable research is not empty proceed to foreach -->
                             <?php foreach($research as $each): ?> <!-- foreach loop: this displays array of data  -->
                                 <tr>
                                     <td>
@@ -29,7 +43,8 @@
                                     <td>
                                         <h5><?= $each->title?></h5><hr>
                                         <p><?= $each->details ?></p>
-                                        <a target="_blank" href="<?= base_url()?>research/showContent?id=<?=$each->id?>"><small>View Content</small></a>
+                                        <!-- <a target="_blank" href="<?= base_url()?>research/showContent?id=<?=$each->id?>"><small>View Content</small></a> -->
+                                        <a r-id="<?=$each->id?>" href="#" class="showContentBtn"><small>View Content</small></a>
                                         <?php if($each->file_name != ''):?>
                                              <?= ' | '?> 
                                             <a target="_blank" href="<?= base_url()?>research/download?id=<?=$each->id?>"><small>Download File</small></a> 
@@ -47,7 +62,7 @@
                                         <?php if($each->status == 'open'):?>
                                         <span class="badge badge-warning"><?= ucwords($each->status);?></span>
                                         <?php elseif($each->status == 'admin_remarks'):?>
-                                        <span class="badge badge-warning">For RND Remarks</span>
+                                        <span class="badge badge-warning">For Director Remarks</span>
                                         <?php elseif($each->status == 'twg_remarks'):?>
                                         <span class="badge badge-warning">For TWG Remarks</span>
                                         <?php elseif($each->status == 'rde_remarks'):?>
@@ -59,11 +74,11 @@
                                         <?php elseif($each->status == 'twg_approved'):?>
                                         <span class="badge badge-success">For approval RDE</span>
                                         <?php elseif($each->status == 'rde_approved'):?>
-                                        <span class="badge badge-success">For approval University President</span>
+                                        <span class="badge badge-success">Approved</span>
                                         <?php elseif($each->status == 'pres_approved'):?>
                                         <span class="badge badge-success">Approved</span>
                                         <?php elseif($each->status == 'admin_disapproved'):?>
-                                        <span class="badge badge-danger">Disapproved By RND</span>
+                                        <span class="badge badge-danger">Disapproved By Director</span>
                                         <?php elseif($each->status == 'twg_disapproved'):?>
                                         <span class="badge badge-danger">Disapproved By TWG</span>
                                         <?php elseif($each->status == 'rde_disapproved'):?>
@@ -85,17 +100,12 @@
                                         <?php if($each->status == 'admin_remarks' || $each->status == 'twg_remarks' || $each->status == 'rde_remarks' || $each->status == 'pres_remarks'):?>
                                             <a href="<?= base_url()?>research/researchEdit?id=<?=$each->id?>" target="_blank" class="btn btn-info btn-sm"><i class="ti-pencil-alt"></i> Edit</a>
                                         <?php endif;?>
-                                        <?php if($each->status == 'pres_approved'):?>
+                                        <?php if($each->status == 'rde_approved'):?>
                                             <a class="btn btn-info btn-sm btn-upload text-light" rid="<?=$each->id?>"><i class="ti-upload"></i> Upload</a>
                                         <?php endif;?>
                                     </td>
                                 </tr>
                             <?php endforeach;?><!-- end of foreach loop -->
-                            <?php else:?> <!-- if variable research is empty; displays-->
-                                <tr>
-                                    <td colspan = "6" class="text-center"> No pending research found. </td>
-                                </tr>
-                            <?php endif;?> <!-- end of if statement -->      
                         </tbody>
                     </table> 
                 </div>
@@ -143,5 +153,28 @@
         </div>   
     </div>
 </form>
+<div class="modal" id="showContentModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body" id="contentContainer">
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-danger btn-sm" data-dismiss="modal"><i class="ti-close"></i> Close</a>
+            </div>
+        </div>
+    </div>   
+</div>
+<script>
+    $(function(){
+        $('.showContentBtn').click(function(){
+            var id = $(this).attr('r-id');
+            $.post(URL+'research/showContent', {'id': id})
+            .done(function(returnData){
+                $('#contentContainer').html(returnData);
+                $('#showContentModal').modal('show');
+            })
+        })
+    })
+</script>
 <!-- Point to external Javascript file -->
 <script src="<?= base_url()?>assets/modules/js/research.js"></script>

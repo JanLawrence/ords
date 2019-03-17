@@ -69,6 +69,117 @@ class Admin_model extends CI_Model{
             echo 1; 
         }
     }
+    public function registerUser(){
+        // $dept = isset($_POST['department']) && $_POST['usertype'] === 'researcher' ? $_POST['department'] : 0;
+        // $spec = isset($_POST['specialization']) && ($_POST['usertype'] === 'researcher' || $_POST['usertype'] === 'twg') ? $_POST['specialization'] : 0;
+
+        // $check = $this->db->get_where('tbl_user', array('username'=>$_POST['username'])); //check if username inputed is exisiting
+        // if(empty($check->result())){ // if not existing insert user
+            //data that will be inserted to tbl_user
+            $data = array(
+                "username" => 'default',
+                "password" => $this->encryptpass->pass_crypt('pass-123'),
+                "user_type" => 'researcher',
+                "status" => 'yes',
+                "created_by" => !empty($this->user) ? $this->user->id : 0,
+                "date_created" => date('Y-m-d H:i:s')
+            );
+            $this->db->insert('tbl_user',$data); //insert data to tbl_user
+            $userid = $this->db->insert_id(); // getting the id of the inserted data
+            
+            //data that will be inserted to tbl_user_info
+            $data = array(
+                "user_id" => $userid,
+                "first_name" => $_POST['fname'],
+                "middle_name" => $_POST['mname'],
+                "last_name" => $_POST['lname'],
+                "email" => $_POST['email'],
+                "position" => $_POST['position'],
+                "department_id" => 0,
+                "specialization_id" => 0,
+                "created_by" => !empty($this->user) ? $this->user->id : 0,
+                "date_created" => date('Y-m-d H:i:s')
+            );
+            $this->db->insert('tbl_user_info',$data); //insert data to tbl_user_info
+
+            $data = array(
+                "user_id" => 0,
+                "username" => '',
+                "transaction" => 'Added User',
+                "created_by" => !empty($this->user) ? $this->user->id : 0,
+                "date_created" => date('Y-m-d H:i:s')
+            );
+            $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
+        // } else { // if existing print 1
+        //     echo 1; 
+        // }
+    }
+    public function setUser(){
+        $dept = isset($_POST['department']) && $_POST['usertype'] === 'researcher' ? $_POST['department'] : 0;
+        $spec = isset($_POST['specialization']) && ($_POST['usertype'] === 'researcher' || $_POST['usertype'] === 'twg') ? $_POST['specialization'] : 0;
+        
+        $checkById = $this->db->get_where('tbl_user', array('id' => $_POST['id'])); //get data by user id
+        $checkById= $checkById->result();
+        $check = $this->db->get_where('tbl_user', array('username' => $_POST['username'])); //check if username inputed is exisiting
+        if(!empty($check->result())){ // if existing classification
+            if($checkById[0]->username == $_POST['username']){ // if inputed is same in data by user id
+                //data that will be updated to tbl_user
+                $this->db->set('username', $_POST['username']);
+                $this->db->set('password', $this->encryptpass->pass_crypt($_POST['password']));
+                $this->db->set('user_type', $_POST['usertype']);
+                $this->db->set('modified_by', $this->user->id);
+                $this->db->set('date_modified', date('Y-m-d H:i:s'));
+                $this->db->where('id', $_POST['id']);
+                $this->db->update('tbl_user');
+                
+                //data that will be updated to tbl_user_info
+                $this->db->set('department_id', $dept);
+                $this->db->set('specialization_id', $spec);
+                $this->db->set('modified_by', $this->user->id);
+                $this->db->set('date_modified', date('Y-m-d H:i:s'));
+                $this->db->where('user_id', $_POST['id']);
+                $this->db->update('tbl_user_info');
+
+                $data = array(
+                    "user_id" => $this->user->id,
+                    "username" => '',
+                    "transaction" => 'Updated User',
+                    "created_by" => !empty($this->user) ? $this->user->id : 0,
+                    "date_created" => date('Y-m-d H:i:s')
+                );
+                $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
+            } else {
+                echo 1;
+            }
+        } else {
+            //data that will be updated to tbl_user
+            $this->db->set('username', $_POST['username']);
+            $this->db->set('password', $this->encryptpass->pass_crypt($_POST['password']));
+            $this->db->set('user_type', $_POST['usertype']);
+            $this->db->set('modified_by', $this->user->id);
+            $this->db->set('date_modified', date('Y-m-d H:i:s'));
+            $this->db->where('id', $_POST['id']);
+            $this->db->update('tbl_user');
+            
+            //data that will be updated to tbl_user_info
+            $this->db->set('department_id', $dept);
+            $this->db->set('specialization_id', $spec);
+            $this->db->set('modified_by', $this->user->id);
+            $this->db->set('date_modified', date('Y-m-d H:i:s'));
+            $this->db->where('user_id', $_POST['id']);
+            $this->db->update('tbl_user_info');
+
+
+            $data = array(
+                "user_id" => $this->user->id,
+                "username" => '',
+                "transaction" => 'Updated User',
+                "created_by" => !empty($this->user) ? $this->user->id : 0,
+                "date_created" => date('Y-m-d H:i:s')
+            );
+            $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
+        }
+    }   
     public function editUser(){
         $dept = isset($_POST['department']) && $_POST['usertype'] === 'researcher' ? $_POST['department'] : 0;
         $spec = isset($_POST['specialization']) && ($_POST['usertype'] === 'researcher' || $_POST['usertype'] === 'twg') ? $_POST['specialization'] : 0;
@@ -127,8 +238,13 @@ class Admin_model extends CI_Model{
             $this->db->set('last_name', $_POST['lname']);
             $this->db->set('email', $_POST['email']);
             $this->db->set('position', $_POST['position']);
+            $this->db->set('department_id', $dept);
+            $this->db->set('specialization_id', $spec);
             $this->db->set('modified_by', $this->user->id);
             $this->db->set('date_modified', date('Y-m-d H:i:s'));
+            $this->db->where('user_id', $_POST['id']);
+            $this->db->update('tbl_user_info');
+
             $this->db->where('user_id', $_POST['id']);
             $this->db->update('tbl_user_info');
 
@@ -181,7 +297,7 @@ class Admin_model extends CI_Model{
 		$query = $this->db->get();
         return $query->result();
 	}
-    public function getAllResearhAdmin2(){
+    public function getAllResearhAdmin2($from, $to){
 		$researcher = $this->user->id;//this is from the session declared in function __construct
         // get data from joined tables
         $this->db->select('r.*, rp.id research_progress_id, rp.levels,rp.`status`, ra.name file_name, ra.type file_type, ra.size file_size,
@@ -194,12 +310,13 @@ class Admin_model extends CI_Model{
         ->join('tbl_research_duration rd', 'rd.research_id = r.id', 'left')
         ->join('tbl_research_agenda research_agenda', 'research_agenda.research_id = r.id', 'left')
         ->join('tbl_priority_agenda agenda', 'research_agenda.agenda_id = agenda.id', 'left');
+        $this->db->where("DATE(r.date_created) >= '$from' && DATE(r.date_created) <= '$to'");
         $this->db->order_by('r.date_created','DESC');
         $this->db->group_by('r.id');
         $query = $this->db->get();
         return $query->result();
     }
-    public function getAllResearhTwg(){
+    public function getAllResearhTwg($from, $to){
         $user = $this->user->id;//this is from the session declared in function __construct
         $getInfo = $this->db->get_where('tbl_user_info', array('user_id' => $user));
         $getInfo = $getInfo->result();
@@ -209,12 +326,14 @@ class Admin_model extends CI_Model{
         ->from('tbl_research_progress rp')
         ->join('tbl_research r', 'r.id = rp.research_id', 'left')
         ->join('tbl_user_info ui', 'ui.user_id = r.created_by', 'left')
+        ->join('tbl_department d', 'd.id = ui.department_id', 'left')
         ->join('tbl_research_attachment ra', 'ra.research_id = r.id', 'left')
         ->join('tbl_research_duration rd', 'rd.research_id = r.id', 'left')
         ->join('tbl_research_agenda research_agenda', 'research_agenda.research_id = r.id', 'left')
         ->join('tbl_priority_agenda agenda', 'research_agenda.agenda_id = agenda.id', 'left');
         $this->db->where('rp.status','admin_approved');
         $this->db->where('ui.specialization_id', $getInfo[0]->specialization_id);
+        $this->db->where("DATE(r.date_created) >= '$from' && DATE(r.date_created) <= '$to'");
         $this->db->or_where('rp.status','twg_approved');
         $this->db->or_where('rp.status','twg_disapproved');
         $this->db->or_where('rp.status','twg_remarks');
@@ -223,7 +342,7 @@ class Admin_model extends CI_Model{
         $query = $this->db->get();
         return $query->result();
     }
-    public function getAllResearhRde(){
+    public function getAllResearhRde($from, $to){
 		$researcher = $this->user->id;//this is from the session declared in function __construct
         // get data from joined tables
         $this->db->select('r.*, rp.id research_progress_id, rp.levels,rp.`status`, ra.name file_name, ra.type file_type, ra.size file_size,
@@ -231,11 +350,13 @@ class Admin_model extends CI_Model{
         ->from('tbl_research_progress rp')
         ->join('tbl_research r', 'r.id = rp.research_id', 'left')
         ->join('tbl_user_info ui', 'ui.user_id = r.created_by', 'left')
+        ->join('tbl_department d', 'd.id = ui.department_id', 'left')
         ->join('tbl_research_attachment ra', 'ra.research_id = r.id', 'left')
         ->join('tbl_research_duration rd', 'rd.research_id = r.id', 'left')
         ->join('tbl_research_agenda research_agenda', 'research_agenda.research_id = r.id', 'left')
         ->join('tbl_priority_agenda agenda', 'research_agenda.agenda_id = agenda.id', 'left');
         $this->db->where('rp.status','admin_approved');
+        $this->db->where("DATE(r.date_created) >= '$from' && DATE(r.date_created) <= '$to'");
         $this->db->or_where('rp.status','twg_approved');
         $this->db->or_where('rp.status','twg_disapproved');
         $this->db->or_where('rp.status','twg_remarks');
@@ -247,7 +368,7 @@ class Admin_model extends CI_Model{
         $query = $this->db->get();
         return $query->result();
     }
-    public function getAllResearhPres(){
+    public function getAllResearhPres($from, $to){
 		$researcher = $this->user->id;//this is from the session declared in function __construct
         // get data from joined tables
         $this->db->select('r.*, rp.id research_progress_id, rp.levels,rp.`status`, ra.name file_name, ra.type file_type, ra.size file_size,
@@ -255,11 +376,13 @@ class Admin_model extends CI_Model{
         ->from('tbl_research_progress rp')
         ->join('tbl_research r', 'r.id = rp.research_id', 'left')
         ->join('tbl_user_info ui', 'ui.user_id = r.created_by', 'left')
+        ->join('tbl_department d', 'd.id = ui.department_id', 'left')
         ->join('tbl_research_attachment ra', 'ra.research_id = r.id', 'left')
         ->join('tbl_research_duration rd', 'rd.research_id = r.id', 'left')
         ->join('tbl_research_agenda research_agenda', 'research_agenda.research_id = r.id', 'left')
         ->join('tbl_priority_agenda agenda', 'research_agenda.agenda_id = agenda.id', 'left');
         $this->db->where('rp.status','rde_approved');
+        $this->db->where("DATE(r.date_created) >= '$from' && DATE(r.date_created) <= '$to'");
         $this->db->or_where('rp.status','pres_approved');
         $this->db->or_where('rp.status','pres_disapproved');
         $this->db->or_where('rp.status','pres_remarks');
@@ -270,7 +393,8 @@ class Admin_model extends CI_Model{
     }
     public function changeResearchStatus(){
 
-        $this->db->set('status', $this->user->user_type.'_'.$_POST['status']);
+        $usertype = $this->user->user_type == 'rnd' ? 'admin' : $this->user->user_type;
+        $this->db->set('status', $usertype.'_'.$_POST['status']);
         $this->db->where('id', $_POST['progress_id']);
         $this->db->update('tbl_research_progress');
 
@@ -648,7 +772,7 @@ class Admin_model extends CI_Model{
             'research_progress_id' => $_POST['progress_id'],
             'notif' => 'unread',
             'notif_type' => 'remarks',
-            'notif_from' =>  $this->user->user_type,
+            'notif_from' =>  $this->user->user_type == 'rnd' ? 'admin' : $this->user->user_type,
             'notif_from_id' => '',
             "created_by" => $this->user->id,
             "date_created" => date('Y-m-d H:i:s')
@@ -659,7 +783,7 @@ class Admin_model extends CI_Model{
         $progress = $query->result();
 
         $this->db->set('levels', $progress[0]->levels++);
-        $this->db->set('status', $this->user->user_type.'_remarks');
+        $this->db->set('status', $this->user->user_type == 'rnd' ? 'admin' : $this->user->user_type.'_remarks');
         $this->db->where('id', $_POST['progress_id']);
         $this->db->update('tbl_research_progress');
 
@@ -860,6 +984,40 @@ class Admin_model extends CI_Model{
         ->join('tbl_user u', "u.id = ul.created_by", "left")
         ->join('tbl_user_info ui', "ui.user_id = u.id", "left");
         $this->db->order_by('ul.date_created DESC');
+        $query = $this->db->get();
+        return $query->result();
+    }
+    public function forApprovalResearch(){
+        $this->db->select('*')
+        ->from('tbl_research r')
+        ->join('tbl_research_progress rp', "r.id = rp.research_id", "left");
+        $this->db->where('rp.status', 'open');
+        if($this->user->user_type == 'researcher'){
+            $this->db->where('r.created_by', $this->user->id);
+        }
+        $this->db->group_by('r.id');
+        $query = $this->db->get();
+        return $query->result();
+    }
+    public function submittedResearch(){
+        $this->db->select('*')
+        ->from('tbl_research r');
+        // ->join('tbl_research_progress rp', "r.id = rp.research_id", "left");
+        if($this->user->user_type == 'researcher'){
+            $this->db->where('r.created_by', $this->user->id);
+        }
+        $this->db->group_by('r.id');
+        $query = $this->db->get();
+        return $query->result();
+    }
+    public function attachmentResearch(){
+        $this->db->select('*')
+        ->from('tbl_research r')
+        ->join('tbl_research_attachment ra', "r.id = ra.research_id", "left");
+        if($this->user->user_type == 'researcher'){
+            $this->db->where('r.created_by', $this->user->id);
+        }
+        $this->db->group_by('r.id');
         $query = $this->db->get();
         return $query->result();
     }

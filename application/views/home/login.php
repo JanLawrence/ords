@@ -17,8 +17,30 @@
         <script>
              var URL = "<?= base_url()?>";
         </script>
-        <script src="<?= base_url()?>assets/modules/js/admin.js"></script>
-      
+        <!-- <script src="<?= base_url()?>assets/modules/js/admin.js"></script> -->
+        <script>
+            $(function(){
+
+                $('#addForm').submit(function(){ // submit add user form
+                    var that = $(this);
+                    // if(pass == confirmpass){ // validation password and confirm pass
+                        $.post(URL+'admin/registerUser',that.serialize()) // post to admin/registerUser
+                        .done(function(returnData){
+                    // if(returnData == 1){ // if existing username
+                        //     alert('Exisiting Username') // alert error
+                        // } else {
+                            alert('Registration Successfull!')
+                            location.reload(); // reload if success
+                            // }
+                        })
+                        return false;
+                        // } else {
+                            //     alert('Password do not match.'); // alert error if pass not match
+                            // }
+                            // return false;
+                })
+            })
+        </script>
     </head>
     <body>
         <!-- for title and details of system -->
@@ -67,7 +89,7 @@
                     <form id="addForm" method="post">
                         <div class="modal-body">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <h6> User Information</h6>
                                     <hr>
                                     <div class="form-group row">
@@ -101,7 +123,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <!-- <div class="col-md-6">
                                     <h6> User Login Information </h6>
                                     <hr>
                                     <div class="form-group row">
@@ -122,8 +144,8 @@
                                             <input type="password" class="form-control" name="confirmpass" required>
                                             <span class="alert-notif"></span>
                                         </div>
-                                    </div>
-                                    <div class="form-group row">
+                                    </div> -->
+                                    <!-- <div class="form-group row">
                                         <label class="col-sm-3"> User Type:</label>
                                         <div class="col-sm-9">
                                             <select name="usertype" class="form-control" required>
@@ -168,13 +190,13 @@
                                                 <?php endif;?>
                                             </select>
                                         </div>
-                                    </div>
-                                </div>
+                                    </div> -->
+                                <!-- </div> -->
                             </div>
                         </div>
                         <div class="modal-footer">
                             <a href="#" class="btn btn-danger btn-sm" data-dismiss="modal"><i class="ti-close"></i> Close</a>
-                            <button class="btn btn-success btn-sm btn-submit" type="submit"><i class="ti-save"></i> Save</button>
+                            <button class="btn btn-success btn-sm btn-submit" type="submit"><i class="ti-save"></i> Register</button>
                         </div>
                     </form>
                 </div>
