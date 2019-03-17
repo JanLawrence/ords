@@ -43,7 +43,7 @@
 							<a class="dropdown-item" href="<?= base_url()?>research/terminal">Terminal</a>
 						</div>
 					</li>
-				<?php elseif($userSession->user_type == 'admin' || $userSession->user_type == 'pres' || $userSession->user_type == 'rde' || $userSession->user_type == 'twg' || $userSession->user_type == 'rnd'): ?>
+				<?php elseif($userSession->user_type == 'admin' || $userSession->user_type == 'pres' || $userSession->user_type == 'rde' || $userSession->user_type == 'twg' || $userSession->user_type == 'rnd' || $userSession->user_type == 'staff'): ?>
 					<?php if($userSession->user_type == 'admin'):?>
 						<li class="<?= $controller.'/'.$method == 'admin/addUser' ? 'active' : ''?>">
 							<a class="text-white" href="<?= base_url()?>admin/addUser"><i class="ti-user"></i>&nbsp&nbsp User List</a>
@@ -67,7 +67,7 @@
 							<a class="text-white" href="<?= base_url()?>admin/userLogs"><i class="ti-layers-alt"></i>&nbsp&nbsp User Logs</a>
 						</li>
 					<?php endif;?>
-					<?php if( $userSession->user_type == 'pres' || $userSession->user_type == 'rde' || $userSession->user_type == 'twg'):?>
+					<?php if( $userSession->user_type == 'pres' || $userSession->user_type == 'rde' || $userSession->user_type == 'twg' || $userSession->user_type == 'staff'):?>
 						<li class="<?= $controller.'/'.$method == 'admin/dashboard' ? 'active' : ''?>">
 							<a class="text-white" href="<?= base_url()?>admin/dashboard"><i class="ti-dashboard"></i>&nbsp&nbsp Dashboard</a>
 						</li>
@@ -117,7 +117,7 @@
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			
 			<ul class="nav navbar-nav ml-auto">
-				<?php if($userSession->user_type != 'admin'): ?>
+				<?php if($userSession->user_type != 'admin' && $userSession->user_type != 'staff'): ?>
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle notifBtn" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
 					aria-expanded="false">

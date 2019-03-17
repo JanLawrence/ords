@@ -7,6 +7,21 @@
                 <div class="text-right">
                     <!-- <a href="#" class="btn btn-secondary btn-sm mb-4" data-toggle="modal" data-target="#addModal"><i class="ti-plus"></i> Add User</a> -->
                 </div>
+                <form method="get">
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label>From</label>
+                            <input type="date" class="form-control" name="from" value="<?= isset($_GET['from']) && $_GET['from'] != '' ? $_GET['from'] : ''?>">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>To</label>
+                            <input type="date" class="form-control" name="to" value="<?= isset($_GET['to']) && $_GET['to'] != '' ? $_GET['to'] : ''?>">
+                        </div>
+                        <div class="form-group col-md-3 mt-4">
+                            <button type="submit" class="btn btn-info"> Generate</button>
+                        </div>
+                    </div>
+                </form>
                 <table class="table table-bordered table-striped table-hovered" id="tableList">
                     <thead>
                         <tr>

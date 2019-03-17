@@ -44,6 +44,8 @@ class Home extends CI_Controller {
             redirect('admin/dashboard');
         } else if($type == 'rnd'){
             redirect('admin/dashboard');
+        } else if($type == 'staff'){
+            redirect('admin/dashboard');
         } else {
             show_404(); // show 404 error page
         }
@@ -85,7 +87,7 @@ class Home extends CI_Controller {
         //destroy session
         $this->session->sess_destroy();
         //redirect to homepage
-        if($session->user_type== 'admin' || $session->user_type== 'pres'  || $session->user_type== 'twg' || $session->user_type== 'rde' || $session->user_type== 'rnd'){
+        if($session->user_type== 'admin' || $session->user_type== 'pres'  || $session->user_type== 'twg' || $session->user_type== 'rde' || $session->user_type== 'rnd' || $session->user_type== 'staff'){
             redirect('admin');
         } else if($session->user_type== 'researcher'){
             redirect('');

@@ -96,7 +96,7 @@
                                         if(!empty($notes)):
                                     ?>
                                         <hr>
-                                        <a class="btn-view-notes" rid="<?= $each->id ?>" href="#"><small>View Notes  <span class="badge badge-danger"><?= count($notes)?></span></small></a>
+                                        <a class="btn-view-notes" rid="<?= $each->id ?>" href="#"><small>View Remarks  <span class="badge badge-danger"><?= count($notes)?></span></small></a>
                                     <?php endif;?>
                                 </td>
                                 <td>
@@ -186,7 +186,7 @@
                                 <label> Date:</label>
                                 <input type="hidden" class="form-control" name="id" required>
                                 <input type="hidden" class="form-control" name="progress_id" required>
-                                <input type="date" class="form-control" name="date" required></textarea>
+                                <input type="date" class="form-control" name="date" min="<?= date('Y-m-d')?>" required></textarea>
                             </div>
                         </div>
                     </div>
@@ -203,7 +203,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4><i class="ti-plus"></i>Notes</h4>
+                <h4><i class="ti-plus"></i>Remarks</h4>
             </div>
             <div class="modal-body">
                 <div class="row">

@@ -205,7 +205,9 @@ class Research_model extends CI_Model {
 			->join('tbl_research_agenda research_agenda', 'research_agenda.research_id = r.id', 'left')
         	->join('tbl_priority_agenda agenda', 'research_agenda.agenda_id = agenda.id', 'left');
 		$this->db->where('r.created_by', $researcher);
-		$this->db->where("DATE(r.date_created) >= '$from' && DATE(r.date_created) <= '$to'");
+		if($from != ''){
+			$this->db->where("DATE(r.date_created) >= '$from' && DATE(r.date_created) <= '$to'");
+		}
 		$this->db->order_by('r.date_created','DESC');
 		$this->db->group_by('r.id');
 		$query = $this->db->get();
@@ -246,12 +248,14 @@ class Research_model extends CI_Model {
 		if($this->user->user_type == 'researcher'){
 			$this->db->where('r.created_by', $researcher);
 		}
-		$this->db->where("rd.duration_date != '' ");
-		$this->db->where("DATE(r.date_created) >= '$from' && DATE(r.date_created) <= '$to'");
+		$this->db->where("rd.duration_date != ''");
+		if($from != ''){
+			$this->db->where("DATE(r.date_created) >= '$from' && DATE(r.date_created) <= '$to'");
+		}
 		$this->db->order_by('r.date_created','DESC');
 		$this->db->group_by('r.id');
 		$query = $this->db->get();
-        return $query->result();
+		return $query->result();
 	}
 	public function getResearchByResearcherMidterm(){
 		//get data of joined tables

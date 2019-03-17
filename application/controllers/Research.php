@@ -57,8 +57,8 @@ class Research extends CI_Controller {
 	{
 		if(!empty($this->session->userdata['user'])){ // if has session
 			if($this->session->userdata['user']->user_type == 'researcher'){ // if user type researcher
-				$from = isset($_GET['from']) && $_GET['from'] != '' ? $_GET['from'] : date('Y-m-d');
-				$to = isset($_GET['to']) &&  $_GET['from'] != '' ? $_GET['to'] : date('Y-m-d');
+				$from = isset($_GET['from']) && $_GET['from'] != '' ? $_GET['from'] : '';
+				$to = isset($_GET['to']) &&  $_GET['from'] != '' ? $_GET['to'] : '';
 				$data['research'] = $this->research_model->getResearchByResearcher($from, $to); // load research per researcher
 
 				// load view
@@ -101,8 +101,8 @@ class Research extends CI_Controller {
 	public function terminal()
 	{
 		if(!empty($this->session->userdata['user'])){ // if has session
-			$from = isset($_GET['from']) && $_GET['from'] != '' ? $_GET['from'] : date('Y-m-d');
-			$to = isset($_GET['to']) && $_GET['from'] != '' ? $_GET['to'] : date('Y-m-d');
+			$from = isset($_GET['from']) && $_GET['from'] != '' ? $_GET['from'] : '';
+			$to = isset($_GET['to']) && $_GET['from'] != '' ? $_GET['to'] : '';
 			$data['research'] = $this->research_model->getResearchByResearcherTerminal($from, $to); // load research per researcher
 			// load view
 			$this->load->view('templates/header');

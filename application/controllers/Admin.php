@@ -131,7 +131,7 @@ class Admin extends CI_Controller {
 	public function dashboard()
 	{
         if(!empty($this->session->userdata['user'])){ // if has session
-            if($this->session->userdata['user']->user_type == 'twg' || $this->session->userdata['user']->user_type == 'pres' || $this->session->userdata['user']->user_type == 'twg' || $this->session->userdata['user']->user_type == 'rde' || $this->session->userdata['user']->user_type == 'rnd'){ // if user type admin 
+            if($this->session->userdata['user']->user_type == 'twg' || $this->session->userdata['user']->user_type == 'pres' || $this->session->userdata['user']->user_type == 'twg' || $this->session->userdata['user']->user_type == 'rde' || $this->session->userdata['user']->user_type == 'rnd' || $this->session->userdata['user']->user_type == 'staff'){ // if user type admin 
 
                 // load view
                 $data['submitted'] = $this->admin_model->submittedResearch();
@@ -200,9 +200,9 @@ class Admin extends CI_Controller {
         if(!empty($this->session->userdata['user'])){ // if has session
 
             // if user type is equal to admin or president
-            $from = isset($_GET['from']) && $_GET['from'] != '' ? $_GET['from'] : date('Y-m-d');
-			$to = isset($_GET['to']) &&  $_GET['from'] != '' ? $_GET['to'] : date('Y-m-d');
-            if($this->session->userdata['user']->user_type == 'rnd' || $this->session->userdata['user']->user_type == 'pres' || $this->session->userdata['user']->user_type == 'twg' || $this->session->userdata['user']->user_type == 'rde'){
+            $from = isset($_GET['from']) && $_GET['from'] != '' ? $_GET['from'] : '';
+			$to = isset($_GET['to']) &&  $_GET['from'] != '' ? $_GET['to'] : '';
+            if($this->session->userdata['user']->user_type == 'rnd' || $this->session->userdata['user']->user_type == 'pres' || $this->session->userdata['user']->user_type == 'twg' || $this->session->userdata['user']->user_type == 'rde' || $this->session->userdata['user']->user_type == 'staff'){
                 if($this->session->userdata['user']->user_type == 'rnd' || $this->session->userdata['user']->user_type == 'staff'){
                     $data['research'] = $this->admin_model->getAllResearhAdmin2($from, $to);
                 } else if($this->session->userdata['user']->user_type == 'twg'){ 
@@ -307,9 +307,10 @@ class Admin extends CI_Controller {
 	{
         if(!empty($this->session->userdata['user'])){ // if has session
             if($this->session->userdata['user']->user_type == 'admin'){ // if user type admin 
-
+                $from = isset($_GET['from']) && $_GET['from'] != '' ? $_GET['from'] : '';
+                $to = isset($_GET['to']) && $_GET['from'] != '' ? $_GET['to'] : '';
                 // load view
-                $data['logs'] = $this->admin_model->logsList();
+                $data['logs'] = $this->admin_model->logsList($from, $to);
                 $this->load->view('templates/header');
                 $this->load->view('admin/logs',$data);
                 $this->load->view('templates/footer');

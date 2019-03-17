@@ -316,7 +316,9 @@ class Admin_model extends CI_Model{
         ->join('tbl_research_duration rd', 'rd.research_id = r.id', 'left')
         ->join('tbl_research_agenda research_agenda', 'research_agenda.research_id = r.id', 'left')
         ->join('tbl_priority_agenda agenda', 'research_agenda.agenda_id = agenda.id', 'left');
-        $this->db->where("DATE(r.date_created) >= '$from' && DATE(r.date_created) <= '$to'");
+        if($from != ''){
+            $this->db->where("DATE(r.date_created) >= '$from' && DATE(r.date_created) <= '$to'");
+        }
         $this->db->order_by('r.date_created','DESC');
         $this->db->group_by('r.id');
         $query = $this->db->get();
@@ -339,7 +341,9 @@ class Admin_model extends CI_Model{
         ->join('tbl_priority_agenda agenda', 'research_agenda.agenda_id = agenda.id', 'left');
         $this->db->where('rp.status','admin_approved');
         $this->db->where('ui.specialization_id', $getInfo[0]->specialization_id);
-        $this->db->where("DATE(r.date_created) >= '$from' && DATE(r.date_created) <= '$to'");
+        if($from != ''){
+            $this->db->where("DATE(r.date_created) >= '$from' && DATE(r.date_created) <= '$to'");
+        }
         $this->db->or_where('rp.status','twg_approved');
         $this->db->or_where('rp.status','twg_disapproved');
         $this->db->or_where('rp.status','twg_remarks');
@@ -362,7 +366,9 @@ class Admin_model extends CI_Model{
         ->join('tbl_research_agenda research_agenda', 'research_agenda.research_id = r.id', 'left')
         ->join('tbl_priority_agenda agenda', 'research_agenda.agenda_id = agenda.id', 'left');
         $this->db->where('rp.status','admin_approved');
-        $this->db->where("DATE(r.date_created) >= '$from' && DATE(r.date_created) <= '$to'");
+        if($from != ''){
+            $this->db->where("DATE(r.date_created) >= '$from' && DATE(r.date_created) <= '$to'");
+        }
         $this->db->or_where('rp.status','twg_approved');
         $this->db->or_where('rp.status','twg_disapproved');
         $this->db->or_where('rp.status','twg_remarks');
@@ -388,7 +394,9 @@ class Admin_model extends CI_Model{
         ->join('tbl_research_agenda research_agenda', 'research_agenda.research_id = r.id', 'left')
         ->join('tbl_priority_agenda agenda', 'research_agenda.agenda_id = agenda.id', 'left');
         $this->db->where('rp.status','rde_approved');
-        $this->db->where("DATE(r.date_created) >= '$from' && DATE(r.date_created) <= '$to'");
+        if($from != ''){
+            $this->db->where("DATE(r.date_created) >= '$from' && DATE(r.date_created) <= '$to'");
+        }
         $this->db->or_where('rp.status','pres_approved');
         $this->db->or_where('rp.status','pres_disapproved');
         $this->db->or_where('rp.status','pres_remarks');
@@ -984,11 +992,14 @@ class Admin_model extends CI_Model{
         // );
         // $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
     }
-    public function logsList(){
+    public function logsList($from, $to){
         $this->db->select('ul.date_created, CONCAT(ui.last_name,", ",ui.first_name," ",ui.middle_name) name, ul.transaction')
         ->from('tbl_user_logs ul')
         ->join('tbl_user u', "u.id = ul.created_by", "left")
         ->join('tbl_user_info ui', "ui.user_id = u.id", "left");
+        if($from != ''){
+            $this->db->where("DATE(ul.date_created) >= '$from' && DATE(ul.date_created) <= '$to'");
+        }
         $this->db->order_by('ul.date_created DESC');
         $query = $this->db->get();
         return $query->result();
