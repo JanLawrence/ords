@@ -110,6 +110,8 @@ class Admin_model extends CI_Model{
                 "date_created" => date('Y-m-d H:i:s')
             );
             $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
+            
+            $this->emailsender->send_email_autosending($_POST['email'], 'Thank you for registering. You are now registered. Please wait for your credentials', 'Registration - ORDS');
         // } else { // if existing print 1
         //     echo 1; 
         // }
@@ -179,6 +181,7 @@ class Admin_model extends CI_Model{
             );
             $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
         }
+        $this->emailsender->send_email_autosending($_POST['email'], 'Thank you for registering. Your username:'.  $_POST['username']. ' and password:'.  $_POST['password'], 'Registration - ORDS');
     }   
     public function editUser(){
         $dept = isset($_POST['department']) && $_POST['usertype'] === 'researcher' ? $_POST['department'] : 0;
