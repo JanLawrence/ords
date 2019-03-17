@@ -110,8 +110,8 @@ class Admin_model extends CI_Model{
                 "date_created" => date('Y-m-d H:i:s')
             );
             $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
-            
-            $this->emailsender->send_email_autosending($_POST['email'], 'Thank you for registering. You are now registered. Please wait for your credentials', 'Registration - ORDS');
+            $body = '<html><body><p>This is to inform you that you have been registered to EVSU - ORDEX</p></body><html>';
+            $this->emailsender->send_email_autosending($_POST['email'], $body, 'Registration - EVSU ORDS');
         // } else { // if existing print 1
         //     echo 1; 
         // }
@@ -181,7 +181,10 @@ class Admin_model extends CI_Model{
             );
             $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
         }
-        $this->emailsender->send_email_autosending($_POST['email'], 'Thank you for registering. Your username:'.  $_POST['username']. ' and password:'.  $_POST['password'], 'Registration - ORDS');
+        $checkInfo = $this->db->get_where('tbl_user_info', array('user_id' => $_POST['id'])); //get data by user id
+        $checkInfo= $checkInfo->result();
+        $body = "<html><body><p>Here's your account details for EVSU - ORDEX <br><br>Username: ".$_POST['username']." <br> Password: ".$_POST['password']." </p></body><html>";
+        $this->emailsender->send_email_autosending($checkInfo[0]->email, $body, 'Registration - EVSU ORDS');
     }   
     public function editUser(){
         $dept = isset($_POST['department']) && $_POST['usertype'] === 'researcher' ? $_POST['department'] : 0;
