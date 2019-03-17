@@ -63,6 +63,9 @@
 						<li class="<?= $controller.'/'.$method == 'admin/agenda' ? 'active' : ''?>">
 							<a class="text-white" href="<?= base_url()?>admin/agenda"><i class="ti-layers-alt"></i>&nbsp&nbsp Agenda</a>
 						</li>
+						<li class="<?= $controller.'/'.$method == 'admin/userLogs' ? 'active' : ''?>">
+							<a class="text-white" href="<?= base_url()?>admin/userLogs"><i class="ti-layers-alt"></i>&nbsp&nbsp User Logs</a>
+						</li>
 					<?php endif;?>
 					<?php if( $userSession->user_type == 'pres' || $userSession->user_type == 'rde' || $userSession->user_type == 'twg'):?>
 						<li class="<?= $controller.'/'.$method == 'admin/dashboard' ? 'active' : ''?>">

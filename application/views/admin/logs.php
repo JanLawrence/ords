@@ -3,6 +3,7 @@
     <div class="col-md-12">
         <div class="card rounded-0">
             <div class="card-body">
+                <h2>User Logs</h2>
                 <div class="text-right">
                     <!-- <a href="#" class="btn btn-secondary btn-sm mb-4" data-toggle="modal" data-target="#addModal"><i class="ti-plus"></i> Add User</a> -->
                 </div>
@@ -32,3 +33,8 @@
         </div>
     </div>
 </div>
+<script>
+    $(function(){
+        $('#tableList').DataTable();
+    })
+</script>

@@ -789,7 +789,7 @@ class Admin_model extends CI_Model{
         $progress = $query->result();
 
         $this->db->set('levels', $progress[0]->levels++);
-        $this->db->set('status', $this->user->user_type == 'rnd' ? 'admin' : $this->user->user_type.'_remarks');
+        $this->db->set('status', $this->user->user_type == 'rnd' ? 'admin_remarks' : $this->user->user_type.'_remarks');
         $this->db->where('id', $_POST['progress_id']);
         $this->db->update('tbl_research_progress');
 

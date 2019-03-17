@@ -104,7 +104,7 @@
                                         <?php if($each->status == 'open' || $each->status == 'admin_remarks'):?>
                                         <button class="btn btn-success btn-sm btn-status" rid="<?= $each->id ?>" rpid="<?=$each->research_progress_id?>" status="approved" type="button">Send</button>
                                         <!-- <button class="btn btn-danger btn-sm btn-status" rid="<?= $each->id ?>" rpid="<?=$each->research_progress_id?>" status="disapproved" type="button">Disapprove</button> -->
-                                        <button class="btn btn-info btn-sm btn-notes" rid="<?= $each->id ?>" rpid="<?=$each->research_progress_id?>" type="button"><i class="ti-plus"></i> Add Notes</button>
+                                        <button class="btn btn-info btn-sm btn-notes" rid="<?= $each->id ?>" rpid="<?=$each->research_progress_id?>" type="button"> For Revision</button>
                                         <?php endif;?>
                                         <?php if($each->status == 'rde_approved' && $each->duration_date == ''):?>
                                         <button class="btn btn-info btn-sm btn-deadline" rid="<?= $each->id ?>" rpid="<?=$each->research_progress_id?>" type="button"><i class="ti-calendar"></i> Set Deadline</button>
@@ -113,13 +113,13 @@
                                         <?php if($each->status == 'open' || $each->status == 'twg_remarks' || $each->status == 'admin_approved'):?>
                                         <button class="btn btn-success btn-sm btn-status" rid="<?= $each->id ?>" rpid="<?=$each->research_progress_id?>" status="approved" type="button">Approve</button>
                                         <button class="btn btn-danger btn-sm btn-status" rid="<?= $each->id ?>" rpid="<?=$each->research_progress_id?>" status="disapproved" type="button">Disapprove</button>
-                                        <button class="btn btn-info btn-sm btn-notes" rid="<?= $each->id ?>" rpid="<?=$each->research_progress_id?>" type="button"><i class="ti-plus"></i> Add Notes</button>
+                                        <button class="btn btn-info btn-sm btn-notes" rid="<?= $each->id ?>" rpid="<?=$each->research_progress_id?>" type="button"> For Revision</button>
                                         <?php endif;?>
                                     <?php elseif($user->user_type == 'rde'): ?>
                                         <?php if($each->status == 'open' || $each->status == 'rde_remarks' || $each->status == 'twg_approved'):?>
                                         <button class="btn btn-success btn-sm btn-status" rid="<?= $each->id ?>" rpid="<?=$each->research_progress_id?>" status="approved" type="button">Approve</button>
                                         <button class="btn btn-danger btn-sm btn-status" rid="<?= $each->id ?>" rpid="<?=$each->research_progress_id?>" status="disapproved" type="button">Disapprove</button>
-                                        <button class="btn btn-info btn-sm btn-notes" rid="<?= $each->id ?>" rpid="<?=$each->research_progress_id?>" type="button"><i class="ti-plus"></i> Add Notes</button>
+                                        <button class="btn btn-info btn-sm btn-notes" rid="<?= $each->id ?>" rpid="<?=$each->research_progress_id?>" type="button"> For Revision</button>
                                         <?php endif;?>
                                     <?php elseif($user->user_type == 'staff'): ?>
                                             
@@ -149,14 +149,14 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4><i class="ti-plus"></i> Add Notes</h4>
+                <h4>For Revision</h4>
             </div>
             <form id="addNotesForm" method="post">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label> Note:</label>
+                                <label> Remarks:</label>
                                 <input type="hidden" class="form-control" name="id" required>
                                 <input type="hidden" class="form-control" name="progress_id" required>
                                 <textarea type="text" class="form-control" name="notes" required></textarea>

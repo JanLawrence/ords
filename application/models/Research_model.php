@@ -308,8 +308,8 @@ class Research_model extends CI_Model {
 	public function edit()
 	{
 		$researchId = $_POST['id'];
-		$this->db->set('class_research', $_POST['class_research']);
-		$this->db->set('class_development', $_POST['class_dev']);
+		$this->db->set('class_research', isset($_POST['class_research']) ? $_POST['class_research'] : '');
+		$this->db->set('class_development', isset($_POST['class_dev']) ? $_POST['class_dev'] : '');
 		$this->db->set('rndsite', $_POST['rnd']);
 		$this->db->set('agencies', isset($_POST['agency']) ? $_POST['agency'] : '');
 		$this->db->set('moi', $_POST['moi']);
@@ -334,6 +334,28 @@ class Research_model extends CI_Model {
 				'date_created' => date('Y-m-d H:i:s')
 			);
 			$this->db->insert('tbl_research_agenda', $data);
+		}
+		$this->db->delete('tbl_research_keyword', array('research_id' => $researchId));
+
+		foreach($_POST['keyword'] as $each){
+			$data = array(
+				'research_id' => $researchId,
+				'keyword' => $each,
+				'created_by' => $this->user->id,
+				'date_created' => date('Y-m-d H:i:s')
+			);
+			$this->db->insert('tbl_research_keyword', $data);
+		}
+		$this->db->delete('tbl_research_author', array('research_id' => $researchId));
+
+		foreach($_POST['author'] as $each){
+			$data = array(
+				'research_id' => $researchId,
+				'author' => $each,
+				'created_by' => $this->user->id,
+				'date_created' => date('Y-m-d H:i:s')
+			);
+			$this->db->insert('tbl_research_author', $data);
 		}
 		$progress = $this->db->get_where('tbl_research_progress', array('research_id' => $researchId));
 		$progress = $progress->result();
