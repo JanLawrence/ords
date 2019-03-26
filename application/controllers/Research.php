@@ -58,7 +58,7 @@ class Research extends CI_Controller {
 		if(!empty($this->session->userdata['user'])){ // if has session
 			if($this->session->userdata['user']->user_type == 'researcher'){ // if user type researcher
 				$from = isset($_GET['from']) && $_GET['from'] != '' ? $_GET['from'] : '';
-				$to = isset($_GET['to']) &&  $_GET['from'] != '' ? $_GET['to'] : '';
+				$to = isset($_GET['to']) &&  $_GET['to'] != '' ? $_GET['to'] : '';
 				$data['research'] = $this->research_model->getResearchByResearcher($from, $to); // load research per researcher
 
 				// load view
@@ -75,12 +75,26 @@ class Research extends CI_Controller {
 	public function monthly()
 	{
 		if(!empty($this->session->userdata['user'])){ // if has session
-			$data['research'] = $this->research_model->getResearchByResearcherMonthly(); // load research per researcher
-			// load view
-			$this->load->view('templates/header');
-			$this->load->view('research/reports/monthly', $data);
-			$this->load->view('templates/footer');
-
+			if($this->session->userdata['user']->user_type == 'researcher' || $this->session->userdata['user']->user_type == 'rnd'){ // if user type researcher
+				$from = isset($_GET['from']) && $_GET['from'] != '' ? $_GET['from'] : '';
+				$to = isset($_GET['to']) &&  $_GET['to'] != '' ? $_GET['to'] : '';
+				$researcher = isset($_GET['researcher']) && $_GET['researcher'] != '' ? $_GET['researcher'] : '%%';
+				if($this->session->userdata['user']->user_type == 'researcher'){
+					$data['research'] = $this->research_model->getResearchByResearcherMonthly(); // load research per researcher
+				} else {
+					$data['research'] = $this->research_model->getResearchByResearcherMonthlyDirector($from, $to, $researcher); // load research per researcher
+				}
+				// load view
+				$this->load->view('templates/header');
+				if($this->session->userdata['user']->user_type == 'researcher'){
+					$this->load->view('research/reports/monthly', $data);
+				} else {
+					$this->load->view('research/reports/monthlydirector', $data);
+				}
+				$this->load->view('templates/footer');
+			} else {
+				show_404(); // show 404 error page
+			}
 		} else {
 			show_404(); // show 404 error page
 		}
@@ -88,12 +102,15 @@ class Research extends CI_Controller {
 	public function midterm()
 	{
 		if(!empty($this->session->userdata['user'])){ // if has session
-			$data['research'] = $this->research_model->getResearchByResearcherMidterm(); // load research per researcher
-			// load view
-			$this->load->view('templates/header');
-			$this->load->view('research/reports/midterm', $data);
-			$this->load->view('templates/footer');
-
+			if($this->session->userdata['user']->user_type == 'researcher' || $this->session->userdata['user']->user_type == 'rnd'){ // if user type researcher
+				$data['research'] = $this->research_model->getResearchByResearcherMidterm(); // load research per researcher
+				// load view
+				$this->load->view('templates/header');
+				$this->load->view('research/reports/midterm', $data);
+				$this->load->view('templates/footer');
+			} else {
+				show_404(); // show 404 error page
+			}
 		} else {
 			show_404(); // show 404 error page
 		}
@@ -101,14 +118,17 @@ class Research extends CI_Controller {
 	public function terminal()
 	{
 		if(!empty($this->session->userdata['user'])){ // if has session
-			$from = isset($_GET['from']) && $_GET['from'] != '' ? $_GET['from'] : '';
-			$to = isset($_GET['to']) && $_GET['from'] != '' ? $_GET['to'] : '';
-			$data['research'] = $this->research_model->getResearchByResearcherTerminal($from, $to); // load research per researcher
-			// load view
-			$this->load->view('templates/header');
-			$this->load->view('research/reports/terminal', $data);
-			$this->load->view('templates/footer');
-
+			if($this->session->userdata['user']->user_type == 'researcher' || $this->session->userdata['user']->user_type == 'rnd'){ // if user type researcher
+				$from = isset($_GET['from']) && $_GET['from'] != '' ? $_GET['from'] : '';
+				$to = isset($_GET['to']) &&  $_GET['to'] != '' ? $_GET['to'] : '';
+				$data['research'] = $this->research_model->getResearchByResearcherTerminal($from, $to); // load research per researcher
+				// load view
+				$this->load->view('templates/header');
+				$this->load->view('research/reports/terminal', $data);
+				$this->load->view('templates/footer');
+			} else {
+				show_404(); // show 404 error page
+			}
 		} else {
 			show_404(); // show 404 error page
 		}

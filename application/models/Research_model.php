@@ -224,6 +224,19 @@ class Research_model extends CI_Model {
 		$query = $this->db->get();
         return $query->result();
 	}
+	public function getResearchByResearcherMonthlyDirector($from, $to, $researcher){
+		//get data of joined tables
+		$this->db->select('r.*, CONCAT(ui.first_name," ",ui.middle_name," ",ui.last_name) u_name')
+			->from('tbl_monthly_report r')
+			->join('tbl_user_info ui', 'ui.user_id = r.created_by', 'left');
+		$this->db->where('r.created_by LIKE "%'.$researcher.'%"');
+		if($from != ''){
+			$this->db->where("DATE(r.date_created) >= '$from' && DATE(r.date_created) <= '$to'");
+		}
+		$this->db->order_by('r.date_created','DESC');
+		$query = $this->db->get();
+        return $query->result();
+	}
 	// public function getResearchByResearcherMonthly(){
 	// 	//get data of joined tables
 	// 	$researcher = $this->user->id;
