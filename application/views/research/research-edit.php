@@ -158,7 +158,7 @@
                             <tr>
                                 <td colspan="2">
                                     <div class="form-group">
-                                        <label>Details: </label>
+                                        <label>Description: </label>
                                         <input class="form-control" type="text" name="details" required value="<?= $research[0]->details?>">
                                     </div>
                                 </td>

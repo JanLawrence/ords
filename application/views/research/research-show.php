@@ -1,4 +1,13 @@
+<?php 
+    $session = $this->session->userdata['user'];
+    $query = $this->db->get_where('tbl_user_info', array('user_id' => $session->id));
+    $userinfo = $query->result();
 
+    $queryAuthor = $this->db->get_where('tbl_research_author', array('research_id' => $_REQUEST['id']));
+    $author = $queryAuthor->result();
+    $queryKeyword = $this->db->get_where('tbl_research_keyword', array('research_id' => $_REQUEST['id']));
+    $keyword = $queryKeyword->result();
+?>
 <div class="row">
     <div class="col-md-12">
         <!-- Form for creating new research-->
@@ -87,10 +96,66 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label>Budget: </label>
+                                        <input class="form-control" type="text" readonly name="budget" required value="<?= $research[0]->budget?>">
+                                    </div>    
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label>Duration: </label>
+                                        <input class="form-control" type="text" readonly name="duration" required value="<?= $research[0]->duration?>">
+                                    </div>    
+                                </td>
+                            </tr>
+                            <tr>
                                 <td colspan="2">
                                     <div class="form-group">
-                                        <label>Details: </label>
-                                        <input class="form-control" type="text" name="details" required readonly value="<?= $research[0]->details?>">
+                                        <label>Abstract: </label>
+                                        <input class="form-control" type="text" readonly name="abstract" required value="<?= $research[0]->abstract?>">
+                                    </div>    
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="appendAuthor">
+                                    <div class="form-group">
+                                        <label>Author: <a class="addAuthor" style="cursor: pointer; color: #41a8fc">Add</a></label>
+                                        <!-- <input class="form-control" type="text" name="author[]" readonly value="<?=  $userinfo[0]->first_name.' '.$userinfo[0]->middle_name.' '.$userinfo[0]->last_name  ?>" required> -->
+                                    </div>
+                                    <?php foreach($author as $key => $each):?>
+                                        <div class="input-group mb-3">
+                                            <input type="text" class="form-control" name="author[]" value="<?= $each->author?>" readonly>
+                                            <div class="input-group-append">
+                                                <?php if($key < 0): ?>
+                                                    <button class="btn btn-danger btnremoveauthor" type="button">Delete</button>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </td>
+                                <td class="appendKeyword">
+                                    <div class="form-group">
+                                        <label>Keyword: <a class="addKeyword" style="cursor: pointer; color: #41a8fc">Add</a></label>
+                                        <!-- <input class="form-control" type="text" name="keyword[]" required> -->
+                                    </div> 
+                                    <?php foreach($keyword as $key => $each):?>
+                                        <div class="input-group mb-3">
+                                            <input type="text" class="form-control" name="keyword[]" value="<?= $each->keyword?>" readonly>
+                                            <div class="input-group-append">
+                                                <?php if($key < 0): ?>
+                                                    <button class="btn btn-danger btnremovekeyword" type="button">Delete</button>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>   
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <div class="form-group">
+                                        <label>Description: </label>
+                                        <input class="form-control" type="text" name="details" readonly required value="<?= $research[0]->details?>">
                                     </div>
                                 </td>
                             </tr>

@@ -110,8 +110,8 @@ class Admin_model extends CI_Model{
                 "date_created" => date('Y-m-d H:i:s')
             );
             $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
-            $body = '<html><body><p>This is to inform you that you have been registered to EVSU - ORDEX</p></body><html>';
-            $this->emailsender->send_email_autosending($_POST['email'], $body, 'Registration - EVSU ORDS');
+            // $body = '<html><body><p>This is to inform you that you have been registered to EVSU - ORDEX</p></body><html>';
+            // $this->emailsender->send_email_autosending($_POST['email'], $body, 'Registration - EVSU ORDS');
         // } else { // if existing print 1
         //     echo 1; 
         // }

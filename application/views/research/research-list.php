@@ -13,6 +13,10 @@
                                 <label>To</label>
                                 <input type="date" class="form-control" name="to" value="<?= isset($_GET['to']) && $_GET['to'] != '' ? $_GET['to'] : ''?>">
                             </div>
+                            <div class="form-group col-md-3">
+                                <label>Status</label>
+                                <input type="date" class="form-control" name="to" value="<?= isset($_GET['to']) && $_GET['to'] != '' ? $_GET['to'] : ''?>">
+                            </div>
                             <div class="form-group col-md-3 mt-4">
                                 <button type="submit" class="btn btn-info"> Generate</button>
                             </div>

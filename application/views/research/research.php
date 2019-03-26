@@ -87,13 +87,13 @@
                                 <td>
                                     <div class="form-group">
                                         <label>Budget: </label>
-                                        <input class="form-control" type="text" name="budget" required>
+                                        <input class="form-control" type="number" name="budget" required>
                                     </div>    
                                 </td>
                                 <td>
                                     <div class="form-group">
                                         <label>Duration: </label>
-                                        <input class="form-control" type="text" name="duration" required>
+                                        <input class="form-control" type="date" name="duration" required>
                                     </div>    
                                 </td>
                             </tr>
