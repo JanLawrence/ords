@@ -159,11 +159,21 @@ $(function(){
     })
     $('#addNotesForm').submit(function(){ // submit add notes form
         var r = confirm("Are you sure?"); // alert confirmation if will add note
+        var form = new FormData(this);
         if (r == true) {
-            $.post(URL+'admin/addNotes',$(this).serialize()) // post to admin/addNotes
-            .done(function(returnData){
-                location.reload(); // reload if success
-            })
+            $.ajax({
+                url: URL + 'admin/addNotes', // post to research/add
+                type: "POST",
+                data:  form,
+                contentType: false, // for file uploading purposes
+                cache: false,  // for file uploading purposes
+                processData:false, // for file uploading purposes
+                success: function(returnData){ // get returned data in the posted link by using returnData variable
+                    alert(returnData)
+                    alert('Sucessfully Added Notes.')
+                    location.reload();
+                }
+            });
         }
         return false;
     })

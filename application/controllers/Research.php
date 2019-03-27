@@ -59,7 +59,8 @@ class Research extends CI_Controller {
 			if($this->session->userdata['user']->user_type == 'researcher'){ // if user type researcher
 				$from = isset($_GET['from']) && $_GET['from'] != '' ? $_GET['from'] : '';
 				$to = isset($_GET['to']) &&  $_GET['to'] != '' ? $_GET['to'] : '';
-				$data['research'] = $this->research_model->getResearchByResearcher($from, $to); // load research per researcher
+				$status = isset($_GET['status']) &&  $_GET['status'] != '' ? $_GET['status'] : '';
+				$data['research'] = $this->research_model->getResearchByResearcher($from, $to, $status); // load research per researcher
 
 				// load view
 				$this->load->view('templates/header');

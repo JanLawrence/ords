@@ -1,5 +1,6 @@
 <?php 
   $user = $this->session->userdata['user'];
+  $status = array('Ongoing' => 'ongoing', 'Approved' => 'approved', 'For Review' => 'review');
 ?>
 <div class="row">
     <div class="col-md-12">
@@ -14,6 +15,15 @@
                         <div class="form-group col-md-3">
                             <label>To</label>
                             <input type="date" class="form-control" name="to" value="<?= isset($_GET['to']) && $_GET['to'] != '' ? $_GET['to'] : ''?>">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Status</label>
+                            <select class="form-control" name="status">
+                                <option selected disabled value="">Select Status</option>
+                                <?php foreach($status as $key => $each): ?>
+                                    <option value="<?=$each?>" <?= isset($_GET['status']) && $_GET['status'] == $each ? 'selected' : ''?>><?=$key?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                         <div class="form-group col-md-3 mt-4">
                             <button type="submit" class="btn btn-info"> Generate</button>
@@ -161,6 +171,13 @@
                                 <input type="hidden" class="form-control" name="progress_id" required>
                                 <textarea type="text" class="form-control" name="notes" required></textarea>
                             </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Upload File: </label>
+                                <input class="form-control" type="hidden" name="id">
+                                <input class="form-control" type="file" name="file">
+                            </div> 
                         </div>
                     </div>
                 </div>

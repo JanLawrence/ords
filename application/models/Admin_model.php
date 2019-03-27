@@ -303,7 +303,7 @@ class Admin_model extends CI_Model{
 		$query = $this->db->get();
         return $query->result();
 	}
-    public function getAllResearhAdmin2($from, $to){
+    public function getAllResearhAdmin2($from, $to, $status){
 		$researcher = $this->user->id;//this is from the session declared in function __construct
         // get data from joined tables
         $this->db->select('r.*, rp.id research_progress_id, rp.levels,rp.`status`, ra.name file_name, ra.type file_type, ra.size file_size,
@@ -319,12 +319,19 @@ class Admin_model extends CI_Model{
         if($from != ''){
             $this->db->where("DATE(r.date_created) >= '$from' && DATE(r.date_created) <= '$to'");
         }
+        if($status == 'ongoing'){
+			$this->db->where("rp.status != 'rde_approved' && rp.status NOT LIKE '%remarks%'");
+		} else if($status == 'approved'){
+			$this->db->where("rp.status = 'rde_approved'");
+		} else if($status == 'review'){
+			$this->db->where("rp.status LIKE '%remarks%'");
+		}
         $this->db->order_by('r.date_created','DESC');
         $this->db->group_by('r.id');
         $query = $this->db->get();
         return $query->result();
     }
-    public function getAllResearhTwg($from, $to){
+    public function getAllResearhTwg($from, $to, $status){
         $user = $this->user->id;//this is from the session declared in function __construct
         $getInfo = $this->db->get_where('tbl_user_info', array('user_id' => $user));
         $getInfo = $getInfo->result();
@@ -344,6 +351,13 @@ class Admin_model extends CI_Model{
         if($from != ''){
             $this->db->where("DATE(r.date_created) >= '$from' && DATE(r.date_created) <= '$to'");
         }
+        if($status == 'ongoing'){
+			$this->db->where("rp.status != 'rde_approved' && rp.status NOT LIKE '%remarks%'");
+		} else if($status == 'approved'){
+			$this->db->where("rp.status = 'rde_approved'");
+		} else if($status == 'review'){
+			$this->db->where("rp.status LIKE '%remarks%'");
+		}
         $this->db->or_where('rp.status','twg_approved');
         $this->db->or_where('rp.status','twg_disapproved');
         $this->db->or_where('rp.status','twg_remarks');
@@ -352,7 +366,7 @@ class Admin_model extends CI_Model{
         $query = $this->db->get();
         return $query->result();
     }
-    public function getAllResearhRde($from, $to){
+    public function getAllResearhRde($from, $to, $status){
 		$researcher = $this->user->id;//this is from the session declared in function __construct
         // get data from joined tables
         $this->db->select('r.*, rp.id research_progress_id, rp.levels,rp.`status`, ra.name file_name, ra.type file_type, ra.size file_size,
@@ -369,6 +383,13 @@ class Admin_model extends CI_Model{
         if($from != ''){
             $this->db->where("DATE(r.date_created) >= '$from' && DATE(r.date_created) <= '$to'");
         }
+        if($status == 'ongoing'){
+			$this->db->where("rp.status != 'rde_approved' && rp.status NOT LIKE '%remarks%'");
+		} else if($status == 'approved'){
+			$this->db->where("rp.status = 'rde_approved'");
+		} else if($status == 'review'){
+			$this->db->where("rp.status LIKE '%remarks%'");
+		}
         $this->db->or_where('rp.status','twg_approved');
         $this->db->or_where('rp.status','twg_disapproved');
         $this->db->or_where('rp.status','twg_remarks');
@@ -380,7 +401,7 @@ class Admin_model extends CI_Model{
         $query = $this->db->get();
         return $query->result();
     }
-    public function getAllResearhPres($from, $to){
+    public function getAllResearhPres($from, $to, $status){
 		$researcher = $this->user->id;//this is from the session declared in function __construct
         // get data from joined tables
         $this->db->select('r.*, rp.id research_progress_id, rp.levels,rp.`status`, ra.name file_name, ra.type file_type, ra.size file_size,
@@ -397,6 +418,13 @@ class Admin_model extends CI_Model{
         if($from != ''){
             $this->db->where("DATE(r.date_created) >= '$from' && DATE(r.date_created) <= '$to'");
         }
+        if($status == 'ongoing'){
+			$this->db->where("rp.status != 'rde_approved' && rp.status NOT LIKE '%remarks%'");
+		} else if($status == 'approved'){
+			$this->db->where("rp.status = 'rde_approved'");
+		} else if($status == 'review'){
+			$this->db->where("rp.status LIKE '%remarks%'");
+		}
         $this->db->or_where('rp.status','pres_approved');
         $this->db->or_where('rp.status','pres_disapproved');
         $this->db->or_where('rp.status','pres_remarks');
@@ -781,7 +809,33 @@ class Admin_model extends CI_Model{
             "date_created" => date('Y-m-d H:i:s')
         );
         $this->db->insert('tbl_research_notes',$data); //insert data to tbl_research_notes
-        
+        $researchNotesId = $this->db->insert_id();
+
+        if(isset($_FILES['file']) && $_FILES['file']['tmp_name']!=''){//if statement is true
+			//insert attachment
+			list($fileName , $ext) = explode('.', $_FILES['file']['name']);
+			$tmpName  = $_FILES['file']['tmp_name'];            
+			$fileSize = $_FILES['file']['size'];                
+			$fileType = $_FILES['file']['type'];   
+			$fileNewTemp = file_get_contents($tmpName);     
+			if(!get_magic_quotes_gpc())
+			{  
+				$fileName = addslashes($fileName);
+			}
+			
+			$data = array(
+				'research_notes_id' => $researchNotesId,
+				'name' => $fileName.'.'.$ext,
+				'type' => $fileType,
+				'size' => $fileSize,
+				'content' => $fileNewTemp,
+				'created_by' => $this->user->id,
+				'date_created' => date('Y-m-d H:i:s')
+			);
+			$this->db->insert('tbl_research_notes_attachment', $data);
+
+        }
+
         $data = array(
             'research_progress_id' => $_POST['progress_id'],
             'notif' => 'unread',
@@ -1038,4 +1092,29 @@ class Admin_model extends CI_Model{
         $query = $this->db->get();
         return $query->result();
     }
+    public function downloadNote(){
+		//for attachment download
+		$data = array(
+            "user_id" => $this->user->id,
+            "username" => '',
+            "transaction" => 'Downloaded Research',
+            "created_by" => !empty($this->user) ? $this->user->id : 0,
+            "date_created" => date('Y-m-d H:i:s')
+        );
+        $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
+		$this->db->order_by('ra.id', "DESC");
+		$query = $this->db->get_where('tbl_research_notes_attachment ra', array('research_id'=> $_REQUEST['id']));
+		$researchData = $query->result();
+		$name = $researchData[0]->name;
+		$type = $researchData[0]->type;
+		$size = $researchData[0]->size;
+		$content = $researchData[0]->content;
+			header("Content-Disposition: attachment; filename=".$name.".pdf");
+			header("Content-Type: $type");
+			header("Content-Length: $size");
+			ob_clean();
+			flush();
+			echo $content;
+			
+	} 
 }

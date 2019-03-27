@@ -201,16 +201,17 @@ class Admin extends CI_Controller {
 
             // if user type is equal to admin or president
             $from = isset($_GET['from']) && $_GET['from'] != '' ? $_GET['from'] : '';
-			$to = isset($_GET['to']) &&  $_GET['to'] != '' ? $_GET['to'] : '';
+            $to = isset($_GET['to']) &&  $_GET['to'] != '' ? $_GET['to'] : '';
+            $status = isset($_GET['status']) &&  $_GET['status'] != '' ? $_GET['status'] : '';
             if($this->session->userdata['user']->user_type == 'rnd' || $this->session->userdata['user']->user_type == 'pres' || $this->session->userdata['user']->user_type == 'twg' || $this->session->userdata['user']->user_type == 'rde' || $this->session->userdata['user']->user_type == 'staff'){
                 if($this->session->userdata['user']->user_type == 'rnd' || $this->session->userdata['user']->user_type == 'staff'){
-                    $data['research'] = $this->admin_model->getAllResearhAdmin2($from, $to);
+                    $data['research'] = $this->admin_model->getAllResearhAdmin2($from, $to, $status);
                 } else if($this->session->userdata['user']->user_type == 'twg'){ 
-                    $data['research'] = $this->admin_model->getAllResearhTwg($from, $to);
+                    $data['research'] = $this->admin_model->getAllResearhTwg($from, $to, $status);
                 } else if($this->session->userdata['user']->user_type == 'rde'){ 
-                    $data['research'] = $this->admin_model->getAllResearhRde($from, $to);
+                    $data['research'] = $this->admin_model->getAllResearhRde($from, $to, $status);
                 } else if($this->session->userdata['user']->user_type == 'pres'){ 
-                    $data['research'] = $this->admin_model->getAllResearhPres($from, $to);
+                    $data['research'] = $this->admin_model->getAllResearhPres($from, $to, $status);
                 }
                 // load view
                 $this->load->view('templates/header');
@@ -302,6 +303,9 @@ class Admin extends CI_Controller {
     }
     public function saveMessage(){
         $this->admin_model->saveMessage(); // save message controller
+    }
+    public function downloadNote(){
+        $this->admin_model->downloadNote(); // save message controller
     }
     public function userLogs()
 	{

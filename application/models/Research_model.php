@@ -192,7 +192,7 @@ class Research_model extends CI_Model {
 			echo $content;
 			
 	} 
-	public function getResearchByResearcher($from, $to){
+	public function getResearchByResearcher($from, $to, $status){
 		//get data of joined tables
 		$researcher = $this->user->id;
 		$this->db->select('r.*, ra.name file_name, ra.type file_type, ra.size file_size, rp.status, rd.duration_date, d.department,  group_concat(agenda.agenda separator ", ") agenda')
@@ -207,6 +207,13 @@ class Research_model extends CI_Model {
 		$this->db->where('r.created_by', $researcher);
 		if($from != ''){
 			$this->db->where("DATE(r.date_created) >= '$from' && DATE(r.date_created) <= '$to'");
+		} 
+		if($status == 'ongoing'){
+			$this->db->where("rp.status != 'rde_approved' && rp.status NOT LIKE '%remarks%'");
+		} else if($status == 'approved'){
+			$this->db->where("rp.status = 'rde_approved'");
+		} else if($status == 'review'){
+			$this->db->where("rp.status LIKE '%remarks%'");
 		}
 		$this->db->order_by('r.date_created','DESC');
 		$this->db->group_by('r.id');

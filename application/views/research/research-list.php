@@ -1,4 +1,8 @@
 <!-- Display Research List -->
+<?php 
+  $user = $this->session->userdata['user'];
+  $status = array('Ongoing' => 'ongoing', 'Approved' => 'approved', 'For Review' => 'review');
+?>
 <div class="row">
     <div class="col-md-12">
         <div class="card rounded-0">
@@ -15,7 +19,12 @@
                             </div>
                             <div class="form-group col-md-3">
                                 <label>Status</label>
-                                <input type="date" class="form-control" name="to" value="<?= isset($_GET['to']) && $_GET['to'] != '' ? $_GET['to'] : ''?>">
+                                <select class="form-control" name="status">
+                                    <option selected disabled value="">Select Status</option>
+                                    <?php foreach($status as $key => $each): ?>
+                                        <option value="<?=$each?>" <?= isset($_GET['status']) && $_GET['status'] == $each ? 'selected' : ''?>><?=$key?></option>
+                                    <?php endforeach; ?>
+                                </select>
                             </div>
                             <div class="form-group col-md-3 mt-4">
                                 <button type="submit" class="btn btn-info"> Generate</button>
