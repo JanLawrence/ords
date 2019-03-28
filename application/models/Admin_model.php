@@ -867,8 +867,9 @@ class Admin_model extends CI_Model{
     public function viewNotesPerResearch($id){
 
         // get notes data per research from joined tables
-        $this->db->select('rn.*, u.user_type')
+        $this->db->select('rn.*, u.user_type, rna.id attachment_id')
 			->from('tbl_research_notes rn')
+			->join('tbl_research_notes_attachment rna', 'rn.id = rna.research_notes_id', 'left')
 			->join('tbl_user u', 'u.id = rn.user_id', 'inner');
 		$this->db->where('rn.research_id', $id);
 		$this->db->order_by('rn.date_created','DESC');
@@ -1097,13 +1098,13 @@ class Admin_model extends CI_Model{
 		$data = array(
             "user_id" => $this->user->id,
             "username" => '',
-            "transaction" => 'Downloaded Research',
+            "transaction" => 'Downloaded Note',
             "created_by" => !empty($this->user) ? $this->user->id : 0,
             "date_created" => date('Y-m-d H:i:s')
         );
         $this->db->insert('tbl_user_logs',$data); //insert data to tbl_user_logs
 		$this->db->order_by('ra.id', "DESC");
-		$query = $this->db->get_where('tbl_research_notes_attachment ra', array('research_id'=> $_REQUEST['id']));
+		$query = $this->db->get_where('tbl_research_notes_attachment ra', array('id'=> $_REQUEST['id']));
 		$researchData = $query->result();
 		$name = $researchData[0]->name;
 		$type = $researchData[0]->type;

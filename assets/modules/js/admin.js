@@ -169,7 +169,6 @@ $(function(){
                 cache: false,  // for file uploading purposes
                 processData:false, // for file uploading purposes
                 success: function(returnData){ // get returned data in the posted link by using returnData variable
-                    alert(returnData)
                     alert('Sucessfully Added Notes.')
                     location.reload();
                 }
