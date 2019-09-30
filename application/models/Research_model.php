@@ -233,7 +233,8 @@ class Research_model extends CI_Model {
 	}
 	public function getResearchByResearcherMonthlyDirector($from, $to, $researcher){
 		//get data of joined tables
-		$this->db->select('r.*, CONCAT(ui.first_name," ",ui.middle_name," ",ui.last_name) u_name')
+// 		$this->db->select('r.*, CONCAT(ui.first_name," ",ui.middle_name," ",ui.last_name) u_name')
+		$this->db->select('r.*, ui.*')
 			->from('tbl_monthly_report r')
 			->join('tbl_user_info ui', 'ui.user_id = r.created_by', 'left');
 		$this->db->where('r.created_by LIKE "%'.$researcher.'%"');
